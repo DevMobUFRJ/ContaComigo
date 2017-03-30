@@ -46,7 +46,7 @@ public class ItemsActivity extends AppCompatActivity {
                 ChildInfo detailInfo =  headerInfo.getProductList().get(childPosition);
                 //display it or do something with it
                 Toast.makeText(getBaseContext(), " Clicked on :: " + headerInfo.getName()
-                        + "/" + detailInfo.getName(), Toast.LENGTH_LONG).show();
+                        + "/" + detailInfo.getName(), Toast.LENGTH_SHORT).show();
                 return false;
             }
         });
@@ -58,7 +58,7 @@ public class ItemsActivity extends AppCompatActivity {
                 HeaderInfo headerInfo = deptList.get(groupPosition);
                 //display it or do something with it
                 Toast.makeText(getBaseContext(), " Header is :: " + headerInfo.getName(),
-                        Toast.LENGTH_LONG).show();
+                        Toast.LENGTH_SHORT).show();
 
                 return false;
             }
@@ -99,6 +99,8 @@ public class ItemsActivity extends AppCompatActivity {
 
     //here we maintain our products in various departments
     private int addProduct(String department, String product){
+        //    TODO
+        //Adicionar parametro de preço, passar o mesmo nos metodos acima, trocar sequence para name, e o name para preço
 
         int groupPosition = 0;
 
