@@ -10,6 +10,8 @@ import android.widget.Toast;
 import com.devmob.contacomigo.ExpandableList.ChildInfo;
 import com.devmob.contacomigo.ExpandableList.ExpandableListAdapter;
 import com.devmob.contacomigo.ExpandableList.HeaderInfo;
+import com.devmob.contacomigo.model.Food;
+import com.devmob.contacomigo.model.Person;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -49,7 +51,7 @@ public class ItemsActivity extends AppCompatActivity {
                     //get the group header
                     HeaderInfo headerInfo = prodList.get(groupPosition);
                     //get the child info
-                    ChildInfo detailInfo =  headerInfo.getProductList().get(childPosition);
+                    ChildInfo detailInfo = headerInfo.getProductList().get(childPosition);
                     Toast.makeText(ItemsActivity.this, detailInfo.getPerson() + " deve " + detailInfo.getPrice(), Toast.LENGTH_SHORT).show();
                     return true;
                 }
@@ -64,8 +66,9 @@ public class ItemsActivity extends AppCompatActivity {
                 //get the group header
                 HeaderInfo headerInfo = prodList.get(groupPosition);
                 //get the child info
-                ChildInfo detailInfo =  headerInfo.getProductList().get(childPosition);
+                ChildInfo detailInfo = headerInfo.getProductList().get(childPosition);
                 //display it or do something with it
+
                 //Toast.makeText(getBaseContext(), " Clicked on :: " + headerInfo.getName()
                 //        + "/" + detailInfo.getPrice(), Toast.LENGTH_SHORT).show();
                 return false;
@@ -91,7 +94,7 @@ public class ItemsActivity extends AppCompatActivity {
     //method to expand all groups
     private void expandAll() {
         int count = listAdapter.getGroupCount();
-        for (int i = 0; i < count; i++){
+        for (int i = 0; i < count; i++) {
             itemsExpandableListView.expandGroup(i);
         }
     }
@@ -99,14 +102,32 @@ public class ItemsActivity extends AppCompatActivity {
     //method to collapse all groups
     private void collapseAll() {
         int count = listAdapter.getGroupCount();
-        for (int i = 0; i < count; i++){
+        for (int i = 0; i < count; i++) {
             itemsExpandableListView.collapseGroup(i);
         }
     }
 
     //load some initial data into out list
-    private void loadData(){
+    private void loadData() {
 
+        Person william = new Person("William", 1);
+        Person silvio = new Person("Silvio", 2);
+        Person daniel = new Person("Daniel", 3);
+
+
+        Food batata = new Food(1, "Aussie Cheese Fries", 48.60);
+        Food cebola = new Food(2, "Bloomin'Onion", 48.60);
+
+        addProduct(william, batata);
+        addProduct(silvio, batata);
+        addProduct(daniel, batata);
+
+        addProduct(william, cebola);
+        addProduct(daniel, cebola);
+
+
+        //----------------antigo-----------
+        /*
         addProduct("Batata", "William","11,00");
         addProduct("Batata", "Silvio","11,00");
         addProduct("Batata", "Daniel","11,00");
@@ -114,42 +135,27 @@ public class ItemsActivity extends AppCompatActivity {
         addProduct("Cebola", "William","14,00");
         addProduct("Cebola", "Silvio","14,00");
 
-        addProduct("Cebola1", "William","14,00");
-        addProduct("Cebola2", "Silvio","14,00");
-        addProduct("Cebola3", "William","14,00");
-        addProduct("Cebola4", "Silvio","14,00");
-        addProduct("Cebola5", "William","14,00");
-        addProduct("Cebola6", "Silvio","14,00");
-        addProduct("Cebola7", "William","14,00");
-        addProduct("Cebola8", "Silvio","14,00");
-        addProduct("Cebola9", "William","14,00");
-        addProduct("Cebola0", "Silvio","14,00");
-        addProduct("Cebola11", "William","14,00");
-        addProduct("Cebola12", "Silvio","14,00");
-        addProduct("Cebola13", "William","14,00");
-        addProduct("Cebola14", "Silvio","14,00");
-        addProduct("Cebola15", "William","14,00");
-        addProduct("Cebola16", "Silvio","14,00");
-        addProduct("Cebola17", "William","14,00");
-        addProduct("Cebola18", "Silvio","14,00");
-
     }
 
 
-
     //here we maintain our products in various departments
-    private int addProduct(String product, String person, String price){
+    private int addProduct(Person personO, Food food) {
         //    TODO
         //Adicionar parametro de preço, passar o mesmo nos metodos acima, trocar sequence para name, e o name para preço
+
+        String product = food.getName();
+        String person = personO.getName();
+        double price = food.getPrice();
 
         int groupPosition = 0;
 
         //check the hash map if the group already exists
         HeaderInfo headerInfo = subjects.get(product);
         //add the group if doesn't exists
-        if(headerInfo == null){
+        if (headerInfo == null) {
             headerInfo = new HeaderInfo();
-            headerInfo.setName(product);
+            headerInfo.setFood(food);
+            headerInfo.setFoodName(product);
             subjects.put(product, headerInfo);
             prodList.add(headerInfo);
         }
@@ -163,10 +169,11 @@ public class ItemsActivity extends AppCompatActivity {
 
         //create a new child and add that to the group
         ChildInfo detailInfo = new ChildInfo();
-        detailInfo.setPerson(person);
+        detailInfo.setPerson(personO);
+        detailInfo.setPersonName(person);
         detailInfo.setPrice(price);
         productList.add(detailInfo);
-        headerInfo.setProductList(productList);
+        headerInfo.setPeopleList(productList);
 
         //find the group position inside the list
         groupPosition = prodList.indexOf(headerInfo);

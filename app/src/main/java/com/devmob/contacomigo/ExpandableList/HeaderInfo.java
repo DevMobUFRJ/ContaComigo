@@ -1,6 +1,11 @@
 package com.devmob.contacomigo.ExpandableList;
 
+import com.devmob.contacomigo.model.Food;
+
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by DevMachine on 30/03/2017.
  */
@@ -8,23 +13,28 @@ import java.util.ArrayList;
 
 public class HeaderInfo {
 
-    private String name;
-    private ArrayList<ChildInfo> list = new ArrayList<ChildInfo>();
+    Food food;
 
-    public String getName() {
-        return name;
+    private ArrayList<ChildInfo> list = new ArrayList<>();
+
+    public void setFood(Food food) {
+        this.food = food;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public String getFoodName() {
+        return food.getName();
+    }
+
+    public void setFoodName(String name) {
+        food.setName(name);
     }
 
     public ArrayList<ChildInfo> getProductList() {
         return list;
     }
 
-    public void setProductList(ArrayList<ChildInfo> productList) {
-        this.list = productList;
+    public void setPeopleList(ArrayList<ChildInfo> people) {
+        this.list = people;
     }
 
 }
