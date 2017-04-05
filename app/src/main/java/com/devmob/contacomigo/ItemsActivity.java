@@ -3,6 +3,7 @@ package com.devmob.contacomigo;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ExpandableListView;
 import android.widget.Toast;
 
@@ -17,10 +18,10 @@ import java.util.LinkedHashMap;
 public class ItemsActivity extends AppCompatActivity {
 
     private LinkedHashMap<String, HeaderInfo> subjects = new LinkedHashMap<String, HeaderInfo>();
-    private ArrayList<HeaderInfo> deptList = new ArrayList<HeaderInfo>();
+    private ArrayList<HeaderInfo> prodList = new ArrayList<HeaderInfo>();
 
     private ExpandableListAdapter listAdapter;
-    private ExpandableListView simpleExpandableListView;
+    private ExpandableListView itemsExpandableListView;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -31,38 +32,54 @@ public class ItemsActivity extends AppCompatActivity {
         loadData();
 
         //get reference of the ExpandableListView
-        simpleExpandableListView = (ExpandableListView) findViewById(R.id.simpleExpandableListView);
+        itemsExpandableListView = (ExpandableListView) findViewById(R.id.simpleExpandableListView);
         // create the adapter by passing your ArrayList data
-        listAdapter = new ExpandableListAdapter(ItemsActivity.this, deptList);
+        listAdapter = new ExpandableListAdapter(ItemsActivity.this, prodList);
         // attach the adapter to the expandable list view
-        simpleExpandableListView.setAdapter(listAdapter);
+        itemsExpandableListView.setAdapter(listAdapter);
 
         //expand all the Groups
         //expandAll();
+        itemsExpandableListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                if (ExpandableListView.getPackedPositionType(id) == ExpandableListView.PACKED_POSITION_TYPE_CHILD) {
+                    int groupPosition = ExpandableListView.getPackedPositionGroup(id);
+                    int childPosition = ExpandableListView.getPackedPositionChild(id);
+                    //get the group header
+                    HeaderInfo headerInfo = prodList.get(groupPosition);
+                    //get the child info
+                    ChildInfo detailInfo =  headerInfo.getProductList().get(childPosition);
+                    Toast.makeText(ItemsActivity.this, detailInfo.getPerson() + " deve " + detailInfo.getPrice(), Toast.LENGTH_SHORT).show();
+                    return true;
+                }
 
+                return false;
+            }
+        });
         // setOnChildClickListener listener for child row click
-        simpleExpandableListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
+        itemsExpandableListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
             @Override
             public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
                 //get the group header
-                HeaderInfo headerInfo = deptList.get(groupPosition);
+                HeaderInfo headerInfo = prodList.get(groupPosition);
                 //get the child info
                 ChildInfo detailInfo =  headerInfo.getProductList().get(childPosition);
                 //display it or do something with it
-                Toast.makeText(getBaseContext(), " Clicked on :: " + headerInfo.getName()
-                        + "/" + detailInfo.getPrice(), Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getBaseContext(), " Clicked on :: " + headerInfo.getName()
+                //        + "/" + detailInfo.getPrice(), Toast.LENGTH_SHORT).show();
                 return false;
             }
         });
         // setOnGroupClickListener listener for group heading click
-        simpleExpandableListView.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
+        itemsExpandableListView.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
             @Override
             public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
                 //get the group header
-                HeaderInfo headerInfo = deptList.get(groupPosition);
+                HeaderInfo headerInfo = prodList.get(groupPosition);
                 //display it or do something with it
-                Toast.makeText(getBaseContext(), " Header is :: " + headerInfo.getName(),
-                        Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getBaseContext(), " Header is :: " + headerInfo.getName(),
+                //        Toast.LENGTH_SHORT).show();
 
                 return false;
             }
@@ -75,7 +92,7 @@ public class ItemsActivity extends AppCompatActivity {
     private void expandAll() {
         int count = listAdapter.getGroupCount();
         for (int i = 0; i < count; i++){
-            simpleExpandableListView.expandGroup(i);
+            itemsExpandableListView.expandGroup(i);
         }
     }
 
@@ -83,7 +100,7 @@ public class ItemsActivity extends AppCompatActivity {
     private void collapseAll() {
         int count = listAdapter.getGroupCount();
         for (int i = 0; i < count; i++){
-            simpleExpandableListView.collapseGroup(i);
+            itemsExpandableListView.collapseGroup(i);
         }
     }
 
@@ -115,7 +132,7 @@ public class ItemsActivity extends AppCompatActivity {
             headerInfo = new HeaderInfo();
             headerInfo.setName(product);
             subjects.put(product, headerInfo);
-            deptList.add(headerInfo);
+            prodList.add(headerInfo);
         }
 
         //get the children for the group
@@ -133,7 +150,7 @@ public class ItemsActivity extends AppCompatActivity {
         headerInfo.setProductList(productList);
 
         //find the group position inside the list
-        groupPosition = deptList.indexOf(headerInfo);
+        groupPosition = prodList.indexOf(headerInfo);
         return groupPosition;
     }
 }
