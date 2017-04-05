@@ -6,6 +6,10 @@ import android.view.View;
 import android.widget.ExpandableListView;
 import android.widget.Toast;
 
+import com.devmob.contacomigo.ExpandableList.ChildInfo;
+import com.devmob.contacomigo.ExpandableList.ExpandableListAdapter;
+import com.devmob.contacomigo.ExpandableList.HeaderInfo;
+
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 
@@ -46,7 +50,7 @@ public class ItemsActivity extends AppCompatActivity {
                 ChildInfo detailInfo =  headerInfo.getProductList().get(childPosition);
                 //display it or do something with it
                 Toast.makeText(getBaseContext(), " Clicked on :: " + headerInfo.getName()
-                        + "/" + detailInfo.getName(), Toast.LENGTH_SHORT).show();
+                        + "/" + detailInfo.getPrice(), Toast.LENGTH_SHORT).show();
                 return false;
             }
         });
@@ -86,31 +90,31 @@ public class ItemsActivity extends AppCompatActivity {
     //load some initial data into out list
     private void loadData(){
 
-        addProduct("Android","ListView");
-        addProduct("Android","ExpandableListView");
-        addProduct("Android","GridView");
+        addProduct("Batata", "William","11,00");
+        addProduct("Batata", "Silvio","11,00");
+        addProduct("Batata", "Daniel","11,00");
 
-        addProduct("Java","PolyMorphism");
-        addProduct("Java","Collections");
+        addProduct("Cebola", "William","14,00");
+        addProduct("Cebola", "Silvio","14,00");
 
     }
 
 
 
     //here we maintain our products in various departments
-    private int addProduct(String department, String product){
+    private int addProduct(String product, String person, String price){
         //    TODO
         //Adicionar parametro de preço, passar o mesmo nos metodos acima, trocar sequence para name, e o name para preço
 
         int groupPosition = 0;
 
         //check the hash map if the group already exists
-        HeaderInfo headerInfo = subjects.get(department);
+        HeaderInfo headerInfo = subjects.get(product);
         //add the group if doesn't exists
         if(headerInfo == null){
             headerInfo = new HeaderInfo();
-            headerInfo.setName(department);
-            subjects.put(department, headerInfo);
+            headerInfo.setName(product);
+            subjects.put(product, headerInfo);
             deptList.add(headerInfo);
         }
 
@@ -123,8 +127,8 @@ public class ItemsActivity extends AppCompatActivity {
 
         //create a new child and add that to the group
         ChildInfo detailInfo = new ChildInfo();
-        detailInfo.setSequence(String.valueOf(listSize));
-        detailInfo.setName(product);
+        detailInfo.setPerson(person);
+        detailInfo.setPrice(price);
         productList.add(detailInfo);
         headerInfo.setProductList(productList);
 

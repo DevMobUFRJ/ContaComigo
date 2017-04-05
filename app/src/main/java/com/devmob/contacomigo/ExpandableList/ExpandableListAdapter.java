@@ -1,4 +1,4 @@
-package com.devmob.contacomigo;
+package com.devmob.contacomigo.ExpandableList;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -6,6 +6,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.TextView;
+
+import com.devmob.contacomigo.R;
 
 import java.util.ArrayList;
 
@@ -44,10 +46,10 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
             view = infalInflater.inflate(R.layout.list_child, null);
         }
 
-        TextView sequence = (TextView) view.findViewById(R.id.sequence);
-        sequence.setText(detailInfo.getSequence().trim() + ".");
-        TextView childItem = (TextView) view.findViewById(R.id.childItem);
-        childItem.setText(detailInfo.getName().trim());
+        TextView person = (TextView) view.findViewById(R.id.person);
+        person.setText(detailInfo.getPerson().trim());
+        TextView price = (TextView) view.findViewById(R.id.price);
+        price.setText(detailInfo.getPrice().trim());
 
         return view;
     }

@@ -1,4 +1,4 @@
-package com.devmob.contacomigo;
+package com.devmob.contacomigo.ExpandableList;
 
 import java.util.ArrayList;
 /**
