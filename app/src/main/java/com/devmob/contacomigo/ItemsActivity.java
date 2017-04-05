@@ -114,6 +114,25 @@ public class ItemsActivity extends AppCompatActivity {
         addProduct("Cebola", "William","14,00");
         addProduct("Cebola", "Silvio","14,00");
 
+        addProduct("Cebola1", "William","14,00");
+        addProduct("Cebola2", "Silvio","14,00");
+        addProduct("Cebola3", "William","14,00");
+        addProduct("Cebola4", "Silvio","14,00");
+        addProduct("Cebola5", "William","14,00");
+        addProduct("Cebola6", "Silvio","14,00");
+        addProduct("Cebola7", "William","14,00");
+        addProduct("Cebola8", "Silvio","14,00");
+        addProduct("Cebola9", "William","14,00");
+        addProduct("Cebola0", "Silvio","14,00");
+        addProduct("Cebola11", "William","14,00");
+        addProduct("Cebola12", "Silvio","14,00");
+        addProduct("Cebola13", "William","14,00");
+        addProduct("Cebola14", "Silvio","14,00");
+        addProduct("Cebola15", "William","14,00");
+        addProduct("Cebola16", "Silvio","14,00");
+        addProduct("Cebola17", "William","14,00");
+        addProduct("Cebola18", "Silvio","14,00");
+
     }
 
 
