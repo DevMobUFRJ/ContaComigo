@@ -9,6 +9,8 @@ import android.widget.Toast;
 import com.devmob.contacomigo.ExpandableList.ChildInfo;
 import com.devmob.contacomigo.ExpandableList.ExpandableListAdapter;
 import com.devmob.contacomigo.ExpandableList.HeaderInfo;
+import com.devmob.contacomigo.model.Food;
+import com.devmob.contacomigo.model.Person;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -49,7 +51,7 @@ public class ItemsActivity extends AppCompatActivity {
                 //get the child info
                 ChildInfo detailInfo =  headerInfo.getProductList().get(childPosition);
                 //display it or do something with it
-                Toast.makeText(getBaseContext(), " Clicked on :: " + headerInfo.getName()
+                Toast.makeText(getBaseContext(), " Clicked on :: " + headerInfo.getFoodName()
                         + "/" + detailInfo.getPrice(), Toast.LENGTH_SHORT).show();
                 return false;
             }
@@ -61,7 +63,7 @@ public class ItemsActivity extends AppCompatActivity {
                 //get the group header
                 HeaderInfo headerInfo = deptList.get(groupPosition);
                 //display it or do something with it
-                Toast.makeText(getBaseContext(), " Header is :: " + headerInfo.getName(),
+                Toast.makeText(getBaseContext(), " Header is :: " + headerInfo.getFoodName(),
                         Toast.LENGTH_SHORT).show();
 
                 return false;
@@ -90,13 +92,75 @@ public class ItemsActivity extends AppCompatActivity {
     //load some initial data into out list
     private void loadData(){
 
+        Person william = new Person("William", 1);
+        Person silvio = new Person("Silvio", 2);
+        Person daniel = new Person("Daniel", 3);
+
+
+
+        Food batata = new Food(1, "Aussie Cheese Fries", 48.60);
+        Food cebola = new Food(2, "Bloomin'Onion", 48.60);
+
+        addProduct2(william, batata);
+        addProduct2(silvio, batata);
+        addProduct2(daniel, batata);
+
+        addProduct2(william, cebola);
+        addProduct2(daniel, cebola);
+
+
+        //----------------antigo-----------
+        /*
         addProduct("Batata", "William","11,00");
         addProduct("Batata", "Silvio","11,00");
         addProduct("Batata", "Daniel","11,00");
 
         addProduct("Cebola", "William","14,00");
         addProduct("Cebola", "Silvio","14,00");
+        */
+    }
 
+
+    //here we maintain our products in various departments
+    private int addProduct2(Person personO, Food food){
+        //    TODO
+        //Adicionar parametro de preço, passar o mesmo nos metodos acima, trocar sequence para name, e o name para preço
+
+        String product = food.getName();
+        String person = personO.getName();
+        double price = food.getPrice();
+
+        int groupPosition = 0;
+
+        //check the hash map if the group already exists
+        HeaderInfo headerInfo = subjects.get(product);
+        //add the group if doesn't exists
+        if(headerInfo == null){
+            headerInfo = new HeaderInfo();
+            headerInfo.setFood(food);
+            headerInfo.setFoodName(product);
+            subjects.put(product, headerInfo);
+            deptList.add(headerInfo);
+        }
+
+        //get the children for the group
+        ArrayList<ChildInfo> productList = headerInfo.getProductList();
+        //size of the children list
+        int listSize = productList.size();
+        //add to the counter
+        listSize++;
+
+        //create a new child and add that to the group
+        ChildInfo detailInfo = new ChildInfo();
+        detailInfo.setPerson(personO);
+        detailInfo.setPersonName(person);
+        detailInfo.setPrice(price);
+        productList.add(detailInfo);
+        headerInfo.setPeopleList(productList);
+
+        //find the group position inside the list
+        groupPosition = deptList.indexOf(headerInfo);
+        return groupPosition;
     }
 
 
@@ -113,7 +177,7 @@ public class ItemsActivity extends AppCompatActivity {
         //add the group if doesn't exists
         if(headerInfo == null){
             headerInfo = new HeaderInfo();
-            headerInfo.setName(product);
+            headerInfo.setFoodName(product);
             subjects.put(product, headerInfo);
             deptList.add(headerInfo);
         }
@@ -127,10 +191,10 @@ public class ItemsActivity extends AppCompatActivity {
 
         //create a new child and add that to the group
         ChildInfo detailInfo = new ChildInfo();
-        detailInfo.setPerson(person);
-        detailInfo.setPrice(price);
+        detailInfo.setPersonName(person);
+        detailInfo.setPrice(2.0);
         productList.add(detailInfo);
-        headerInfo.setProductList(productList);
+        headerInfo.setPeopleList(productList);
 
         //find the group position inside the list
         groupPosition = deptList.indexOf(headerInfo);

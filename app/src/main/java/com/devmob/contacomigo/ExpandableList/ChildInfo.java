@@ -1,28 +1,38 @@
 package com.devmob.contacomigo.ExpandableList;
 
+import com.devmob.contacomigo.model.Person;
+
+
 /**
  * Created by DevMachine on 30/03/2017.
  */
 
 public class ChildInfo {
 
-    private String person = "";
-    private String price = "";
+    private Person person;
 
-    public String getPerson() {
+    public Person getPerson() {
         return person;
     }
 
-    public void setPerson(String person) {
+    public void setPerson(Person person) {
         this.person = person;
     }
 
-    public String getPrice() {
-        return price;
+    public void setPersonName(String name){
+        this.person.setName(name);
     }
 
-    public void setPrice(String price) {
-        this.price = price;
+    public String getPersonName(){
+        return person.getName();
+    }
+
+    public double getPrice() {
+        return person.getTotalPrice();
+    }
+
+    public void setPrice(double price) {
+        person.setTotalPrice(price);
     }
 
 }
