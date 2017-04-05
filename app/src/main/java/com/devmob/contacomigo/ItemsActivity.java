@@ -26,7 +26,7 @@ public class ItemsActivity extends AppCompatActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_items);
+        setContentView(R.layout.activity_main);
 
         // add data for displaying in expandable list view
         loadData();
