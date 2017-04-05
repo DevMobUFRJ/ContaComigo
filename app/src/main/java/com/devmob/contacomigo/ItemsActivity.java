@@ -52,7 +52,7 @@ public class ItemsActivity extends AppCompatActivity {
                     HeaderInfo headerInfo = prodList.get(groupPosition);
                     //get the child info
                     ChildInfo detailInfo = headerInfo.getProductList().get(childPosition);
-                    Toast.makeText(ItemsActivity.this, detailInfo.getPerson() + " deve " + detailInfo.getPrice(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ItemsActivity.this, detailInfo.getPersonName() + " deve " + detailInfo.getPrice(), Toast.LENGTH_SHORT).show();
                     return true;
                 }
 
@@ -134,14 +134,12 @@ public class ItemsActivity extends AppCompatActivity {
 
         addProduct("Cebola", "William","14,00");
         addProduct("Cebola", "Silvio","14,00");
-
+        */
     }
 
 
     //here we maintain our products in various departments
     private int addProduct(Person personO, Food food) {
-        //    TODO
-        //Adicionar parametro de preço, passar o mesmo nos metodos acima, trocar sequence para name, e o name para preço
 
         String product = food.getName();
         String person = personO.getName();

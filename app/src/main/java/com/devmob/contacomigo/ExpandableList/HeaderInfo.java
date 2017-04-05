@@ -25,6 +25,10 @@ public class HeaderInfo {
         return food.getName();
     }
 
+    public double getFoodPrice() {
+        return food.getPrice();
+    }
+
     public void setFoodName(String name) {
         food.setName(name);
     }

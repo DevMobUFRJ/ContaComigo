@@ -48,7 +48,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
 
         TextView person = (TextView) view.findViewById(R.id.person);
         person.setText(detailInfo.getPersonName().trim());
-        TextView price = (TextView) view.findViewById(R.id.price);
+        TextView price = (TextView) view.findViewById(R.id.personPrice);
         price.setText(String.valueOf(detailInfo.getPrice()));
 
         return view;
@@ -89,6 +89,8 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
 
         TextView heading = (TextView) view.findViewById(R.id.heading);
         heading.setText(headerInfo.getFoodName().trim());
+        TextView productPrice = (TextView) view.findViewById(R.id.productPrice);
+        productPrice.setText(String.valueOf(headerInfo.getFoodPrice()));
 
         return view;
     }
