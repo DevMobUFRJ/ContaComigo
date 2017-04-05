@@ -3,6 +3,7 @@ package com.devmob.contacomigo;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ExpandableListView;
 import android.widget.Toast;
 
@@ -19,52 +20,69 @@ import java.util.LinkedHashMap;
 public class ItemsActivity extends AppCompatActivity {
 
     private LinkedHashMap<String, HeaderInfo> subjects = new LinkedHashMap<String, HeaderInfo>();
-    private ArrayList<HeaderInfo> deptList = new ArrayList<HeaderInfo>();
+    private ArrayList<HeaderInfo> prodList = new ArrayList<HeaderInfo>();
 
     private ExpandableListAdapter listAdapter;
-    private ExpandableListView simpleExpandableListView;
+    private ExpandableListView itemsExpandableListView;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_items);
+        setContentView(R.layout.activity_main);
 
         // add data for displaying in expandable list view
         loadData();
 
         //get reference of the ExpandableListView
-        simpleExpandableListView = (ExpandableListView) findViewById(R.id.simpleExpandableListView);
+        itemsExpandableListView = (ExpandableListView) findViewById(R.id.simpleExpandableListView);
         // create the adapter by passing your ArrayList data
-        listAdapter = new ExpandableListAdapter(ItemsActivity.this, deptList);
+        listAdapter = new ExpandableListAdapter(ItemsActivity.this, prodList);
         // attach the adapter to the expandable list view
-        simpleExpandableListView.setAdapter(listAdapter);
+        itemsExpandableListView.setAdapter(listAdapter);
 
         //expand all the Groups
         //expandAll();
+        itemsExpandableListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                if (ExpandableListView.getPackedPositionType(id) == ExpandableListView.PACKED_POSITION_TYPE_CHILD) {
+                    int groupPosition = ExpandableListView.getPackedPositionGroup(id);
+                    int childPosition = ExpandableListView.getPackedPositionChild(id);
+                    //get the group header
+                    HeaderInfo headerInfo = prodList.get(groupPosition);
+                    //get the child info
+                    ChildInfo detailInfo = headerInfo.getProductList().get(childPosition);
+                    Toast.makeText(ItemsActivity.this, detailInfo.getPerson() + " deve " + detailInfo.getPrice(), Toast.LENGTH_SHORT).show();
+                    return true;
+                }
 
+                return false;
+            }
+        });
         // setOnChildClickListener listener for child row click
-        simpleExpandableListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
+        itemsExpandableListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
             @Override
             public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
                 //get the group header
-                HeaderInfo headerInfo = deptList.get(groupPosition);
+                HeaderInfo headerInfo = prodList.get(groupPosition);
                 //get the child info
-                ChildInfo detailInfo =  headerInfo.getProductList().get(childPosition);
+                ChildInfo detailInfo = headerInfo.getProductList().get(childPosition);
                 //display it or do something with it
-                Toast.makeText(getBaseContext(), " Clicked on :: " + headerInfo.getFoodName()
-                        + "/" + detailInfo.getPrice(), Toast.LENGTH_SHORT).show();
+
+                //Toast.makeText(getBaseContext(), " Clicked on :: " + headerInfo.getName()
+                //        + "/" + detailInfo.getPrice(), Toast.LENGTH_SHORT).show();
                 return false;
             }
         });
         // setOnGroupClickListener listener for group heading click
-        simpleExpandableListView.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
+        itemsExpandableListView.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
             @Override
             public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
                 //get the group header
-                HeaderInfo headerInfo = deptList.get(groupPosition);
+                HeaderInfo headerInfo = prodList.get(groupPosition);
                 //display it or do something with it
-                Toast.makeText(getBaseContext(), " Header is :: " + headerInfo.getFoodName(),
-                        Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getBaseContext(), " Header is :: " + headerInfo.getName(),
+                //        Toast.LENGTH_SHORT).show();
 
                 return false;
             }
@@ -76,37 +94,36 @@ public class ItemsActivity extends AppCompatActivity {
     //method to expand all groups
     private void expandAll() {
         int count = listAdapter.getGroupCount();
-        for (int i = 0; i < count; i++){
-            simpleExpandableListView.expandGroup(i);
+        for (int i = 0; i < count; i++) {
+            itemsExpandableListView.expandGroup(i);
         }
     }
 
     //method to collapse all groups
     private void collapseAll() {
         int count = listAdapter.getGroupCount();
-        for (int i = 0; i < count; i++){
-            simpleExpandableListView.collapseGroup(i);
+        for (int i = 0; i < count; i++) {
+            itemsExpandableListView.collapseGroup(i);
         }
     }
 
     //load some initial data into out list
-    private void loadData(){
+    private void loadData() {
 
         Person william = new Person("William", 1);
         Person silvio = new Person("Silvio", 2);
         Person daniel = new Person("Daniel", 3);
 
 
-
         Food batata = new Food(1, "Aussie Cheese Fries", 48.60);
         Food cebola = new Food(2, "Bloomin'Onion", 48.60);
 
-        addProduct2(william, batata);
-        addProduct2(silvio, batata);
-        addProduct2(daniel, batata);
+        addProduct(william, batata);
+        addProduct(silvio, batata);
+        addProduct(daniel, batata);
 
-        addProduct2(william, cebola);
-        addProduct2(daniel, cebola);
+        addProduct(william, cebola);
+        addProduct(daniel, cebola);
 
 
         //----------------antigo-----------
@@ -122,7 +139,7 @@ public class ItemsActivity extends AppCompatActivity {
 
 
     //here we maintain our products in various departments
-    private int addProduct2(Person personO, Food food){
+    private int addProduct(Person personO, Food food) {
         //    TODO
         //Adicionar parametro de preço, passar o mesmo nos metodos acima, trocar sequence para name, e o name para preço
 
@@ -135,12 +152,12 @@ public class ItemsActivity extends AppCompatActivity {
         //check the hash map if the group already exists
         HeaderInfo headerInfo = subjects.get(product);
         //add the group if doesn't exists
-        if(headerInfo == null){
+        if (headerInfo == null) {
             headerInfo = new HeaderInfo();
             headerInfo.setFood(food);
             headerInfo.setFoodName(product);
             subjects.put(product, headerInfo);
-            deptList.add(headerInfo);
+            prodList.add(headerInfo);
         }
 
         //get the children for the group
@@ -159,45 +176,7 @@ public class ItemsActivity extends AppCompatActivity {
         headerInfo.setPeopleList(productList);
 
         //find the group position inside the list
-        groupPosition = deptList.indexOf(headerInfo);
-        return groupPosition;
-    }
-
-
-
-    //here we maintain our products in various departments
-    private int addProduct(String product, String person, String price){
-        //    TODO
-        //Adicionar parametro de preço, passar o mesmo nos metodos acima, trocar sequence para name, e o name para preço
-
-        int groupPosition = 0;
-
-        //check the hash map if the group already exists
-        HeaderInfo headerInfo = subjects.get(product);
-        //add the group if doesn't exists
-        if(headerInfo == null){
-            headerInfo = new HeaderInfo();
-            headerInfo.setFoodName(product);
-            subjects.put(product, headerInfo);
-            deptList.add(headerInfo);
-        }
-
-        //get the children for the group
-        ArrayList<ChildInfo> productList = headerInfo.getProductList();
-        //size of the children list
-        int listSize = productList.size();
-        //add to the counter
-        listSize++;
-
-        //create a new child and add that to the group
-        ChildInfo detailInfo = new ChildInfo();
-        detailInfo.setPersonName(person);
-        detailInfo.setPrice(2.0);
-        productList.add(detailInfo);
-        headerInfo.setPeopleList(productList);
-
-        //find the group position inside the list
-        groupPosition = deptList.indexOf(headerInfo);
+        groupPosition = prodList.indexOf(headerInfo);
         return groupPosition;
     }
 }
