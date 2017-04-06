@@ -15,56 +15,58 @@ import java.util.ArrayList;
  * Created by DevMachine on 29/03/2017.
  */
 
+// GROUP EH O PRODUTO, CHILD EH PESSOA
+
 public class ExpandableListAdapter extends BaseExpandableListAdapter {
     private Context context;
-    private ArrayList<HeaderInfo> deptList;
+    private ArrayList<ProdutoInfo> deptList;
 
-    public ExpandableListAdapter(Context context, ArrayList<HeaderInfo> deptList) {
+    public ExpandableListAdapter(Context context, ArrayList<ProdutoInfo> deptList) {
         this.context = context;
         this.deptList = deptList;
     }
 
     @Override
-    public Object getChild(int groupPosition, int childPosition) {
-        ArrayList<ChildInfo> productList = deptList.get(groupPosition).getProductList();
-        return productList.get(childPosition);
+    public Object getChild(int indiceProduto, int indicePessoa) {
+        ArrayList<PessoaInfo> productList = deptList.get(indiceProduto).getListProduto();
+        return productList.get(indicePessoa);
     }
 
     @Override
-    public long getChildId(int groupPosition, int childPosition) {
-        return childPosition;
+    public long getChildId(int indiceProduto, int indicePessoa) {
+        return indicePessoa;
     }
 
 
     @Override
-    public View getChildView(int groupPosition, int childPosition, boolean isLastChild,
+    public View getChildView(int indiceProduto, int indicePessoa, boolean isLastChild,
                              View view, ViewGroup parent) {
 
-        ChildInfo detailInfo = (ChildInfo) getChild(groupPosition, childPosition);
+        PessoaInfo detailInfo = (PessoaInfo) getChild(indiceProduto, indicePessoa);
         if (view == null) {
             LayoutInflater infalInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            view = infalInflater.inflate(R.layout.list_child, null);
+            view = infalInflater.inflate(R.layout.list_pessoa, null);
         }
 
-        TextView person = (TextView) view.findViewById(R.id.person);
-        person.setText(detailInfo.getPersonName().trim());
-        TextView price = (TextView) view.findViewById(R.id.personPrice);
-        price.setText(String.valueOf(detailInfo.getPrice()));
+        TextView pessoa = (TextView) view.findViewById(R.id.pessoa);
+        pessoa.setText(detailInfo.getNomePessoa().trim());
+        TextView pessoaPreco = (TextView) view.findViewById(R.id.pessoaPreco);
+        pessoaPreco.setText(String.valueOf(detailInfo.getPreco()));
 
         return view;
     }
 
     @Override
-    public int getChildrenCount(int groupPosition) {
+    public int getChildrenCount(int indiceProduto) {
 
-        ArrayList<ChildInfo> productList = deptList.get(groupPosition).getProductList();
-        return productList.size();
+        ArrayList<PessoaInfo> listProduto = deptList.get(indiceProduto).getListProduto();
+        return listProduto.size();
 
     }
 
     @Override
-    public Object getGroup(int groupPosition) {
-        return deptList.get(groupPosition);
+    public Object getGroup(int indiceProduto) {
+        return deptList.get(indiceProduto);
     }
 
     @Override
@@ -73,24 +75,24 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
     }
 
     @Override
-    public long getGroupId(int groupPosition) {
-        return groupPosition;
+    public long getGroupId(int indiceProduto) {
+        return indiceProduto;
     }
 
     @Override
-    public View getGroupView(int groupPosition, boolean isLastChild, View view,
+    public View getGroupView(int indiceProduto, boolean isLastChild, View view,
                              ViewGroup parent) {
 
-        HeaderInfo headerInfo = (HeaderInfo) getGroup(groupPosition);
+        ProdutoInfo produtoInfo = (ProdutoInfo) getGroup(indiceProduto);
         if (view == null) {
             LayoutInflater inf = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            view = inf.inflate(R.layout.list_header, null);
+            view = inf.inflate(R.layout.list_produto, null);
         }
 
         TextView heading = (TextView) view.findViewById(R.id.heading);
-        heading.setText(headerInfo.getFoodName().trim());
+        heading.setText(produtoInfo.getNomeProduto().trim());
         TextView productPrice = (TextView) view.findViewById(R.id.productPrice);
-        productPrice.setText(String.valueOf(headerInfo.getFoodPrice()));
+        productPrice.setText(String.valueOf(produtoInfo.getProdutoPreco()));
 
         return view;
     }
@@ -101,7 +103,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
     }
 
     @Override
-    public boolean isChildSelectable(int groupPosition, int childPosition) {
+    public boolean isChildSelectable(int indiceProduto, int indicePessoa) {
         return true;
     }
 }

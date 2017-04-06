@@ -1,17 +1,20 @@
 package com.devmob.contacomigo;
 
+import android.support.annotation.NonNull;
+import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ExpandableListView;
 import android.widget.Toast;
 
-import com.devmob.contacomigo.ExpandableList.ChildInfo;
+import com.devmob.contacomigo.ExpandableList.PessoaInfo;
 import com.devmob.contacomigo.ExpandableList.ExpandableListAdapter;
-import com.devmob.contacomigo.ExpandableList.HeaderInfo;
-import com.devmob.contacomigo.model.Food;
-import com.devmob.contacomigo.model.Person;
+import com.devmob.contacomigo.ExpandableList.ProdutoInfo;
+import com.devmob.contacomigo.model.Pessoa;
+import com.devmob.contacomigo.model.Produto;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -19,8 +22,8 @@ import java.util.LinkedHashMap;
 
 public class ItemsActivity extends AppCompatActivity {
 
-    private LinkedHashMap<String, HeaderInfo> productHash = new LinkedHashMap<String, HeaderInfo>();
-    private ArrayList<HeaderInfo> productList = new ArrayList<HeaderInfo>();
+    private LinkedHashMap<String, ProdutoInfo> hashProduto = new LinkedHashMap<String, ProdutoInfo>();
+    private ArrayList<ProdutoInfo> listProduto = new ArrayList<ProdutoInfo>();
 
     private ExpandableListAdapter listAdapter;
     private ExpandableListView itemsExpandableListView;
@@ -30,10 +33,36 @@ public class ItemsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         //Inicialização
-        loadData();
+        carregamentoDeDados();
         itemsExpandableListView = (ExpandableListView) findViewById(R.id.simpleExpandableListView);
-        listAdapter = new ExpandableListAdapter(ItemsActivity.this, productList);
+        listAdapter = new ExpandableListAdapter(ItemsActivity.this, listProduto);
         itemsExpandableListView.setAdapter(listAdapter);
+        BottomNavigationView bottomNavigationView = (BottomNavigationView)
+                findViewById(R.id.bottom_navigation);
+
+        //TODO
+        //Quando selecionar o ícone, chamar outra janela. Trocar ícone ativo em cada tela. (icone diferente ou mudar bg?)
+        bottomNavigationView.setOnNavigationItemSelectedListener(
+                new BottomNavigationView.OnNavigationItemSelectedListener() {
+                    @Override
+                    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                        switch (item.getItemId()) {
+                            case R.id.moneyIcon:
+                                //textFavorites.setVisibility(View.VISIBLE);
+                                //textSchedules.setVisibility(View.GONE);
+                                //item.setIcon(R.drawable.ic_people_black_48dp);
+                                Toast.makeText(ItemsActivity.this, "Money", Toast.LENGTH_SHORT).show();
+                                break;
+                            case R.id.personIcon:
+                                Toast.makeText(ItemsActivity.this, "Person", Toast.LENGTH_SHORT).show();
+                                break;
+                            case R.id.tempIcon:
+                                Toast.makeText(ItemsActivity.this, "tempIcon", Toast.LENGTH_SHORT).show();
+                                break;
+                        }
+                        return false;
+                    }
+                });
 
 
 
@@ -42,13 +71,13 @@ public class ItemsActivity extends AppCompatActivity {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
                 if (ExpandableListView.getPackedPositionType(id) == ExpandableListView.PACKED_POSITION_TYPE_CHILD) {
-                    int groupPosition = ExpandableListView.getPackedPositionGroup(id);
-                    int childPosition = ExpandableListView.getPackedPositionChild(id);
+                    int indiceProduto = ExpandableListView.getPackedPositionGroup(id);
+                    int indicePessoa = ExpandableListView.getPackedPositionChild(id);
                     //get the group header
-                    HeaderInfo headerInfo = productList.get(groupPosition);
+                    ProdutoInfo produtoInfo = listProduto.get(indiceProduto);
                     //get the child info
-                    ChildInfo detailInfo = headerInfo.getProductList().get(childPosition);
-                    Toast.makeText(ItemsActivity.this, detailInfo.getPersonName() + " deve " + detailInfo.getPrice(), Toast.LENGTH_SHORT).show();
+                    PessoaInfo detailInfo = produtoInfo.getListProduto().get(indicePessoa);
+                    Toast.makeText(ItemsActivity.this, detailInfo.getNomePessoa() + "/"+ indicePessoa+" deve " + detailInfo.getPreco(), Toast.LENGTH_SHORT).show();
                     return true;
                 }
 
@@ -58,19 +87,19 @@ public class ItemsActivity extends AppCompatActivity {
         // CLICK EM CADA CHILD (PESSOA E PREÇO)
         itemsExpandableListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
             @Override
-            public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
-                HeaderInfo headerInfo = productList.get(groupPosition);
-                ChildInfo detailInfo = headerInfo.getProductList().get(childPosition);
-                //Toast.makeText(getBaseContext(), " Clicked on :: " + headerInfo.getName()+ "/" + detailInfo.getPrice(), Toast.LENGTH_SHORT).show();
+            public boolean onChildClick(ExpandableListView parent, View v, int indiceProduto, int indicePessoa, long id) {
+                ProdutoInfo produtoInfo = listProduto.get(indiceProduto);
+                PessoaInfo pessoaInfo = produtoInfo.getListProduto().get(indicePessoa);
+                Toast.makeText(getBaseContext(), " Clicked on :: " + pessoaInfo.getNomePessoa()+ "/" +indiceProduto + "/" + pessoaInfo.getPreco(), Toast.LENGTH_SHORT).show();
                 return false;
             }
         });
         // CLICK EM CADA HEADER (PRODUTO E PREÇO)
         itemsExpandableListView.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
             @Override
-            public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
-                HeaderInfo headerInfo = productList.get(groupPosition);
-                //Toast.makeText(getBaseContext(), " Header is :: " + headerInfo.getName(),Toast.LENGTH_SHORT).show();
+            public boolean onGroupClick(ExpandableListView parent, View v, int indiceProduto, long id) {
+                ProdutoInfo produtoInfo = listProduto.get(indiceProduto);
+                Toast.makeText(getBaseContext(), " Header is :: " + produtoInfo.getNomeProduto(),Toast.LENGTH_SHORT).show();
                 return false;
             }
         });
@@ -79,69 +108,69 @@ public class ItemsActivity extends AppCompatActivity {
     }
 
     //DATA SETADA POR HARDCODING TEMPORARIO
-    private void loadData() {
+    private void carregamentoDeDados() {
 
-        Person william = new Person("William", 1);
-        Person silvio = new Person("Silvio", 2);
-        Person daniel = new Person("Daniel", 3);
+        Pessoa william = new Pessoa("William", 1);
+        Pessoa silvio = new Pessoa("Silvio", 2);
+        Pessoa daniel = new Pessoa("Daniel", 3);
 
 
-        Food batata = new Food(1, "Aussie Cheese Fries", 48.60);
-        Food cebola = new Food(2, "Bloomin'Onion", 48.60);
+        Produto batata = new Produto(1, "Aussie Cheese Fries", 48.60);
+        Produto cebola = new Produto(2, "Bloomin'Onion", 48.60);
 
-        addProduct(william, batata);
-        addProduct(silvio, batata);
-        addProduct(daniel, batata);
+        addProduto(william, batata);
+        addProduto(silvio, batata);
+        addProduto(daniel, batata);
 
-        addProduct(william, cebola);
-        addProduct(daniel, cebola);
+        addProduto(william, cebola);
+        addProduto(daniel, cebola);
 
     }
 
     //PREENCHIMENTO DE CLASSES
-    private int addProduct(Person personO, Food food) {
+    private int addProduto(Pessoa pessoaO, Produto produto) {
 
-        String product = food.getName();
-        String person = personO.getName();
-        double price = food.getPrice();
+        String product = produto.getNome();
+        String person = pessoaO.getNome();
+        double price = produto.getPreco();
 
-        int groupPosition = 0;
+        int posicaoPessoa = 0;
 
         //CHECA SE PRODUTO JA EXISTE
-        HeaderInfo headerInfo = productHash.get(product);
+        ProdutoInfo produtoInfo = hashProduto.get(product);
 
         //CASO NÃO EXISTA, CRIA
-        if (headerInfo == null) {
-            headerInfo = new HeaderInfo();
-            headerInfo.setFood(food);
-            headerInfo.setFoodName(product);
-            productHash.put(product, headerInfo);
-            productList.add(headerInfo);
+        if (produtoInfo == null) {
+            produtoInfo = new ProdutoInfo();
+            produtoInfo.setProduto(produto);
+            produtoInfo.setNomeProduto(product);
+            hashProduto.put(product, produtoInfo);
+            listProduto.add(produtoInfo);
         }
 
         //get the children for the group
-        ArrayList<ChildInfo> productList = headerInfo.getProductList();
+        ArrayList<PessoaInfo> listPessoa = produtoInfo.getListProduto();
         //size of the children list
-        int listSize = productList.size();
+        int listTamanho = listPessoa.size();
         //add to the counter
-        listSize++;
+        listTamanho++;
 
         //create a new child and add that to the group
-        ChildInfo detailInfo = new ChildInfo();
-        detailInfo.setPerson(personO);
-        detailInfo.setPersonName(person);
-        detailInfo.setPrice(price);
-        productList.add(detailInfo);
-        headerInfo.setPeopleList(productList);
+        PessoaInfo detailInfo = new PessoaInfo();
+        detailInfo.setPessoa(pessoaO);
+        detailInfo.setNomePessoa(person);
+        detailInfo.setPreco(price);
+        listPessoa.add(detailInfo);
+        produtoInfo.setListPessoa(listPessoa);
 
         //find the group position inside the list
-        groupPosition = this.productList.indexOf(headerInfo);
-        return groupPosition;
+        posicaoPessoa = this.listProduto.indexOf(produtoInfo);
+        return posicaoPessoa;
     }
 
 
     //method to expand all groups
-    private void expandAll() {
+    private void expandirTodos() {
         int count = listAdapter.getGroupCount();
         for (int i = 0; i < count; i++) {
             itemsExpandableListView.expandGroup(i);
@@ -149,7 +178,7 @@ public class ItemsActivity extends AppCompatActivity {
     }
 
     //method to collapse all groups
-    private void collapseAll() {
+    private void fecharTodos() {
         int count = listAdapter.getGroupCount();
         for (int i = 0; i < count; i++) {
             itemsExpandableListView.collapseGroup(i);
