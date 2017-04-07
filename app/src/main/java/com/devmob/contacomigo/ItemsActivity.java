@@ -37,11 +37,14 @@ public class ItemsActivity extends AppCompatActivity {
         itemsExpandableListView = (ExpandableListView) findViewById(R.id.simpleExpandableListView);
         listAdapter = new ExpandableListAdapter(ItemsActivity.this, listProduto);
         itemsExpandableListView.setAdapter(listAdapter);
-        BottomNavigationView bottomNavigationView = (BottomNavigationView)
+        final BottomNavigationView bottomNavigationView = (BottomNavigationView)
                 findViewById(R.id.bottom_navigation);
 
         //TODO
         //Quando selecionar o ícone, chamar outra janela. Trocar ícone ativo em cada tela. (icone diferente ou mudar bg?)
+
+        //TODO
+        //Toolbar
         bottomNavigationView.setOnNavigationItemSelectedListener(
                 new BottomNavigationView.OnNavigationItemSelectedListener() {
                     @Override
@@ -51,12 +54,18 @@ public class ItemsActivity extends AppCompatActivity {
                                 //textFavorites.setVisibility(View.VISIBLE);
                                 //textSchedules.setVisibility(View.GONE);
                                 //item.setIcon(R.drawable.ic_people_black_48dp);
+                                bottomNavigationView.setItemBackgroundResource(R.color.colorPrimary);
+                                item.setChecked(true);
                                 Toast.makeText(ItemsActivity.this, "Money", Toast.LENGTH_SHORT).show();
                                 break;
                             case R.id.personIcon:
+                                bottomNavigationView.setItemBackgroundResource(R.color.red);
+                                item.setChecked(true);
                                 Toast.makeText(ItemsActivity.this, "Person", Toast.LENGTH_SHORT).show();
                                 break;
                             case R.id.tempIcon:
+                                bottomNavigationView.setItemBackgroundResource(R.color.black);
+                                item.setChecked(true);
                                 Toast.makeText(ItemsActivity.this, "tempIcon", Toast.LENGTH_SHORT).show();
                                 break;
                         }
@@ -124,6 +133,7 @@ public class ItemsActivity extends AppCompatActivity {
 
         addProduto(william, cebola);
         addProduto(daniel, cebola);
+        
 
     }
 
