@@ -6,6 +6,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ExpandableListView;
@@ -34,8 +35,7 @@ public class ItemsActivity extends AppCompatActivity {
 
     @BindView(R.id.simpleExpandableListView)
     private ExpandableListView itemsExpandableListView;
-    @BindView(R.id.addFAB)
-    public FloatingActionButton addFAB;
+    public FloatingActionButton addFAB; //On Click não funciona com butterknife
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -49,7 +49,7 @@ public class ItemsActivity extends AppCompatActivity {
         itemsExpandableListView.setAdapter(listAdapter);
         final BottomNavigationView bottomNavigationView = (BottomNavigationView)
                 findViewById(R.id.bottom_navigation);
-
+        addFAB = (FloatingActionButton) findViewById(R.id.addFAB);
         //TODO
         //Quando selecionar o ícone, chamar outra janela. Trocar ícone ativo em cada tela. (icone diferente ou mudar bg?)
 
@@ -123,7 +123,13 @@ public class ItemsActivity extends AppCompatActivity {
             }
         });
         
-
+        addFAB.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                Toast.makeText(ItemsActivity.this, "Add", Toast.LENGTH_SHORT).show();
+                return true;
+            }
+        });
     }
 
     //DATA SETADA POR HARDCODING TEMPORARIO
