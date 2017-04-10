@@ -1,10 +1,11 @@
-package com.devmob.contacomigo;
+package com.devmob.contacomigo.activities;
 
+import android.content.Intent;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
@@ -12,9 +13,10 @@ import android.widget.AdapterView;
 import android.widget.ExpandableListView;
 import android.widget.Toast;
 
-import com.devmob.contacomigo.ExpandableList.PessoaInfo;
 import com.devmob.contacomigo.ExpandableList.ExpandableListAdapter;
+import com.devmob.contacomigo.ExpandableList.PessoaInfo;
 import com.devmob.contacomigo.ExpandableList.ProdutoInfo;
+import com.devmob.contacomigo.R;
 import com.devmob.contacomigo.model.Pessoa;
 import com.devmob.contacomigo.model.Produto;
 
@@ -84,7 +86,6 @@ public class ItemsActivity extends AppCompatActivity {
                 });
 
 
-
         //LONG CLICK EM CADA CHILD (PESSOA E PREÇO)
         itemsExpandableListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
@@ -96,7 +97,7 @@ public class ItemsActivity extends AppCompatActivity {
                     ProdutoInfo produtoInfo = listProduto.get(indiceProduto);
                     //get the child info
                     PessoaInfo detailInfo = produtoInfo.getListProduto().get(indicePessoa);
-                    Toast.makeText(ItemsActivity.this, detailInfo.getNomePessoa() + "/"+ indicePessoa+" deve " + detailInfo.getPreco(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ItemsActivity.this, detailInfo.getNomePessoa() + "/" + indicePessoa + " deve " + detailInfo.getPreco(), Toast.LENGTH_SHORT).show();
                     return true;
                 }
 
@@ -109,7 +110,7 @@ public class ItemsActivity extends AppCompatActivity {
             public boolean onChildClick(ExpandableListView parent, View v, int indiceProduto, int indicePessoa, long id) {
                 ProdutoInfo produtoInfo = listProduto.get(indiceProduto);
                 PessoaInfo pessoaInfo = produtoInfo.getListProduto().get(indicePessoa);
-                Toast.makeText(getBaseContext(), " Clicked on :: " + pessoaInfo.getNomePessoa()+ "/" +indiceProduto + "/" + pessoaInfo.getPreco(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getBaseContext(), " Clicked on :: " + pessoaInfo.getNomePessoa() + "/" + indiceProduto + "/" + pessoaInfo.getPreco(), Toast.LENGTH_SHORT).show();
                 return false;
             }
         });
@@ -118,15 +119,18 @@ public class ItemsActivity extends AppCompatActivity {
             @Override
             public boolean onGroupClick(ExpandableListView parent, View v, int indiceProduto, long id) {
                 ProdutoInfo produtoInfo = listProduto.get(indiceProduto);
-                Toast.makeText(getBaseContext(), " Header is :: " + produtoInfo.getNomeProduto(),Toast.LENGTH_SHORT).show();
+                Toast.makeText(getBaseContext(), " Header is :: " + produtoInfo.getNomeProduto(), Toast.LENGTH_SHORT).show();
                 return false;
             }
         });
-        
+
+        final AppCompatActivity aux = this;
         addFAB.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 Toast.makeText(ItemsActivity.this, "Add", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(aux, AddProdutoActivity.class);
+                startActivity(intent);
                 return true;
             }
         });

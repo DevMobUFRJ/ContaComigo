@@ -19,8 +19,13 @@ public class Pessoa extends Model {
     @Column(name = "precoTotal")
     private double precoTotal;
 
+    public Pessoa(){
+        super();
+    }
+
     //TODO remove id from constructor, must be auto-incremented(sql)
     public Pessoa(String nome, int id) {
+        super();
         this.nome = nome;
         this.id = id;
     }
