@@ -19,7 +19,13 @@ android {
     }
 }
 
+repositories {
+    mavenCentral()
+    maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
+}
+
 dependencies {
+    compile 'com.michaelpardo:activeandroid:3.1.0-SNAPSHOT'
     compile 'com.jakewharton:butterknife:8.5.1'
     compile fileTree(dir: 'libs', include: ['*.jar'])
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
