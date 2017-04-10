@@ -2,6 +2,7 @@ package com.devmob.contacomigo;
 
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -19,6 +20,9 @@ import com.devmob.contacomigo.model.Produto;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 
 public class ItemsActivity extends AppCompatActivity {
 
@@ -26,12 +30,18 @@ public class ItemsActivity extends AppCompatActivity {
     private ArrayList<ProdutoInfo> listProduto = new ArrayList<ProdutoInfo>();
 
     private ExpandableListAdapter listAdapter;
+    //private ExpandableListView itemsExpandableListView;
+
+    @BindView(R.id.simpleExpandableListView)
     private ExpandableListView itemsExpandableListView;
+    @BindView(R.id.addFAB)
+    public FloatingActionButton addFAB;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        ButterKnife.bind(this);
         //Inicialização
         carregamentoDeDados();
         itemsExpandableListView = (ExpandableListView) findViewById(R.id.simpleExpandableListView);
@@ -112,7 +122,7 @@ public class ItemsActivity extends AppCompatActivity {
                 return false;
             }
         });
-
+        
 
     }
 
@@ -133,7 +143,7 @@ public class ItemsActivity extends AppCompatActivity {
 
         addProduto(william, cebola);
         addProduto(daniel, cebola);
-        
+
 
     }
 

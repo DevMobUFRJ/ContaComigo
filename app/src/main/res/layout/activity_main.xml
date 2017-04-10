@@ -5,6 +5,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/addFAB"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/bottom_navigation"
+        android:layout_alignParentRight="true"
+        android:layout_margin="16sp"
+        android:backgroundTint="@color/red"
+        android:src="@drawable/ic_add_button_circle" />
     <android.support.design.widget.BottomNavigationView
         android:id="@+id/bottom_navigation"
         android:layout_width="match_parent"
@@ -21,9 +30,10 @@
         android:layout_width="match_parent"
         android:layout_height="fill_parent"
         android:childDivider="@android:color/transparent"
-        android:layout_above="@id/bottom_navigation"
+        android:layout_above="@id/addFAB"
         android:divider="@android:color/holo_blue_bright"
-        android:dividerHeight="1dp"></ExpandableListView>
+        android:dividerHeight="1dp"
+        ></ExpandableListView>
 
 
 </RelativeLayout>
