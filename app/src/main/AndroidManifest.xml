@@ -3,7 +3,6 @@
     package="com.devmob.contacomigo">
 
     <application
-        android:name="com.activeandroid.app.Application"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -18,14 +17,6 @@
             </intent-filter>
         </activity>
         <activity android:name=".activities.AddProdutoActivity" />
-
-        <meta-data
-            android:name="AA_DB_NAME"
-            android:value="ContaComigo.db" />
-        <meta-data
-            android:name="AA_DB_VERSION"
-            android:value="1" />
-
     </application>
 
 </manifest>

@@ -1,32 +1,24 @@
 package com.devmob.contacomigo.model;
 
-import com.activeandroid.Model;
-import com.activeandroid.annotation.Column;
-import com.activeandroid.annotation.Table;
-
 /**
  * Created by silviomm on 05/04/17.
  */
 
-@Table(name = "produto")
-public class Produto extends Model {
+public class Produto {
 
     private int id;
 
-    @Column(name = "nome")
     private String nome;
 
-    @Column(name = "preco")
     private double preco;
 
 
-    public Produto(){
+    public Produto() {
         super();
     }
 
     // TODO remove id from constructor, must be auto-incremented
     public Produto(int id, String nome, double preco) {
-        super();
         this.id = id;
         this.nome = nome;
         this.preco = preco;
