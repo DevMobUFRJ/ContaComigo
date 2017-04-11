@@ -20,8 +20,13 @@ public class Produto extends Model {
     private double preco;
 
 
+    public Produto(){
+        super();
+    }
+
     // TODO remove id from constructor, must be auto-incremented
     public Produto(int id, String nome, double preco) {
+        super();
         this.id = id;
         this.nome = nome;
         this.preco = preco;
