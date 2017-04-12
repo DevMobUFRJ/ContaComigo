@@ -12,7 +12,7 @@
         android:layout_gravity="end|bottom"
         android:layout_alignParentRight="true"
         android:layout_margin="16sp"
-        android:backgroundTint="@color/red"
+        app:backgroundTint="@color/red"
         android:src="@drawable/ic_add_button_circle" />
 
 

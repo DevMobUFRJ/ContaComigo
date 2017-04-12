@@ -14,7 +14,7 @@ public class Produto {
 
 
     public Produto() {
-        super();
+
     }
 
     // TODO remove id from constructor, must be auto-incremented
