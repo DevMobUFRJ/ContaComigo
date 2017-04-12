@@ -18,14 +18,14 @@ import java.util.List;
 public class ProdutoDAO extends SQLiteOpenHelper {
 
     public ProdutoDAO(Context context) {
-        super(context, "ContaComigo", null, 1);
+        super(context, "ContaComigo", null, 2);
     }
 
 
     @Override
     public void onCreate(SQLiteDatabase db) {
         String sql = "CREATE TABLE Produto(" +
-                "id INTEGER PRIMARY KEY AUTO_INCREMENT," +
+                "id INTEGER PRIMARY KEY," +
                 "nome VARCHAR(255) NOT NULL, " +
                 "preco REAL NOT NULL" +
                 ");";
@@ -60,6 +60,8 @@ public class ProdutoDAO extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-
+        String sql = "DROP TABLE IF EXISTS Produto;";
+        db.execSQL(sql);
+        onCreate(db);
     }
 }
