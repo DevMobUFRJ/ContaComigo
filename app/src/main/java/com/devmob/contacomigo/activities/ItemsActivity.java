@@ -144,8 +144,8 @@ public class ItemsActivity extends AppCompatActivity {
         Pessoa daniel = new Pessoa("Daniel", 3);
 
 
-        Produto batata = new Produto(1, "Aussie Cheese Fries", 48.60);
-        Produto cebola = new Produto(2, "Bloomin'Onion", 48.60);
+        Produto batata = new Produto(1, "Aussie Cheese Fries", 48.60f);
+        Produto cebola = new Produto(2, "Bloomin'Onion", 48.60f);
 
         addProduto(william, batata);
         addProduto(silvio, batata);

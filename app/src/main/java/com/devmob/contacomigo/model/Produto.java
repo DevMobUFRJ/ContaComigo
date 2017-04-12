@@ -10,15 +10,14 @@ public class Produto {
 
     private String nome;
 
-    private double preco;
+    private float preco;
 
-
-    public Produto() {
-
+    public Produto(String nome, float preco){
+        this.nome = nome;
+        this.preco = preco;
     }
 
-    // TODO remove id from constructor, must be auto-incremented
-    public Produto(int id, String nome, double preco) {
+    public Produto(int id, String nome, float preco) {
         this.id = id;
         this.nome = nome;
         this.preco = preco;
