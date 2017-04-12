@@ -15,7 +15,22 @@
         app:backgroundTint="@color/red"
         android:src="@drawable/ic_add_button_circle" />
 
-
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/produtoTxt"
+        android:text="Produto"
+        android:textSize="25sp"
+        android:layout_margin="16sp"
+        android:layout_alignParentTop="true"/>
+    <ToggleButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:layout_margin="16sp"
+        android:text="10%"
+        />
     <android.support.design.widget.BottomNavigationView
         android:id="@+id/bottom_navigation"
         android:layout_width="match_parent"
@@ -33,6 +48,7 @@
         android:layout_height="fill_parent"
         android:childDivider="@android:color/transparent"
         android:layout_above="@id/addFAB"
+        android:layout_below="@+id/produtoTxt"
         android:divider="@android:color/holo_blue_bright"
         android:dividerHeight="1dp"
         ></ExpandableListView>
