@@ -21,16 +21,23 @@
         android:id="@+id/produtoTxt"
         android:text="Produto"
         android:textSize="25sp"
-        android:layout_margin="16sp"
+        android:layout_marginLeft="16sp"
+        android:layout_marginRight="16sp"
+        android:layout_marginTop="16sp"
+        android:layout_marginBottom="8sp"
         android:layout_alignParentTop="true"/>
-    <ToggleButton
+    <android.support.v7.widget.SwitchCompat
+        android:id="@+id/switchGorjeta"
+        android:layout_alignParentRight="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentRight="true"
-        android:layout_margin="16sp"
-        android:text="10%"
-        />
+        android:text="10% "
+        android:textStyle="bold"
+        android:textSize="18sp"
+        android:background="@android:color/transparent"
+        android:textColor="@color/black"
+        android:button="@null"
+        android:padding="20dp"/>
     <android.support.design.widget.BottomNavigationView
         android:id="@+id/bottom_navigation"
         android:layout_width="match_parent"

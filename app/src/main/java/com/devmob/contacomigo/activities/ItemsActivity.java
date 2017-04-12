@@ -1,15 +1,18 @@
 package com.devmob.contacomigo.activities;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.SwitchCompat;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.CompoundButton;
 import android.widget.ExpandableListView;
 import android.widget.Toast;
 
@@ -17,14 +20,13 @@ import com.devmob.contacomigo.ExpandableList.ExpandableListAdapter;
 import com.devmob.contacomigo.ExpandableList.PessoaInfo;
 import com.devmob.contacomigo.ExpandableList.ProdutoInfo;
 import com.devmob.contacomigo.R;
+import com.devmob.contacomigo.model.Gorjeta;
 import com.devmob.contacomigo.model.Pessoa;
 import com.devmob.contacomigo.model.Produto;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
 
 
 public class ItemsActivity extends AppCompatActivity {
@@ -34,18 +36,18 @@ public class ItemsActivity extends AppCompatActivity {
 
     private ExpandableListAdapter listAdapter;
     //private ExpandableListView itemsExpandableListView;
-
-    @BindView(R.id.simpleExpandableListView)
+    public SwitchCompat switchGorjeta;
     private ExpandableListView itemsExpandableListView;
     public FloatingActionButton addFAB; //On Click não funciona com butterknife
-
+    public static Gorjeta gorjeta;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        ButterKnife.bind(this);
         //Inicialização
         carregamentoDeDados();
+        switchGorjeta = (SwitchCompat) findViewById(R.id.switchGorjeta);
+        gorjeta = new Gorjeta();
         itemsExpandableListView = (ExpandableListView) findViewById(R.id.simpleExpandableListView);
         listAdapter = new ExpandableListAdapter(ItemsActivity.this, listProduto);
         itemsExpandableListView.setAdapter(listAdapter);
@@ -134,6 +136,30 @@ public class ItemsActivity extends AppCompatActivity {
                 return true;
             }
         });
+
+        switchGorjeta.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                switch (buttonView.getId()) {
+                    case R.id.switchGorjeta:
+                        if(!isChecked){
+                            switchGorjeta.setTextColor(Color.BLACK);
+                            gorjeta.setAtivo(false);
+                            listAdapter.notifyDataSetChanged();
+                            Toast.makeText (ItemsActivity.this,"Err Switch is off!!",Toast.LENGTH_SHORT).show ();
+                        }else{
+                            switchGorjeta.setTextColor(Color.RED);
+                            gorjeta.setAtivo(true);
+                            listAdapter.notifyDataSetChanged();
+                            Toast.makeText (ItemsActivity.this,"Yes Switch is on!!",Toast.LENGTH_SHORT).show ();
+                        }
+                        break;
+                    default:
+                        break;
+                }
+            }
+        });
+
     }
 
     //DATA SETADA POR HARDCODING TEMPORARIO
