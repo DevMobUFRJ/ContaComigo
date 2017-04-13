@@ -25,13 +25,17 @@ import com.devmob.contacomigo.model.Pessoa;
 import com.devmob.contacomigo.model.Produto;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
-
+import java.util.Map;
 
 
 public class ItemsActivity extends AppCompatActivity {
 
     private LinkedHashMap<String, ProdutoInfo> hashProduto = new LinkedHashMap<String, ProdutoInfo>();
+    private LinkedHashMap<ProdutoInfo, String> FoohashProduto = new LinkedHashMap<ProdutoInfo, String>();
+    private Map<ProdutoInfo, Integer> fillMap = new HashMap<ProdutoInfo, Integer>();
+    private Map<ProdutoInfo, Double> priceMap = new HashMap<ProdutoInfo, Double>();
     private ArrayList<ProdutoInfo> listProduto = new ArrayList<ProdutoInfo>();
 
     private ExpandableListAdapter listAdapter;
@@ -172,13 +176,16 @@ public class ItemsActivity extends AppCompatActivity {
 
         Produto batata = new Produto(1, "Aussie Cheese Fries", 48.60f);
         Produto cebola = new Produto(2, "Bloomin'Onion", 48.60f);
-
-        addProduto(william, batata);
+        ProdutoInfo teste = new ProdutoInfo();
+        teste = fooAdicionaProduto(batata);
+        fooAdicionaPessoa(william, teste);
+        fooAdicionaPessoa(daniel,teste);
+        /*/addProduto(william, batata);
         addProduto(silvio, batata);
         addProduto(daniel, batata);
 
         addProduto(william, cebola);
-        addProduto(daniel, cebola);
+        addProduto(daniel, cebola);/*/
 
 
     }
@@ -223,6 +230,42 @@ public class ItemsActivity extends AppCompatActivity {
         posicaoPessoa = this.listProduto.indexOf(produtoInfo);
         return posicaoPessoa;
     }
+
+
+    private ProdutoInfo fooAdicionaProduto(Produto produto){
+        String product = produto.getNome();
+        double price = produto.getPreco();
+
+        ProdutoInfo produtoInfo;
+        produtoInfo = new ProdutoInfo();
+        produtoInfo.setProduto(produto);
+        produtoInfo.setNomeProduto(product);
+        FoohashProduto.put(produtoInfo, product);
+        listProduto.add(produtoInfo);
+        fillMap.put(produtoInfo,0);
+        priceMap.put(produtoInfo,price);
+        return produtoInfo;
+    }
+
+    private void fooAdicionaPessoa(Pessoa pessoaO, ProdutoInfo produto){
+        String person = pessoaO.getNome();
+        double price = priceMap.get(produto);
+        ArrayList<PessoaInfo> listPessoa = produto.getListProduto();
+        //add to the counter
+        fillMap.put(produto, fillMap.get(produto) + 1);
+        //create a new child and add that to the group
+        PessoaInfo detailInfo = new PessoaInfo();
+        detailInfo.setPessoa(pessoaO);
+        detailInfo.setNomePessoa(person);
+        detailInfo.setPreco(priceMap.get(produto)/fillMap.get(produto));
+        listPessoa.add(detailInfo);
+        for(int i=0;i<listPessoa.size();i++){
+            listPessoa.get(i).setPreco(priceMap.get(produto)/fillMap.get(produto));
+        }
+        produto.setListPessoa(listPessoa);
+    }
+
+
 
 
     //method to expand all groups
