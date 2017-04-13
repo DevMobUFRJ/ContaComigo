@@ -20,6 +20,7 @@ import com.devmob.contacomigo.ExpandableList.ExpandableListAdapter;
 import com.devmob.contacomigo.ExpandableList.PessoaInfo;
 import com.devmob.contacomigo.ExpandableList.ProdutoInfo;
 import com.devmob.contacomigo.R;
+import com.devmob.contacomigo.dao.ProdutoDAO;
 import com.devmob.contacomigo.model.Gorjeta;
 import com.devmob.contacomigo.model.Pessoa;
 import com.devmob.contacomigo.model.Produto;
@@ -27,6 +28,7 @@ import com.devmob.contacomigo.model.Produto;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 
@@ -44,6 +46,7 @@ public class ItemsActivity extends AppCompatActivity {
     private ExpandableListView itemsExpandableListView;
     public FloatingActionButton addFAB; //On Click não funciona com butterknife
     public static Gorjeta gorjeta;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -130,13 +133,13 @@ public class ItemsActivity extends AppCompatActivity {
             }
         });
 
-        final AppCompatActivity aux = this;
         addFAB.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 Toast.makeText(ItemsActivity.this, "Add", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(aux, AddProdutoActivity.class);
+                Intent intent = new Intent(ItemsActivity.this, AddProdutoActivity.class);
                 startActivity(intent);
+                listAdapter.notifyDataSetChanged();
                 return true;
             }
         });
@@ -146,16 +149,16 @@ public class ItemsActivity extends AppCompatActivity {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 switch (buttonView.getId()) {
                     case R.id.switchGorjeta:
-                        if(!isChecked){
+                        if (!isChecked) {
                             switchGorjeta.setTextColor(Color.BLACK);
                             gorjeta.setAtivo(false);
                             listAdapter.notifyDataSetChanged();
-                            Toast.makeText (ItemsActivity.this,"Err Switch is off!!",Toast.LENGTH_SHORT).show ();
-                        }else{
+                            Toast.makeText(ItemsActivity.this, "Err Switch is off!!", Toast.LENGTH_SHORT).show();
+                        } else {
                             switchGorjeta.setTextColor(Color.RED);
                             gorjeta.setAtivo(true);
                             listAdapter.notifyDataSetChanged();
-                            Toast.makeText (ItemsActivity.this,"Yes Switch is on!!",Toast.LENGTH_SHORT).show ();
+                            Toast.makeText(ItemsActivity.this, "Yes Switch is on!!", Toast.LENGTH_SHORT).show();
                         }
                         break;
                     default:
@@ -169,17 +172,23 @@ public class ItemsActivity extends AppCompatActivity {
     //DATA SETADA POR HARDCODING TEMPORARIO
     private void carregamentoDeDados() {
 
+        System.out.println("Entrei");
+
         Pessoa william = new Pessoa("William", 1);
         Pessoa silvio = new Pessoa("Silvio", 2);
         Pessoa daniel = new Pessoa("Daniel", 3);
 
+        ProdutoDAO dao = new ProdutoDAO(this);
+        List<Produto> produtos = dao.buscaProdutos();
+        dao.close();
 
-        Produto batata = new Produto(1, "Aussie Cheese Fries", 48.60f);
-        Produto cebola = new Produto(2, "Bloomin'Onion", 48.60f);
         ProdutoInfo teste = new ProdutoInfo();
-        teste = fooAdicionaProduto(batata);
-        fooAdicionaPessoa(william, teste);
-        fooAdicionaPessoa(daniel,teste);
+        for (Produto produto : produtos) {
+            System.out.println(produto.getNome());
+            teste = fooAdicionaProduto(produto);
+            fooAdicionaPessoa(william, teste);
+            fooAdicionaPessoa(daniel, teste);
+        }
         /*/addProduto(william, batata);
         addProduto(silvio, batata);
         addProduto(daniel, batata);
@@ -188,6 +197,12 @@ public class ItemsActivity extends AppCompatActivity {
         addProduto(daniel, cebola);/*/
 
 
+    }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+        listAdapter.notifyDataSetChanged();
     }
 
     //PREENCHIMENTO DE CLASSES
@@ -232,7 +247,7 @@ public class ItemsActivity extends AppCompatActivity {
     }
 
 
-    private ProdutoInfo fooAdicionaProduto(Produto produto){
+    private ProdutoInfo fooAdicionaProduto(Produto produto) {
         String product = produto.getNome();
         double price = produto.getPreco();
 
@@ -242,12 +257,12 @@ public class ItemsActivity extends AppCompatActivity {
         produtoInfo.setNomeProduto(product);
         FoohashProduto.put(produtoInfo, product);
         listProduto.add(produtoInfo);
-        fillMap.put(produtoInfo,0);
-        priceMap.put(produtoInfo,price);
+        fillMap.put(produtoInfo, 0);
+        priceMap.put(produtoInfo, price);
         return produtoInfo;
     }
 
-    private void fooAdicionaPessoa(Pessoa pessoaO, ProdutoInfo produto){
+    private void fooAdicionaPessoa(Pessoa pessoaO, ProdutoInfo produto) {
         String person = pessoaO.getNome();
         double price = priceMap.get(produto);
         ArrayList<PessoaInfo> listPessoa = produto.getListProduto();
@@ -257,15 +272,13 @@ public class ItemsActivity extends AppCompatActivity {
         PessoaInfo detailInfo = new PessoaInfo();
         detailInfo.setPessoa(pessoaO);
         detailInfo.setNomePessoa(person);
-        detailInfo.setPreco(priceMap.get(produto)/fillMap.get(produto));
+        detailInfo.setPreco(priceMap.get(produto) / fillMap.get(produto));
         listPessoa.add(detailInfo);
-        for(int i=0;i<listPessoa.size();i++){
-            listPessoa.get(i).setPreco(priceMap.get(produto)/fillMap.get(produto));
+        for (int i = 0; i < listPessoa.size(); i++) {
+            listPessoa.get(i).setPreco(priceMap.get(produto) / fillMap.get(produto));
         }
         produto.setListPessoa(listPessoa);
     }
-
-
 
 
     //method to expand all groups

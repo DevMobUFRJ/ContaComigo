@@ -15,7 +15,7 @@ import com.devmob.contacomigo.model.Produto;
 public class AddProdutoActivity extends AppCompatActivity {
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_produto);
 
@@ -35,6 +35,7 @@ public class AddProdutoActivity extends AppCompatActivity {
                 dao.close();
 
                 Toast.makeText(AddProdutoActivity.this, "Produto salvo com sucesso!", Toast.LENGTH_SHORT).show();
+
 
                 finish();
             }
