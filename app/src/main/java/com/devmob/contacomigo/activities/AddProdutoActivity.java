@@ -36,8 +36,7 @@ public class AddProdutoActivity extends AppCompatActivity {
 
                 Toast.makeText(AddProdutoActivity.this, "Produto salvo com sucesso!", Toast.LENGTH_SHORT).show();
 
-                Intent intent = new Intent(AddProdutoActivity.this, ItemsActivity.class);
-                startActivity(intent);
+                finish();
             }
         });
     }
