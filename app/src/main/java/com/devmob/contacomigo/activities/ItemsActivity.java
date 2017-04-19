@@ -45,6 +45,7 @@ public class ItemsActivity extends AppCompatActivity {
     private ExpandableListView itemsExpandableListView;
     public FloatingActionButton addFAB; //On Click não funciona com butterknife
     public static Gorjeta gorjeta;
+    private int qntdDeProdutos = 0;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -177,6 +178,7 @@ public class ItemsActivity extends AppCompatActivity {
 
         ProdutoDAO dao = new ProdutoDAO(this);
         List<Produto> produtos = dao.buscaProdutos();
+        qntdDeProdutos = produtos.size();
         dao.close();
 
         ProdutoInfo teste = new ProdutoInfo();
@@ -186,12 +188,6 @@ public class ItemsActivity extends AppCompatActivity {
             fooAdicionaPessoa(william, teste);
             fooAdicionaPessoa(daniel, teste);
         }
-        /*/addProduto(william, batata);
-        addProduto(silvio, batata);
-        addProduto(daniel, batata);
-
-        addProduto(william, cebola);
-        addProduto(daniel, cebola);/*/
 
 
     }
@@ -201,49 +197,10 @@ public class ItemsActivity extends AppCompatActivity {
         super.onResume();
         ProdutoDAO dao = new ProdutoDAO(this);
         List<Produto> produtos = dao.buscaProdutos();
-        fooAdicionaProduto(produtos.get(produtos.size()-1));
-        listAdapter.notifyDataSetChanged();
-    }
-
-    //PREENCHIMENTO DE CLASSES
-    private int addProduto(Pessoa pessoaO, Produto produto) {
-
-        String product = produto.getNome();
-        String person = pessoaO.getNome();
-        double price = produto.getPreco();
-
-        int posicaoPessoa = 0;
-
-        //CHECA SE PRODUTO JA EXISTE
-        ProdutoInfo produtoInfo = hashProduto.get(product);
-
-        //CASO NÃO EXISTA, CRIA
-        if (produtoInfo == null) {
-            produtoInfo = new ProdutoInfo();
-            produtoInfo.setProduto(produto);
-            produtoInfo.setNomeProduto(product);
-            hashProduto.put(product, produtoInfo);
-            listProduto.add(produtoInfo);
+        if (produtos.size() > qntdDeProdutos){
+            fooAdicionaProduto(produtos.get(produtos.size() - 1));
+            listAdapter.notifyDataSetChanged();
         }
-
-        //get the children for the group
-        ArrayList<PessoaInfo> listPessoa = produtoInfo.getListProduto();
-        //size of the children list
-        int listTamanho = listPessoa.size();
-        //add to the counter
-        listTamanho++;
-
-        //create a new child and add that to the group
-        PessoaInfo detailInfo = new PessoaInfo();
-        detailInfo.setPessoa(pessoaO);
-        detailInfo.setNomePessoa(person);
-        detailInfo.setPreco(price);
-        listPessoa.add(detailInfo);
-        produtoInfo.setListPessoa(listPessoa);
-
-        //find the group position inside the list
-        posicaoPessoa = this.listProduto.indexOf(produtoInfo);
-        return posicaoPessoa;
     }
 
 
@@ -254,6 +211,7 @@ public class ItemsActivity extends AppCompatActivity {
         ProdutoInfo produtoInfo;
         produtoInfo = new ProdutoInfo();
         produtoInfo.setProduto(produto);
+
         produtoInfo.setNomeProduto(product);
         hashNomeProduto.put(produtoInfo, product);
         listProduto.add(produtoInfo);
