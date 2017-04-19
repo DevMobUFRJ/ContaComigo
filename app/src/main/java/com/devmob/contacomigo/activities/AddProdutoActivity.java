@@ -18,6 +18,7 @@ public class AddProdutoActivity extends AppCompatActivity {
     public EditText nomeT;
     public EditText precoT;
     public Button botaoSalvar;
+    public Button botaoCancelar;
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -27,6 +28,7 @@ public class AddProdutoActivity extends AppCompatActivity {
         nomeT = (EditText) findViewById(R.id.nome);
         precoT = (EditText) findViewById(R.id.preco);
         botaoSalvar = (Button) findViewById(R.id.salvar);
+        botaoCancelar = (Button) findViewById(R.id.cancelar);
         nomeT.addTextChangedListener(mTextWatcher);
         precoT.addTextChangedListener(mTextWatcher);
         checkFieldsForEmptyValues();
@@ -44,6 +46,12 @@ public class AddProdutoActivity extends AppCompatActivity {
                 Toast.makeText(AddProdutoActivity.this, "Produto salvo com sucesso!", Toast.LENGTH_SHORT).show();
 
 
+                finish();
+            }
+        });
+        botaoCancelar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
                 finish();
             }
         });
