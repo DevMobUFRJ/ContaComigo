@@ -173,6 +173,10 @@ public class ItemsActivity extends AppCompatActivity implements NumberPicker.OnV
                 dao.deletaTudo();
                 dao.close();
                 listAdapter.notifyDataSetChanged();
+                finish();
+                overridePendingTransition(0, 0);
+                startActivity(getIntent());
+                overridePendingTransition(0, 0);
             }
         });
 
