@@ -6,20 +6,30 @@ package com.devmob.contacomigo.model;
 
 public class Gorjeta {
 
+
     private double valor;
+
+    public int getPorcentagem() {
+        return porcentagem;
+    }
+
+    public void setPorcentagem(int porcentagem) {
+        this.porcentagem = porcentagem;
+        this.valor = 1 + (this.porcentagem/100);
+    }
+
+    private int porcentagem;
     private Boolean ativo;
 
     public Gorjeta() {
-        this.valor = 1.1;
+        this.porcentagem = 10;
+        this.valor = 1 + (this.porcentagem/100);
         this.ativo = false;
     }
 
     public double getValor() {
-        return valor;
-    }
 
-    public void setValor(double valor) {
-        this.valor = valor;
+        return valor;
     }
 
     public Boolean getAtivo() {
