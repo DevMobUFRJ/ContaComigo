@@ -1,6 +1,8 @@
 package com.devmob.contacomigo.activities;
 
 
+import android.content.ClipData;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
@@ -16,6 +18,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.ExpandableListView;
 import android.widget.NumberPicker;
@@ -23,9 +26,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.devmob.contacomigo.ExpandableList.ExpandableListAdapter;
-import com.devmob.contacomigo.ExpandableList.PessoaInfo;
 import com.devmob.contacomigo.ExpandableList.ProdutoInfo;
 import com.devmob.contacomigo.R;
+import com.devmob.contacomigo.dao.PessoaDAO;
 import com.devmob.contacomigo.dao.ProdutoDAO;
 import com.devmob.contacomigo.model.Gorjeta;
 import com.devmob.contacomigo.model.Pessoa;
@@ -42,6 +45,9 @@ public class ItemsActivity extends AppCompatActivity implements NumberPicker.OnV
 
     private LinkedHashMap<String, ProdutoInfo> hashProduto = new LinkedHashMap<String, ProdutoInfo>();
     private LinkedHashMap<ProdutoInfo, String> hashNomeProduto = new LinkedHashMap<ProdutoInfo, String>();
+
+    private LinkedHashMap<Integer, Produto> produtos = new LinkedHashMap<>();
+
     private Map<ProdutoInfo, Integer> hashPessoaProduto = new HashMap<ProdutoInfo, Integer>();
     private Map<ProdutoInfo, Double> hashPrecoProduto = new HashMap<ProdutoInfo, Double>();
     private ArrayList<ProdutoInfo> listProduto = new ArrayList<ProdutoInfo>();
@@ -51,6 +57,8 @@ public class ItemsActivity extends AppCompatActivity implements NumberPicker.OnV
     public SwitchCompat switchGorjeta;
     private ExpandableListView itemsExpandableListView;
     public FloatingActionButton addFAB; //On Click não funciona com butterknife
+    public Button apagaTudo;
+
     public static Gorjeta gorjeta;
     private TextView gorjetaValor;
     private int qntdDeProdutos = 0;
@@ -60,16 +68,18 @@ public class ItemsActivity extends AppCompatActivity implements NumberPicker.OnV
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         gorjetaValor = (TextView) findViewById(R.id.gorjetaValor);
         //Inicialização
+        apagaTudo = (Button) findViewById(R.id.deletaTudo);
         carregamentoDeDados();
         switchGorjeta = (SwitchCompat) findViewById(R.id.switchGorjeta);
         gorjetaValor = (TextView) findViewById(R.id.gorjetaValor);
         gorjeta = new Gorjeta();
         itemsExpandableListView = (ExpandableListView) findViewById(R.id.simpleExpandableListView);
-        listAdapter = new ExpandableListAdapter(ItemsActivity.this, listProduto);
+        listAdapter = new ExpandableListAdapter(ItemsActivity.this, new ArrayList<>(produtos.values()));
         itemsExpandableListView.setAdapter(listAdapter);
         addFAB = (FloatingActionButton) findViewById(R.id.addFAB);
         final BottomNavigationView bottomNavigationView = (BottomNavigationView)
@@ -113,23 +123,27 @@ public class ItemsActivity extends AppCompatActivity implements NumberPicker.OnV
                     int indiceProduto = ExpandableListView.getPackedPositionGroup(id);
                     int indicePessoa = ExpandableListView.getPackedPositionChild(id);
                     //get the group header
-                    ProdutoInfo produtoInfo = listProduto.get(indiceProduto);
+                    List<Produto> listProdutos = new ArrayList<Produto>(produtos.values());
+                    Produto produto = listProdutos.get(indiceProduto);
                     //get the child info
-                    PessoaInfo detailInfo = produtoInfo.getListProduto().get(indicePessoa);
-                    Toast.makeText(ItemsActivity.this, detailInfo.getNomePessoa() + "/" + indicePessoa + " deve " + detailInfo.getPreco(), Toast.LENGTH_SHORT).show();
+                    Pessoa pessoa = produto.getConsumidores().get(indicePessoa);
+                    Toast.makeText(ItemsActivity.this, pessoa.getNome() + "/" + indicePessoa + " deve " + pessoa.getPrecoTotal(), Toast.LENGTH_SHORT).show();
                     return true;
                 }
 
                 return false;
             }
         });
+
+
         // CLICK EM CADA CHILD (PESSOA E PREÇO)
         itemsExpandableListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
             @Override
             public boolean onChildClick(ExpandableListView parent, View v, int indiceProduto, int indicePessoa, long id) {
-                ProdutoInfo produtoInfo = listProduto.get(indiceProduto);
-                PessoaInfo pessoaInfo = produtoInfo.getListProduto().get(indicePessoa);
-                Toast.makeText(getBaseContext(), " Clicked on :: " + pessoaInfo.getNomePessoa() + "/" + indiceProduto + "/" + pessoaInfo.getPreco(), Toast.LENGTH_SHORT).show();
+                List<Produto> listProdutos = new ArrayList<Produto>(produtos.values());
+                Produto produto = listProdutos.get(indiceProduto);
+                Pessoa pessoa = produto.getConsumidores().get(indicePessoa);
+                Toast.makeText(getBaseContext(), " Clicked on :: " + pessoa.getNome() + "/" + indiceProduto + "/" + pessoa.getPrecoTotal(), Toast.LENGTH_SHORT).show();
                 return false;
             }
         });
@@ -137,8 +151,9 @@ public class ItemsActivity extends AppCompatActivity implements NumberPicker.OnV
         itemsExpandableListView.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
             @Override
             public boolean onGroupClick(ExpandableListView parent, View v, int indiceProduto, long id) {
-                ProdutoInfo produtoInfo = listProduto.get(indiceProduto);
-                Toast.makeText(getBaseContext(), " Header is :: " + produtoInfo.getNomeProduto(), Toast.LENGTH_SHORT).show();
+                List<Produto> listProdutos = new ArrayList<Produto>(produtos.values());
+                Produto produto = listProdutos.get(indiceProduto);
+                Toast.makeText(getBaseContext(), " Header is :: " + produto.getNome(), Toast.LENGTH_SHORT).show();
                 return false;
             }
         });
@@ -148,6 +163,22 @@ public class ItemsActivity extends AppCompatActivity implements NumberPicker.OnV
                 Toast.makeText(ItemsActivity.this, "Add", Toast.LENGTH_SHORT).show();
                 telaAdicionar();
                 listAdapter.notifyDataSetChanged();
+            }
+        });
+
+
+        final Context aux = this;
+        apagaTudo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ProdutoDAO dao = new ProdutoDAO(aux);
+                dao.deletaTudo();
+                dao.close();
+                listAdapter.notifyDataSetChanged();
+                finish();
+                overridePendingTransition(0, 0);
+                startActivity(getIntent());
+                overridePendingTransition(0, 0);
             }
         });
 
@@ -238,12 +269,11 @@ public class ItemsActivity extends AppCompatActivity implements NumberPicker.OnV
         List<Produto> produtos = dao.buscaProdutos();
         dao.close();
 
-        ProdutoInfo teste = new ProdutoInfo();
         for (Produto produto : produtos) {
             System.out.println(produto.getNome());
-            teste = adicionaProduto(produto);
-            adicionaPessoa(william, teste);
-            adicionaPessoa(daniel, teste);
+            adicionaProduto(produto);
+            adicionaPessoa(william, produto);
+            adicionaPessoa(daniel, produto);
         }
     }
 
@@ -252,45 +282,24 @@ public class ItemsActivity extends AppCompatActivity implements NumberPicker.OnV
         super.onResume();
         ProdutoDAO dao = new ProdutoDAO(this);
         List<Produto> produtos = dao.buscaProdutos();
-        if (produtos.size() > qntdDeProdutos) {
+        if (itemAdicionado==true) {
             adicionaProduto(produtos.get(produtos.size() - 1));
             listAdapter.notifyDataSetChanged();
         }
     }
 
 
-    private ProdutoInfo adicionaProduto(Produto produto) {
-        String product = produto.getNome();
-        double price = produto.getPreco();
-
-        ProdutoInfo produtoInfo;
-        produtoInfo = new ProdutoInfo();
-        produtoInfo.setProduto(produto);
-
-        produtoInfo.setNomeProduto(product);
-        hashNomeProduto.put(produtoInfo, product);
-        listProduto.add(produtoInfo);
-        hashPessoaProduto.put(produtoInfo, 0);
-        hashPrecoProduto.put(produtoInfo, price);
-        return produtoInfo;
+    private void adicionaProduto(Produto produto) {
+        produtos.put(produto.getId(), produto);
     }
 
-    private void adicionaPessoa(Pessoa pessoaO, ProdutoInfo produto) {
-        String person = pessoaO.getNome();
-        double price = hashPrecoProduto.get(produto);
-        ArrayList<PessoaInfo> listPessoa = produto.getListProduto();
-        //add to the counter
-        hashPessoaProduto.put(produto, hashPessoaProduto.get(produto) + 1);
-        //create a new child and add that to the group
-        PessoaInfo detailInfo = new PessoaInfo();
-        detailInfo.setPessoa(pessoaO);
-        detailInfo.setNomePessoa(person);
-        detailInfo.setPreco(hashPrecoProduto.get(produto) / hashPessoaProduto.get(produto));
-        listPessoa.add(detailInfo);
-        for (int i = 0; i < listPessoa.size(); i++) {
-            listPessoa.get(i).setPreco(hashPrecoProduto.get(produto) / hashPessoaProduto.get(produto));
+    private void adicionaPessoa(Pessoa pessoa, Produto produto) {
+        double price = produtos.get(produto.getId()).getPreco();
+        List<Pessoa> consumidores = produtos.get(produto.getId()).getConsumidores();
+        consumidores.add(pessoa);
+        for (Pessoa person : consumidores) {
+            person.setPrecoTotal(price/consumidores.size());
         }
-        produto.setListPessoa(listPessoa);
     }
 
 
