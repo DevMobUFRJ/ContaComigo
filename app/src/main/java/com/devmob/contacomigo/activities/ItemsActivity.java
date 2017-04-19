@@ -272,7 +272,6 @@ public class ItemsActivity extends AppCompatActivity implements NumberPicker.OnV
         listProduto.add(produtoInfo);
         hashPessoaProduto.put(produtoInfo, 0);
         hashPrecoProduto.put(produtoInfo, price);
-        qntdDeProdutos++;
         return produtoInfo;
     }
 
@@ -295,14 +294,22 @@ public class ItemsActivity extends AppCompatActivity implements NumberPicker.OnV
     }
 
 
- 
+
 
 
     private void telaAdicionar() {
         Intent intent = new Intent(this, AddProdutoActivity.class);
         //intent.putExtra(getString(R.string.key_name), name);
-        startActivity(intent);
+        startActivityForResult(intent, 1);
+    }
 
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1) {
+            if(resultCode == RESULT_OK) {
+                String strEditText = data.getStringExtra("editTextValue");
+            }
+        }
     }
 
     @Override
