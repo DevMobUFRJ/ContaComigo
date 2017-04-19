@@ -253,7 +253,7 @@ public class ItemsActivity extends AppCompatActivity implements NumberPicker.OnV
         super.onResume();
         ProdutoDAO dao = new ProdutoDAO(this);
         List<Produto> produtos = dao.buscaProdutos();
-        if (produtos.size() > qntdDeProdutos) {
+        if (itemAdicionado==true) {
             adicionaProduto(produtos.get(produtos.size() - 1));
             listAdapter.notifyDataSetChanged();
         }
