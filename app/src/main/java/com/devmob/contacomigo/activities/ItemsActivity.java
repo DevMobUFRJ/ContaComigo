@@ -1,19 +1,28 @@
 package com.devmob.contacomigo.activities;
 
+import android.app.Dialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SwitchCompat;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.ExpandableListView;
+import android.widget.NumberPicker;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.devmob.contacomigo.ExpandableList.ExpandableListAdapter;
@@ -32,7 +41,7 @@ import java.util.List;
 import java.util.Map;
 
 
-public class ItemsActivity extends AppCompatActivity {
+public class ItemsActivity extends AppCompatActivity implements NumberPicker.OnValueChangeListener {
 
     private LinkedHashMap<String, ProdutoInfo> hashProduto = new LinkedHashMap<String, ProdutoInfo>();
     private LinkedHashMap<ProdutoInfo, String> FoohashProduto = new LinkedHashMap<ProdutoInfo, String>();
@@ -46,6 +55,8 @@ public class ItemsActivity extends AppCompatActivity {
     private ExpandableListView itemsExpandableListView;
     public FloatingActionButton addFAB; //On Click não funciona com butterknife
     public static Gorjeta gorjeta;
+    private TextView gorjetaValor;
+    static Dialog d ;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -54,6 +65,7 @@ public class ItemsActivity extends AppCompatActivity {
         //Inicialização
         carregamentoDeDados();
         switchGorjeta = (SwitchCompat) findViewById(R.id.switchGorjeta);
+        gorjetaValor = (TextView) findViewById(R.id.gorjetaValor);
         gorjeta = new Gorjeta();
         itemsExpandableListView = (ExpandableListView) findViewById(R.id.simpleExpandableListView);
         listAdapter = new ExpandableListAdapter(ItemsActivity.this, listProduto);
@@ -164,6 +176,55 @@ public class ItemsActivity extends AppCompatActivity {
                 }
             }
         });
+        gorjetaValor.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showGorjetaValor();
+
+            }
+        });
+
+
+    }
+
+    private void showGorjetaValor() {
+        LayoutInflater li = LayoutInflater.from(getActivity());
+        View promptsView = li.inflate(R.layout.dialogo, null);
+
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                getActivity());
+
+        // set prompts.xml to alertdialog builder
+        alertDialogBuilder.setView(promptsView);
+
+        final NumberPicker np = (NumberPicker) promptsView.findViewById(R.id.numberPicker1);
+        np.setMaxValue(100);
+        np.setMinValue(1);
+        np.setValue(gorjeta.getPorcentagem());
+        np.setWrapSelectorWheel(false);
+        np.setOnValueChangedListener(this);
+        alertDialogBuilder
+                .setTitle(R.string.text_tip)
+                .setCancelable(false)
+                .setPositiveButton(R.string.text_ok,
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                gorjetaValor.setText(String.valueOf(np.getValue()) + "%");
+                                gorjeta.setPorcentagem(np.getValue());
+                                listAdapter.notifyDataSetChanged();
+                            }
+                        })
+                .setNegativeButton(R.string.text_cancel,
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.cancel();
+                            }
+                        }
+
+                );
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
+
 
     }
 
@@ -302,4 +363,14 @@ public class ItemsActivity extends AppCompatActivity {
         startActivity(intent);
 
     }
+
+    @Override
+    public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
+        Log.i("value is",""+newVal);
+    }
+
+    public Context getActivity() {
+        return this;
+    }
 }
+
