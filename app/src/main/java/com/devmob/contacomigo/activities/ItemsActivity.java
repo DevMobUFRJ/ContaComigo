@@ -9,7 +9,6 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SwitchCompat;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.CompoundButton;
@@ -35,9 +34,9 @@ import java.util.Map;
 public class ItemsActivity extends AppCompatActivity {
 
     private LinkedHashMap<String, ProdutoInfo> hashProduto = new LinkedHashMap<String, ProdutoInfo>();
-    private LinkedHashMap<ProdutoInfo, String> FoohashProduto = new LinkedHashMap<ProdutoInfo, String>();
-    private Map<ProdutoInfo, Integer> fillMap = new HashMap<ProdutoInfo, Integer>();
-    private Map<ProdutoInfo, Double> priceMap = new HashMap<ProdutoInfo, Double>();
+    private LinkedHashMap<ProdutoInfo, String> hashNomeProduto = new LinkedHashMap<ProdutoInfo, String>();
+    private Map<ProdutoInfo, Integer> hashPessoaProduto = new HashMap<ProdutoInfo, Integer>();
+    private Map<ProdutoInfo, Double> hashPrecoProduto = new HashMap<ProdutoInfo, Double>();
     private ArrayList<ProdutoInfo> listProduto = new ArrayList<ProdutoInfo>();
 
     private ExpandableListAdapter listAdapter;
@@ -256,27 +255,27 @@ public class ItemsActivity extends AppCompatActivity {
         produtoInfo = new ProdutoInfo();
         produtoInfo.setProduto(produto);
         produtoInfo.setNomeProduto(product);
-        FoohashProduto.put(produtoInfo, product);
+        hashNomeProduto.put(produtoInfo, product);
         listProduto.add(produtoInfo);
-        fillMap.put(produtoInfo, 0);
-        priceMap.put(produtoInfo, price);
+        hashPessoaProduto.put(produtoInfo, 0);
+        hashPrecoProduto.put(produtoInfo, price);
         return produtoInfo;
     }
 
     private void fooAdicionaPessoa(Pessoa pessoaO, ProdutoInfo produto) {
         String person = pessoaO.getNome();
-        double price = priceMap.get(produto);
+        double price = hashPrecoProduto.get(produto);
         ArrayList<PessoaInfo> listPessoa = produto.getListProduto();
         //add to the counter
-        fillMap.put(produto, fillMap.get(produto) + 1);
+        hashPessoaProduto.put(produto, hashPessoaProduto.get(produto) + 1);
         //create a new child and add that to the group
         PessoaInfo detailInfo = new PessoaInfo();
         detailInfo.setPessoa(pessoaO);
         detailInfo.setNomePessoa(person);
-        detailInfo.setPreco(priceMap.get(produto) / fillMap.get(produto));
+        detailInfo.setPreco(hashPrecoProduto.get(produto) / hashPessoaProduto.get(produto));
         listPessoa.add(detailInfo);
         for (int i = 0; i < listPessoa.size(); i++) {
-            listPessoa.get(i).setPreco(priceMap.get(produto) / fillMap.get(produto));
+            listPessoa.get(i).setPreco(hashPrecoProduto.get(produto) / hashPessoaProduto.get(produto));
         }
         produto.setListPessoa(listPessoa);
     }
