@@ -163,12 +163,12 @@ public class ItemsActivity extends AppCompatActivity implements NumberPicker.OnV
                             switchGorjeta.setTextColor(Color.BLACK);
                             gorjeta.setAtivo(false);
                             listAdapter.notifyDataSetChanged();
-                            Toast.makeText(ItemsActivity.this, "Err Switch is off!!", Toast.LENGTH_SHORT).show();
+                            //Toast.makeText(ItemsActivity.this, String.valueOf(gorjeta.getValor()), Toast.LENGTH_SHORT).show();
                         } else {
                             switchGorjeta.setTextColor(Color.RED);
                             gorjeta.setAtivo(true);
                             listAdapter.notifyDataSetChanged();
-                            Toast.makeText(ItemsActivity.this, "Yes Switch is on!!", Toast.LENGTH_SHORT).show();
+                            //Toast.makeText(ItemsActivity.this, String.valueOf(gorjeta.getValor()), Toast.LENGTH_SHORT).show();
                         }
                         break;
                     default:
