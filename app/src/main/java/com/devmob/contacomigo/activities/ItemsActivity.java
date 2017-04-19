@@ -203,47 +203,7 @@ public class ItemsActivity extends AppCompatActivity {
             listAdapter.notifyDataSetChanged();
         }
     }
-
-    //PREENCHIMENTO DE CLASSES
-    private int addProduto(Pessoa pessoaO, Produto produto) {
-
-        String product = produto.getNome();
-        String person = pessoaO.getNome();
-        double price = produto.getPreco();
-
-        int posicaoPessoa = 0;
-
-        //CHECA SE PRODUTO JA EXISTE
-        ProdutoInfo produtoInfo = hashProduto.get(product);
-
-        //CASO NÃO EXISTA, CRIA
-        if (produtoInfo == null) {
-            produtoInfo = new ProdutoInfo();
-            produtoInfo.setProduto(produto);
-            produtoInfo.setNomeProduto(product);
-            hashProduto.put(product, produtoInfo);
-            listProduto.add(produtoInfo);
-        }
-
-        //get the children for the group
-        ArrayList<PessoaInfo> listPessoa = produtoInfo.getListProduto();
-        //size of the children list
-        int listTamanho = listPessoa.size();
-        //add to the counter
-        listTamanho++;
-
-        //create a new child and add that to the group
-        PessoaInfo detailInfo = new PessoaInfo();
-        detailInfo.setPessoa(pessoaO);
-        detailInfo.setNomePessoa(person);
-        detailInfo.setPreco(price);
-        listPessoa.add(detailInfo);
-        produtoInfo.setListPessoa(listPessoa);
-
-        //find the group position inside the list
-        posicaoPessoa = this.listProduto.indexOf(produtoInfo);
-        return posicaoPessoa;
-    }
+    
 
 
     private ProdutoInfo fooAdicionaProduto(Produto produto) {
