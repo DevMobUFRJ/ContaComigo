@@ -19,12 +19,12 @@ public class AddProdutoActivity extends AppCompatActivity {
     public EditText precoT;
     public Button botaoSalvar;
     public Button botaoCancelar;
+    Intent intent;
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_produto);
-        Intent intent = getIntent();
-
+        intent = getIntent();
         nomeT = (EditText) findViewById(R.id.nome);
         precoT = (EditText) findViewById(R.id.preco);
         botaoSalvar = (Button) findViewById(R.id.salvar);
@@ -46,14 +46,15 @@ public class AddProdutoActivity extends AppCompatActivity {
                 Toast.makeText(AddProdutoActivity.this, "Produto salvo com sucesso!", Toast.LENGTH_SHORT).show();
 
 
+                intent.putExtra("booleanItem", true);
+                setResult(RESULT_OK, intent);
                 finish();
             }
         });
         botaoCancelar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent();
-                intent.putExtra("editTextValue", "value_here")
+                intent.putExtra("booleanItem", false);
                 setResult(RESULT_OK, intent);
                 finish();
             }
@@ -85,5 +86,12 @@ public class AddProdutoActivity extends AppCompatActivity {
         } else {
             botaoSalvar.setEnabled(true);
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        intent.putExtra("booleanItem", false);
+        setResult(RESULT_OK, intent);
+        finish();
     }
 }

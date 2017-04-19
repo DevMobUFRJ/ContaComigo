@@ -54,6 +54,7 @@ public class ItemsActivity extends AppCompatActivity implements NumberPicker.OnV
     public static Gorjeta gorjeta;
     private TextView gorjetaValor;
     private int qntdDeProdutos = 0;
+    boolean itemAdicionado;
 
 
     @Override
@@ -307,7 +308,8 @@ public class ItemsActivity extends AppCompatActivity implements NumberPicker.OnV
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 1) {
             if(resultCode == RESULT_OK) {
-                String strEditText = data.getStringExtra("editTextValue");
+                itemAdicionado = data.getExtras().getBoolean("booleanItem");
+                Toast.makeText(this, String.valueOf(itemAdicionado), Toast.LENGTH_SHORT).show();
             }
         }
     }
