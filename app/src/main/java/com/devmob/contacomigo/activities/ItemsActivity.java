@@ -43,14 +43,7 @@ import java.util.Map;
 
 public class ItemsActivity extends AppCompatActivity implements NumberPicker.OnValueChangeListener {
 
-    private LinkedHashMap<String, ProdutoInfo> hashProduto = new LinkedHashMap<String, ProdutoInfo>();
-    private LinkedHashMap<ProdutoInfo, String> hashNomeProduto = new LinkedHashMap<ProdutoInfo, String>();
-
     private LinkedHashMap<Integer, Produto> produtos = new LinkedHashMap<>();
-
-    private Map<ProdutoInfo, Integer> hashPessoaProduto = new HashMap<ProdutoInfo, Integer>();
-    private Map<ProdutoInfo, Double> hashPrecoProduto = new HashMap<ProdutoInfo, Double>();
-    private ArrayList<ProdutoInfo> listProduto = new ArrayList<ProdutoInfo>();
 
     private ExpandableListAdapter listAdapter;
     //private ExpandableListView itemsExpandableListView;
@@ -284,6 +277,9 @@ public class ItemsActivity extends AppCompatActivity implements NumberPicker.OnV
         ProdutoDAO dao = new ProdutoDAO(this);
         List<Produto> produtos = dao.buscaProdutos();
         if (itemAdicionado==true) {
+            System.out.println("AEEEEE");
+            System.out.println(produtos.get(produtos.size() - 1).getNome());
+
             adicionaProduto(produtos.get(produtos.size() - 1));
             listAdapter.notifyDataSetChanged();
         }
