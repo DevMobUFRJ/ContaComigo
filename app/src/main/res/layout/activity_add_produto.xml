@@ -21,6 +21,11 @@
         android:id="@+id/salvar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Salvar"/>
+        android:text="@string/text_save"/>
+    <Button
+        android:id="@+id/cancelar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/text_cancel"/>
 
 </LinearLayout>

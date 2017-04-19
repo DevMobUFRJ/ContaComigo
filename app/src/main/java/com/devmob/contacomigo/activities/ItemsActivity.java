@@ -56,6 +56,7 @@ public class ItemsActivity extends AppCompatActivity implements NumberPicker.OnV
     public static Gorjeta gorjeta;
     private TextView gorjetaValor;
     private int qntdDeProdutos = 0;
+    boolean itemAdicionado;
 
 
     @Override
@@ -256,7 +257,7 @@ public class ItemsActivity extends AppCompatActivity implements NumberPicker.OnV
         super.onResume();
         ProdutoDAO dao = new ProdutoDAO(this);
         List<Produto> produtos = dao.buscaProdutos();
-        if (produtos.size() > qntdDeProdutos) {
+        if (itemAdicionado==true) {
             adicionaProduto(produtos.get(produtos.size() - 1));
             listAdapter.notifyDataSetChanged();
         }
@@ -278,28 +279,23 @@ public class ItemsActivity extends AppCompatActivity implements NumberPicker.OnV
     }
 
 
-    //method to expand all groups
-    private void expandirTodos() {
-        int count = listAdapter.getGroupCount();
-        for (int i = 0; i < count; i++) {
-            itemsExpandableListView.expandGroup(i);
-        }
-    }
 
-    //method to collapse all groups
-    private void fecharTodos() {
-        int count = listAdapter.getGroupCount();
-        for (int i = 0; i < count; i++) {
-            itemsExpandableListView.collapseGroup(i);
-        }
-    }
 
 
     private void telaAdicionar() {
         Intent intent = new Intent(this, AddProdutoActivity.class);
         //intent.putExtra(getString(R.string.key_name), name);
-        startActivity(intent);
+        startActivityForResult(intent, 1);
+    }
 
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1) {
+            if(resultCode == RESULT_OK) {
+                itemAdicionado = data.getExtras().getBoolean("booleanItem");
+                Toast.makeText(this, String.valueOf(itemAdicionado), Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 
     @Override
