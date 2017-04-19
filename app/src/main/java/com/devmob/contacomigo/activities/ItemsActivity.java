@@ -272,6 +272,7 @@ public class ItemsActivity extends AppCompatActivity implements NumberPicker.OnV
         listProduto.add(produtoInfo);
         hashPessoaProduto.put(produtoInfo, 0);
         hashPrecoProduto.put(produtoInfo, price);
+        qntdDeProdutos++;
         return produtoInfo;
     }
 
