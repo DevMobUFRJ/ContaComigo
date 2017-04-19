@@ -43,14 +43,7 @@ import java.util.Map;
 
 public class ItemsActivity extends AppCompatActivity implements NumberPicker.OnValueChangeListener {
 
-    private LinkedHashMap<String, ProdutoInfo> hashProduto = new LinkedHashMap<String, ProdutoInfo>();
-    private LinkedHashMap<ProdutoInfo, String> hashNomeProduto = new LinkedHashMap<ProdutoInfo, String>();
-
     private LinkedHashMap<Integer, Produto> produtos = new LinkedHashMap<>();
-
-    private Map<ProdutoInfo, Integer> hashPessoaProduto = new HashMap<ProdutoInfo, Integer>();
-    private Map<ProdutoInfo, Double> hashPrecoProduto = new HashMap<ProdutoInfo, Double>();
-    private ArrayList<ProdutoInfo> listProduto = new ArrayList<ProdutoInfo>();
 
     private ExpandableListAdapter listAdapter;
     //private ExpandableListView itemsExpandableListView;
@@ -63,6 +56,7 @@ public class ItemsActivity extends AppCompatActivity implements NumberPicker.OnV
     private TextView gorjetaValor;
     private int qntdDeProdutos = 0;
     boolean itemAdicionado;
+    Intent intent;
 
 
     @Override
@@ -80,10 +74,9 @@ public class ItemsActivity extends AppCompatActivity implements NumberPicker.OnV
         itemsExpandableListView = (ExpandableListView) findViewById(R.id.simpleExpandableListView);
         listAdapter = new ExpandableListAdapter(ItemsActivity.this, new ArrayList<>(produtos.values()));
         itemsExpandableListView.setAdapter(listAdapter);
+        addFAB = (FloatingActionButton) findViewById(R.id.addFAB);
         final BottomNavigationView bottomNavigationView = (BottomNavigationView)
                 findViewById(R.id.bottom_navigation);
-        addFAB = (FloatingActionButton) findViewById(R.id.addFAB);
-
         bottomNavigationView.setOnNavigationItemSelectedListener(
                 new BottomNavigationView.OnNavigationItemSelectedListener() {
                     @Override
@@ -99,6 +92,8 @@ public class ItemsActivity extends AppCompatActivity implements NumberPicker.OnV
                                 break;
                             case R.id.personIcon:
                                 bottomNavigationView.setItemBackgroundResource(R.color.red);
+                                intent = new Intent(ItemsActivity.this, PessoasActivity.class);
+                                startActivityForResult(intent, 2);
                                 item.setChecked(true);
                                 Toast.makeText(ItemsActivity.this, "Person", Toast.LENGTH_SHORT).show();
                                 break;
@@ -225,7 +220,7 @@ public class ItemsActivity extends AppCompatActivity implements NumberPicker.OnV
         np.setMaxValue(100);
         np.setMinValue(1);
         np.setValue(gorjeta.getPorcentagem());
-        np.setWrapSelectorWheel(false);
+        np.setWrapSelectorWheel(true);
         np.setOnValueChangedListener(this);
         alertDialogBuilder
                 .setTitle(R.string.text_tip)
@@ -272,9 +267,6 @@ public class ItemsActivity extends AppCompatActivity implements NumberPicker.OnV
             adicionaPessoa(william, produto);
             adicionaPessoa(daniel, produto);
         }
-
-
-
     }
 
     @Override
@@ -283,6 +275,9 @@ public class ItemsActivity extends AppCompatActivity implements NumberPicker.OnV
         ProdutoDAO dao = new ProdutoDAO(this);
         List<Produto> produtos = dao.buscaProdutos();
         if (itemAdicionado==true) {
+            System.out.println("AEEEEE");
+            System.out.println(produtos.get(produtos.size() - 1).getNome());
+
             adicionaProduto(produtos.get(produtos.size() - 1));
             listAdapter.notifyDataSetChanged();
         }
@@ -291,7 +286,6 @@ public class ItemsActivity extends AppCompatActivity implements NumberPicker.OnV
 
     private void adicionaProduto(Produto produto) {
         produtos.put(produto.getId(), produto);
-        qntdDeProdutos++;
     }
 
     private void adicionaPessoa(Pessoa pessoa, Produto produto) {
