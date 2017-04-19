@@ -203,7 +203,6 @@ public class ItemsActivity extends AppCompatActivity {
             listAdapter.notifyDataSetChanged();
         }
     }
-    
 
 
     private ProdutoInfo fooAdicionaProduto(Produto produto) {
