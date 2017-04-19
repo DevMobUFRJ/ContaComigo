@@ -1,8 +1,6 @@
 package com.devmob.contacomigo.activities;
 
 
-import android.app.Dialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
@@ -18,7 +16,6 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.ExpandableListView;
 import android.widget.NumberPicker;
@@ -241,16 +238,11 @@ public class ItemsActivity extends AppCompatActivity implements NumberPicker.OnV
         ProdutoInfo teste = new ProdutoInfo();
         for (Produto produto : produtos) {
             System.out.println(produto.getNome());
-            teste = fooAdicionaProduto(produto);
-            fooAdicionaPessoa(william, teste);
-            fooAdicionaPessoa(daniel, teste);
+            teste = adicionaProduto(produto);
+            adicionaPessoa(william, teste);
+            adicionaPessoa(daniel, teste);
         }
-        /*/addProduto(william, batata);
-        addProduto(silvio, batata);
-        addProduto(daniel, batata);
 
-        addProduto(william, cebola);
-        addProduto(daniel, cebola);/*/
 
 
     }
@@ -261,13 +253,13 @@ public class ItemsActivity extends AppCompatActivity implements NumberPicker.OnV
         ProdutoDAO dao = new ProdutoDAO(this);
         List<Produto> produtos = dao.buscaProdutos();
         if (produtos.size() > qntdDeProdutos) {
-            fooAdicionaProduto(produtos.get(produtos.size() - 1));
+            adicionaProduto(produtos.get(produtos.size() - 1));
             listAdapter.notifyDataSetChanged();
         }
     }
 
 
-    private ProdutoInfo fooAdicionaProduto(Produto produto) {
+    private ProdutoInfo adicionaProduto(Produto produto) {
         String product = produto.getNome();
         double price = produto.getPreco();
 
@@ -283,7 +275,7 @@ public class ItemsActivity extends AppCompatActivity implements NumberPicker.OnV
         return produtoInfo;
     }
 
-    private void fooAdicionaPessoa(Pessoa pessoaO, ProdutoInfo produto) {
+    private void adicionaPessoa(Pessoa pessoaO, ProdutoInfo produto) {
         String person = pessoaO.getNome();
         double price = hashPrecoProduto.get(produto);
         ArrayList<PessoaInfo> listPessoa = produto.getListProduto();
