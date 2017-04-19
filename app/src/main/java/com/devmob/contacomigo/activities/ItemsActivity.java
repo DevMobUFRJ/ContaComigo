@@ -136,14 +136,8 @@ public class ItemsActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Toast.makeText(ItemsActivity.this, "Add", Toast.LENGTH_SHORT).show();
-<<<<<<< HEAD
-                Intent intent = new Intent(ItemsActivity.this, AddProdutoActivity.class);
-                startActivity(intent);
-                return true;
-=======
                 telaAdicionar();
                 listAdapter.notifyDataSetChanged();
->>>>>>> cedc2023a31537ffbc717a927e857263bd88218c
             }
         });
 
