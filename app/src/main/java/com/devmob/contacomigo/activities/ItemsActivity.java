@@ -36,7 +36,7 @@ public class ItemsActivity extends AppCompatActivity {
     private LinkedHashMap<String, ProdutoInfo> hashProduto = new LinkedHashMap<String, ProdutoInfo>();
     private LinkedHashMap<ProdutoInfo, String> hashNomeProduto = new LinkedHashMap<ProdutoInfo, String>();
     private Map<ProdutoInfo, Integer> hashPessoaProduto = new HashMap<ProdutoInfo, Integer>();
-    private Map<ProdutoInfo, Double> hashPrecoProduto = new HashMap<ProdutoInfo, Double>();
+    private Map<ProdutoInfo, Double> hashPreco_Produto = new HashMap<ProdutoInfo, Double>();
     private ArrayList<ProdutoInfo> listProduto = new ArrayList<ProdutoInfo>();
 
     private ExpandableListAdapter listAdapter;
@@ -261,13 +261,13 @@ public class ItemsActivity extends AppCompatActivity {
         hashNomeProduto.put(produtoInfo, product);
         listProduto.add(produtoInfo);
         hashPessoaProduto.put(produtoInfo, 0);
-        hashPrecoProduto.put(produtoInfo, price);
+        _hashPrecoProduto.put(produtoInfo, price);
         return produtoInfo;
     }
 
     private void fooAdicionaPessoa(Pessoa pessoaO, ProdutoInfo produto) {
         String person = pessoaO.getNome();
-        double price = hashPrecoProduto.get(produto);
+        double price = _hashPrecoProduto.get(produto);
         ArrayList<PessoaInfo> listPessoa = produto.getListProduto();
         //add to the counter
         hashPessoaProduto.put(produto, hashPessoaProduto.get(produto) + 1);
@@ -275,10 +275,10 @@ public class ItemsActivity extends AppCompatActivity {
         PessoaInfo detailInfo = new PessoaInfo();
         detailInfo.setPessoa(pessoaO);
         detailInfo.setNomePessoa(person);
-        detailInfo.setPreco(hashPrecoProduto.get(produto) / hashPessoaProduto.get(produto));
+        detailInfo.setPreco(_hashPrecoProduto.get(produto) / hashPessoaProduto.get(produto));
         listPessoa.add(detailInfo);
         for (int i = 0; i < listPessoa.size(); i++) {
-            listPessoa.get(i).setPreco(hashPrecoProduto.get(produto) / hashPessoaProduto.get(produto));
+            listPessoa.get(i).setPreco(_hashPrecoProduto.get(produto) / hashPessoaProduto.get(produto));
         }
         produto.setListPessoa(listPessoa);
     }
