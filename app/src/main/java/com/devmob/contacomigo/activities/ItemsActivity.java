@@ -55,8 +55,7 @@ public class ItemsActivity extends AppCompatActivity implements NumberPicker.OnV
     public FloatingActionButton addFAB; //On Click não funciona com butterknife
     public static Gorjeta gorjeta;
     private TextView gorjetaValor;
-    static Dialog d ;
-
+    private int qntdDeProdutos = 0;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -266,19 +265,6 @@ public class ItemsActivity extends AppCompatActivity implements NumberPicker.OnV
             fooAdicionaProduto(produtos.get(produtos.size() - 1));
             listAdapter.notifyDataSetChanged();
         }
-    }
-
-        //create a new child and add that to the group
-        PessoaInfo detailInfo = new PessoaInfo();
-        detailInfo.setPessoa(pessoaO);
-        detailInfo.setNomePessoa(person);
-        detailInfo.setPreco(price);
-        listPessoa.add(detailInfo);
-        produtoInfo.setListPessoa(listPessoa);
-
-        //find the group position inside the list
-        posicaoPessoa = this.listProduto.indexOf(produtoInfo);
-        return posicaoPessoa;
     }
 
 
