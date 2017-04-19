@@ -174,9 +174,8 @@ public class ItemsActivity extends AppCompatActivity implements NumberPicker.OnV
                 dao.close();
                 listAdapter.notifyDataSetChanged();
                 finish();
-                overridePendingTransition(0, 0);
+                overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
                 startActivity(getIntent());
-                overridePendingTransition(0, 0);
             }
         });
 
