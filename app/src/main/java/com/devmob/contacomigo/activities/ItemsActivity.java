@@ -132,17 +132,15 @@ public class ItemsActivity extends AppCompatActivity {
                 return false;
             }
         });
-
-        addFAB.setOnTouchListener(new View.OnTouchListener() {
+        addFAB.setOnClickListener(new View.OnClickListener() {
             @Override
-            public boolean onTouch(View v, MotionEvent event) {
+            public void onClick(View v) {
                 Toast.makeText(ItemsActivity.this, "Add", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(ItemsActivity.this, AddProdutoActivity.class);
-                startActivity(intent);
+                telaAdicionar();
                 listAdapter.notifyDataSetChanged();
-                return true;
             }
         });
+
 
         switchGorjeta.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -200,7 +198,7 @@ public class ItemsActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onResume(){
+    public void onResume() {
         super.onResume();
         listAdapter.notifyDataSetChanged();
     }
@@ -295,5 +293,13 @@ public class ItemsActivity extends AppCompatActivity {
         for (int i = 0; i < count; i++) {
             itemsExpandableListView.collapseGroup(i);
         }
+    }
+
+
+    private void telaAdicionar() {
+        Intent intent = new Intent(this, AddProdutoActivity.class);
+        //intent.putExtra(getString(R.string.key_name), name);
+        startActivity(intent);
+
     }
 }
