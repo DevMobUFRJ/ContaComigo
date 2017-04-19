@@ -33,6 +33,14 @@ public class ProdutoDAO extends SQLiteOpenHelper {
     }
 
 
+    public void deletaTudo(){
+        SQLiteDatabase db = getWritableDatabase();
+        String sql = "DROP TABLE Produto";
+        db.execSQL(sql);
+        onCreate(db);
+
+    }
+
     public void insere(Produto produto){
         SQLiteDatabase db = getWritableDatabase();
         ContentValues dados = new ContentValues();

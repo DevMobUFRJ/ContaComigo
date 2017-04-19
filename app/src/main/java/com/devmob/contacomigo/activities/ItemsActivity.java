@@ -1,6 +1,8 @@
 package com.devmob.contacomigo.activities;
 
 
+import android.content.ClipData;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
@@ -16,6 +18,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.ExpandableListView;
 import android.widget.NumberPicker;
@@ -26,6 +29,7 @@ import com.devmob.contacomigo.ExpandableList.ExpandableListAdapter;
 import com.devmob.contacomigo.ExpandableList.PessoaInfo;
 import com.devmob.contacomigo.ExpandableList.ProdutoInfo;
 import com.devmob.contacomigo.R;
+import com.devmob.contacomigo.dao.PessoaDAO;
 import com.devmob.contacomigo.dao.ProdutoDAO;
 import com.devmob.contacomigo.model.Gorjeta;
 import com.devmob.contacomigo.model.Pessoa;
@@ -51,6 +55,8 @@ public class ItemsActivity extends AppCompatActivity implements NumberPicker.OnV
     public SwitchCompat switchGorjeta;
     private ExpandableListView itemsExpandableListView;
     public FloatingActionButton addFAB; //On Click não funciona com butterknife
+    public Button apagaTudo;
+
     public static Gorjeta gorjeta;
     private TextView gorjetaValor;
     private int qntdDeProdutos = 0;
@@ -59,10 +65,12 @@ public class ItemsActivity extends AppCompatActivity implements NumberPicker.OnV
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         gorjetaValor = (TextView) findViewById(R.id.gorjetaValor);
         //Inicialização
+        apagaTudo = (Button) findViewById(R.id.deletaTudo);
         carregamentoDeDados();
         switchGorjeta = (SwitchCompat) findViewById(R.id.switchGorjeta);
         gorjetaValor = (TextView) findViewById(R.id.gorjetaValor);
@@ -121,6 +129,8 @@ public class ItemsActivity extends AppCompatActivity implements NumberPicker.OnV
                 return false;
             }
         });
+
+
         // CLICK EM CADA CHILD (PESSOA E PREÇO)
         itemsExpandableListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
             @Override
@@ -145,6 +155,18 @@ public class ItemsActivity extends AppCompatActivity implements NumberPicker.OnV
             public void onClick(View v) {
                 Toast.makeText(ItemsActivity.this, "Add", Toast.LENGTH_SHORT).show();
                 telaAdicionar();
+                listAdapter.notifyDataSetChanged();
+            }
+        });
+
+
+        final Context aux = this;
+        apagaTudo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ProdutoDAO dao = new ProdutoDAO(aux);
+                dao.deletaTudo();
+                dao.close();
                 listAdapter.notifyDataSetChanged();
             }
         });
