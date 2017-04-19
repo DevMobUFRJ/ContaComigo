@@ -25,7 +25,8 @@ public class Gorjeta {
 
     public Gorjeta() {
         this.porcentagem = 10;
-        this.valor = 1 + (this.porcentagem/100);
+        this.valor =(double) porcentagem/100;
+        this.valor = this.valor +1.0;
         this.ativo = false;
     }
 
