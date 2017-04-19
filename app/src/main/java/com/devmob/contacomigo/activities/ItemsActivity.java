@@ -46,6 +46,7 @@ public class ItemsActivity extends AppCompatActivity {
     private ExpandableListView itemsExpandableListView;
     public FloatingActionButton addFAB; //On Click não funciona com butterknife
     public static Gorjeta gorjeta;
+    private int qntdDeProdutos = 0;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -178,6 +179,7 @@ public class ItemsActivity extends AppCompatActivity {
 
         ProdutoDAO dao = new ProdutoDAO(this);
         List<Produto> produtos = dao.buscaProdutos();
+        qntdDeProdutos = produtos.size();
         dao.close();
 
         ProdutoInfo teste = new ProdutoInfo();
@@ -202,8 +204,10 @@ public class ItemsActivity extends AppCompatActivity {
         super.onResume();
         ProdutoDAO dao = new ProdutoDAO(this);
         List<Produto> produtos = dao.buscaProdutos();
-        fooAdicionaProduto(produtos.get(produtos.size()-1));
-        listAdapter.notifyDataSetChanged();
+        if (produtos.size() > qntdDeProdutos){
+            fooAdicionaProduto(produtos.get(produtos.size() - 1));
+            listAdapter.notifyDataSetChanged();
+        }
     }
 
     //PREENCHIMENTO DE CLASSES
@@ -255,7 +259,6 @@ public class ItemsActivity extends AppCompatActivity {
         ProdutoInfo produtoInfo;
         produtoInfo = new ProdutoInfo();
         produtoInfo.setProduto(produto);
-        produtoInfo.setNomeProduto(product);
         FoohashProduto.put(produtoInfo, product);
         listProduto.add(produtoInfo);
         fillMap.put(produtoInfo, 0);
