@@ -1,5 +1,8 @@
 package com.devmob.contacomigo.activities;
 
+
+import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
@@ -15,6 +18,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.ExpandableListView;
 import android.widget.NumberPicker;
@@ -51,9 +55,9 @@ public class ItemsActivity extends AppCompatActivity implements NumberPicker.OnV
     private ExpandableListView itemsExpandableListView;
     public FloatingActionButton addFAB; //On Click não funciona com butterknife
     public static Gorjeta gorjeta;
+    private TextView gorjetaValor;
     private int qntdDeProdutos = 0;
 
-    private TextView gorjetaValor;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -63,6 +67,7 @@ public class ItemsActivity extends AppCompatActivity implements NumberPicker.OnV
         //Inicialização
         carregamentoDeDados();
         switchGorjeta = (SwitchCompat) findViewById(R.id.switchGorjeta);
+        gorjetaValor = (TextView) findViewById(R.id.gorjetaValor);
         gorjeta = new Gorjeta();
         itemsExpandableListView = (ExpandableListView) findViewById(R.id.simpleExpandableListView);
         listAdapter = new ExpandableListAdapter(ItemsActivity.this, listProduto);
@@ -70,11 +75,7 @@ public class ItemsActivity extends AppCompatActivity implements NumberPicker.OnV
         final BottomNavigationView bottomNavigationView = (BottomNavigationView)
                 findViewById(R.id.bottom_navigation);
         addFAB = (FloatingActionButton) findViewById(R.id.addFAB);
-        //TODO
-        //Quando selecionar o ícone, chamar outra janela. Trocar ícone ativo em cada tela. (icone diferente ou mudar bg?)
 
-        //TODO
-        //Toolbar
         bottomNavigationView.setOnNavigationItemSelectedListener(
                 new BottomNavigationView.OnNavigationItemSelectedListener() {
                     @Override
@@ -181,7 +182,6 @@ public class ItemsActivity extends AppCompatActivity implements NumberPicker.OnV
             }
         });
 
-
     }
 
     private void showGorjetaValor() {
@@ -236,7 +236,6 @@ public class ItemsActivity extends AppCompatActivity implements NumberPicker.OnV
 
         ProdutoDAO dao = new ProdutoDAO(this);
         List<Produto> produtos = dao.buscaProdutos();
-        qntdDeProdutos = produtos.size();
         dao.close();
 
         ProdutoInfo teste = new ProdutoInfo();
@@ -246,6 +245,12 @@ public class ItemsActivity extends AppCompatActivity implements NumberPicker.OnV
             fooAdicionaPessoa(william, teste);
             fooAdicionaPessoa(daniel, teste);
         }
+        /*/addProduto(william, batata);
+        addProduto(silvio, batata);
+        addProduto(daniel, batata);
+
+        addProduto(william, cebola);
+        addProduto(daniel, cebola);/*/
 
 
     }
@@ -255,7 +260,7 @@ public class ItemsActivity extends AppCompatActivity implements NumberPicker.OnV
         super.onResume();
         ProdutoDAO dao = new ProdutoDAO(this);
         List<Produto> produtos = dao.buscaProdutos();
-        if (produtos.size() > qntdDeProdutos){
+        if (produtos.size() > qntdDeProdutos) {
             fooAdicionaProduto(produtos.get(produtos.size() - 1));
             listAdapter.notifyDataSetChanged();
         }
@@ -323,6 +328,6 @@ public class ItemsActivity extends AppCompatActivity implements NumberPicker.OnV
 
     @Override
     public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
-        Log.i("value is",""+newVal);
+        Log.i("value is", "" + newVal);
     }
 }
