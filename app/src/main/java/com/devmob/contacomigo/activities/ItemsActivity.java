@@ -266,7 +266,6 @@ public class ItemsActivity extends AppCompatActivity implements NumberPicker.OnV
 
     private void adicionaProduto(Produto produto) {
         produtos.put(produto.getId(), produto);
-        qntdDeProdutos++;
     }
 
     private void adicionaPessoa(Pessoa pessoa, Produto produto) {
