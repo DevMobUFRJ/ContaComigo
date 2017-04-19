@@ -189,12 +189,6 @@ public class ItemsActivity extends AppCompatActivity {
             fooAdicionaPessoa(william, teste);
             fooAdicionaPessoa(daniel, teste);
         }
-        /*/addProduto(william, batata);
-        addProduto(silvio, batata);
-        addProduto(daniel, batata);
-
-        addProduto(william, cebola);
-        addProduto(daniel, cebola);/*/
 
 
     }
