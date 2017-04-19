@@ -52,6 +52,9 @@ public class AddProdutoActivity extends AppCompatActivity {
         botaoCancelar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Intent intent = new Intent();
+                intent.putExtra("editTextValue", "value_here")
+                setResult(RESULT_OK, intent);
                 finish();
             }
         });
