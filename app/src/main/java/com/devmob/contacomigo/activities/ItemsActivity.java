@@ -71,11 +71,7 @@ public class ItemsActivity extends AppCompatActivity implements NumberPicker.OnV
         final BottomNavigationView bottomNavigationView = (BottomNavigationView)
                 findViewById(R.id.bottom_navigation);
         addFAB = (FloatingActionButton) findViewById(R.id.addFAB);
-        //TODO
-        //Quando selecionar o ícone, chamar outra janela. Trocar ícone ativo em cada tela. (icone diferente ou mudar bg?)
 
-        //TODO
-        //Toolbar
         bottomNavigationView.setOnNavigationItemSelectedListener(
                 new BottomNavigationView.OnNavigationItemSelectedListener() {
                     @Override
@@ -158,12 +154,12 @@ public class ItemsActivity extends AppCompatActivity implements NumberPicker.OnV
                 switch (buttonView.getId()) {
                     case R.id.switchGorjeta:
                         if (!isChecked) {
-                            switchGorjeta.setTextColor(Color.BLACK);
+                            gorjetaValor.setTextColor(Color.BLACK);
                             gorjeta.setAtivo(false);
                             listAdapter.notifyDataSetChanged();
                             //Toast.makeText(ItemsActivity.this, String.valueOf(gorjeta.getValor()), Toast.LENGTH_SHORT).show();
                         } else {
-                            switchGorjeta.setTextColor(Color.RED);
+                            gorjetaValor.setTextColor(Color.RED);
                             gorjeta.setAtivo(true);
                             listAdapter.notifyDataSetChanged();
                             //Toast.makeText(ItemsActivity.this, String.valueOf(gorjeta.getValor()), Toast.LENGTH_SHORT).show();
