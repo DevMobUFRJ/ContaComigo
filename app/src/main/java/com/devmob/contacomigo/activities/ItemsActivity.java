@@ -295,21 +295,7 @@ public class ItemsActivity extends AppCompatActivity implements NumberPicker.OnV
     }
 
 
-    //method to expand all groups
-    private void expandirTodos() {
-        int count = listAdapter.getGroupCount();
-        for (int i = 0; i < count; i++) {
-            itemsExpandableListView.expandGroup(i);
-        }
-    }
-
-    //method to collapse all groups
-    private void fecharTodos() {
-        int count = listAdapter.getGroupCount();
-        for (int i = 0; i < count; i++) {
-            itemsExpandableListView.collapseGroup(i);
-        }
-    }
+ 
 
 
     private void telaAdicionar() {
