@@ -4,6 +4,7 @@
     <string name="text_money">Dinheiro</string>
     <string name="text_tip">Gorjeta</string>
     <string name="text_ok">Ok</string>
-    <string name="text_cancel">Cancel</string>
+    <string name="text_cancel">Cancelar</string>
+    <string name="text_save">Salvar</string>
 
 </resources>
