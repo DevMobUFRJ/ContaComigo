@@ -132,17 +132,21 @@ public class ItemsActivity extends AppCompatActivity {
                 return false;
             }
         });
-
-        addFAB.setOnTouchListener(new View.OnTouchListener() {
+        addFAB.setOnClickListener(new View.OnClickListener() {
             @Override
-            public boolean onTouch(View v, MotionEvent event) {
+            public void onClick(View v) {
                 Toast.makeText(ItemsActivity.this, "Add", Toast.LENGTH_SHORT).show();
+<<<<<<< HEAD
                 Intent intent = new Intent(ItemsActivity.this, AddProdutoActivity.class);
                 startActivity(intent);
-                listAdapter.notifyDataSetChanged();
                 return true;
+=======
+                telaAdicionar();
+                listAdapter.notifyDataSetChanged();
+>>>>>>> cedc2023a31537ffbc717a927e857263bd88218c
             }
         });
+
 
         switchGorjeta.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -200,8 +204,11 @@ public class ItemsActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onResume(){
+    public void onResume() {
         super.onResume();
+        ProdutoDAO dao = new ProdutoDAO(this);
+        List<Produto> produtos = dao.buscaProdutos();
+        fooAdicionaProduto(produtos.get(produtos.size()-1));
         listAdapter.notifyDataSetChanged();
     }
 
@@ -295,5 +302,13 @@ public class ItemsActivity extends AppCompatActivity {
         for (int i = 0; i < count; i++) {
             itemsExpandableListView.collapseGroup(i);
         }
+    }
+
+
+    private void telaAdicionar() {
+        Intent intent = new Intent(this, AddProdutoActivity.class);
+        //intent.putExtra(getString(R.string.key_name), name);
+        startActivity(intent);
+
     }
 }
