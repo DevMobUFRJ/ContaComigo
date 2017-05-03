@@ -1,22 +1,19 @@
-package com.devmob.contacomigo.activities;
+package com.devmob.contacomigo.fragments;
 
-
-import android.content.ClipData;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
-import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.Fragment;
+import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SwitchCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.CompoundButton;
@@ -26,87 +23,54 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.devmob.contacomigo.ExpandableList.ExpandableListAdapter;
-import com.devmob.contacomigo.ExpandableList.ProdutoInfo;
 import com.devmob.contacomigo.R;
-import com.devmob.contacomigo.dao.PessoaDAO;
+import com.devmob.contacomigo.activities.AddProdutoActivity;
 import com.devmob.contacomigo.dao.ProdutoDAO;
 import com.devmob.contacomigo.model.Gorjeta;
 import com.devmob.contacomigo.model.Pessoa;
 import com.devmob.contacomigo.model.Produto;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 
+import static android.app.Activity.RESULT_OK;
 
-public class ItemsActivity extends AppCompatActivity implements NumberPicker.OnValueChangeListener {
+/**
+ * Created by devmob on 03/05/17.
+ */
+
+public class ItemFragmento extends Fragment {
+    private static final String TAG = "ItemFragmento";
+
 
     private LinkedHashMap<Integer, Produto> produtos = new LinkedHashMap<>();
-
     private ExpandableListAdapter listAdapter;
-    //private ExpandableListView itemsExpandableListView;
     public SwitchCompat switchGorjeta;
     private ExpandableListView itemsExpandableListView;
-    public FloatingActionButton addFAB; //On Click não funciona com butterknife
+    public FloatingActionButton addFAB;
     public Button apagaTudo;
-
     public static Gorjeta gorjeta;
     private TextView gorjetaValor;
     private int qntdDeProdutos = 0;
     boolean itemAdicionado;
-    Intent intent;
 
-
+    @Nullable
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
+        View view  = inflater.inflate(R.layout.items_layout, container, false);
 
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        gorjetaValor = (TextView) findViewById(R.id.gorjetaValor);
+        gorjetaValor = (TextView) view.findViewById(R.id.gorjetaValor);
         //Inicialização
-        apagaTudo = (Button) findViewById(R.id.deletaTudo);
+        apagaTudo = (Button) view.findViewById(R.id.deletaTudo);
         carregamentoDeDados();
-        switchGorjeta = (SwitchCompat) findViewById(R.id.switchGorjeta);
-        gorjetaValor = (TextView) findViewById(R.id.gorjetaValor);
+        switchGorjeta = (SwitchCompat) view.findViewById(R.id.switchGorjeta);
+        gorjetaValor = (TextView) view.findViewById(R.id.gorjetaValor);
         gorjeta = new Gorjeta();
-        itemsExpandableListView = (ExpandableListView) findViewById(R.id.simpleExpandableListView);
-        listAdapter = new ExpandableListAdapter(ItemsActivity.this, new ArrayList<>(produtos.values()));
+        itemsExpandableListView = (ExpandableListView) view.findViewById(R.id.simpleExpandableListView);
+        listAdapter = new ExpandableListAdapter(getActivity(), new ArrayList<>(produtos.values()));
         itemsExpandableListView.setAdapter(listAdapter);
-        addFAB = (FloatingActionButton) findViewById(R.id.addFAB);
-        final BottomNavigationView bottomNavigationView = (BottomNavigationView)
-                findViewById(R.id.bottom_navigation);
-        bottomNavigationView.setOnNavigationItemSelectedListener(
-                new BottomNavigationView.OnNavigationItemSelectedListener() {
-                    @Override
-                    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                        switch (item.getItemId()) {
-                            case R.id.moneyIcon:
-                                //textFavorites.setVisibility(View.VISIBLE);
-                                //textSchedules.setVisibility(View.GONE);
-                                //item.setIcon(R.drawable.ic_people_black_48dp);
-                                bottomNavigationView.setItemBackgroundResource(R.color.colorPrimary);
-                                item.setChecked(true);
-                                Toast.makeText(ItemsActivity.this, "Money", Toast.LENGTH_SHORT).show();
-                                break;
-                            case R.id.personIcon:
-                                bottomNavigationView.setItemBackgroundResource(R.color.red);
-                                intent = new Intent(ItemsActivity.this, PessoasActivity.class);
-                                startActivityForResult(intent, 2);
-                                item.setChecked(true);
-                                Toast.makeText(ItemsActivity.this, "Person", Toast.LENGTH_SHORT).show();
-                                break;
-                            case R.id.tempIcon:
-                                bottomNavigationView.setItemBackgroundResource(R.color.black);
-                                item.setChecked(true);
-                                Toast.makeText(ItemsActivity.this, "tempIcon", Toast.LENGTH_SHORT).show();
-                                break;
-                        }
-                        return false;
-                    }
-                });
-
+        addFAB = (FloatingActionButton) view.findViewById(R.id.addFAB);
 
         //LONG CLICK EM CADA CHILD (PESSOA E PREÇO)
         itemsExpandableListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
@@ -120,7 +84,7 @@ public class ItemsActivity extends AppCompatActivity implements NumberPicker.OnV
                     Produto produto = listProdutos.get(indiceProduto);
                     //get the child info
                     Pessoa pessoa = produto.getConsumidores().get(indicePessoa);
-                    Toast.makeText(ItemsActivity.this, pessoa.getNome() + "/" + indicePessoa + " deve " + pessoa.getPrecoTotal(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), pessoa.getNome() + "/" + indicePessoa + " deve " + pessoa.getPrecoTotal(), Toast.LENGTH_SHORT).show();
                     return true;
                 }
 
@@ -136,7 +100,7 @@ public class ItemsActivity extends AppCompatActivity implements NumberPicker.OnV
                 List<Produto> listProdutos = new ArrayList<Produto>(produtos.values());
                 Produto produto = listProdutos.get(indiceProduto);
                 Pessoa pessoa = produto.getConsumidores().get(indicePessoa);
-                Toast.makeText(getBaseContext(), " Clicked on :: " + pessoa.getNome() + "/" + indiceProduto + "/" + pessoa.getPrecoTotal(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), " Clicked on :: " + pessoa.getNome() + "/" + indiceProduto + "/" + pessoa.getPrecoTotal(), Toast.LENGTH_SHORT).show();
                 return false;
             }
         });
@@ -146,31 +110,24 @@ public class ItemsActivity extends AppCompatActivity implements NumberPicker.OnV
             public boolean onGroupClick(ExpandableListView parent, View v, int indiceProduto, long id) {
                 List<Produto> listProdutos = new ArrayList<Produto>(produtos.values());
                 Produto produto = listProdutos.get(indiceProduto);
-                Toast.makeText(getBaseContext(), " Header is :: " + produto.getNome(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), " Header is :: " + produto.getNome(), Toast.LENGTH_SHORT).show();
                 return false;
             }
         });
         addFAB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(ItemsActivity.this, "Add", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), "Add", Toast.LENGTH_SHORT).show();
                 telaAdicionar();
                 listAdapter.notifyDataSetChanged();
             }
         });
 
 
-        final Context aux = this;
         apagaTudo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ProdutoDAO dao = new ProdutoDAO(aux);
-                dao.deletaTudo();
-                dao.close();
-                listAdapter.notifyDataSetChanged();
-                finish();
-                overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
-                startActivity(getIntent());
+            //TODO fazer apagaTudo
             }
         });
 
@@ -205,13 +162,16 @@ public class ItemsActivity extends AppCompatActivity implements NumberPicker.OnV
             }
         });
 
+        return view;
     }
 
+
+
     private void showGorjetaValor() {
-        LayoutInflater li = LayoutInflater.from(this);
+        LayoutInflater li = LayoutInflater.from(getActivity());
         View promptsView = li.inflate(R.layout.dialogo, null);
 
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity());
 
         // set prompts.xml to alertdialog builder
         alertDialogBuilder.setView(promptsView);
@@ -221,7 +181,12 @@ public class ItemsActivity extends AppCompatActivity implements NumberPicker.OnV
         np.setMinValue(1);
         np.setValue(gorjeta.getPorcentagem());
         np.setWrapSelectorWheel(true);
-        np.setOnValueChangedListener(this);
+        np.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
+            @Override
+            public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
+                Log.i("value is", "" + newVal);
+            }
+        });
         alertDialogBuilder
                 .setTitle(R.string.text_tip)
                 .setCancelable(false)
@@ -257,7 +222,7 @@ public class ItemsActivity extends AppCompatActivity implements NumberPicker.OnV
         Pessoa silvio = new Pessoa("Silvio", 2);
         Pessoa daniel = new Pessoa("Daniel", 3);
 
-        ProdutoDAO dao = new ProdutoDAO(this);
+        ProdutoDAO dao = new ProdutoDAO(getActivity());
         List<Produto> produtos = dao.buscaProdutos();
         dao.close();
 
@@ -272,7 +237,7 @@ public class ItemsActivity extends AppCompatActivity implements NumberPicker.OnV
     @Override
     public void onResume() {
         super.onResume();
-        ProdutoDAO dao = new ProdutoDAO(this);
+        ProdutoDAO dao = new ProdutoDAO(getActivity());
         List<Produto> produtos = dao.buscaProdutos();
         if (itemAdicionado==true) {
             System.out.println("AEEEEE");
@@ -302,7 +267,7 @@ public class ItemsActivity extends AppCompatActivity implements NumberPicker.OnV
 
 
     private void telaAdicionar() {
-        Intent intent = new Intent(this, AddProdutoActivity.class);
+        Intent intent = new Intent(getActivity(), AddProdutoActivity.class);
         //intent.putExtra(getString(R.string.key_name), name);
         startActivityForResult(intent, 1);
     }
@@ -312,13 +277,11 @@ public class ItemsActivity extends AppCompatActivity implements NumberPicker.OnV
         if (requestCode == 1) {
             if(resultCode == RESULT_OK) {
                 itemAdicionado = data.getExtras().getBoolean("booleanItem");
-                Toast.makeText(this, String.valueOf(itemAdicionado), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), String.valueOf(itemAdicionado), Toast.LENGTH_SHORT).show();
             }
         }
     }
 
-    @Override
-    public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
-        Log.i("value is", "" + newVal);
-    }
 }
+
+

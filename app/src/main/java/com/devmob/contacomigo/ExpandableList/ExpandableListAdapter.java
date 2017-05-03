@@ -8,7 +8,7 @@ import android.widget.BaseExpandableListAdapter;
 import android.widget.TextView;
 
 import com.devmob.contacomigo.R;
-import com.devmob.contacomigo.activities.ItemsActivity;
+import com.devmob.contacomigo.fragments.ItemFragmento;
 import com.devmob.contacomigo.model.Pessoa;
 import com.devmob.contacomigo.model.Produto;
 
@@ -58,10 +58,10 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         TextView pessoa = (TextView) view.findViewById(R.id.pessoa);
         pessoa.setText(detailInfo.getNome().trim());
         TextView pessoaPreco = (TextView) view.findViewById(R.id.pessoaPreco);
-        if (ItemsActivity.gorjeta.getAtivo() == false)
+        if (ItemFragmento.gorjeta.getAtivo() == false)
             pessoaPreco.setText(String.format("%.2f",price));
         else
-            pessoaPreco.setText(String.format("%.2f", price*ItemsActivity.gorjeta.getValor()));
+            pessoaPreco.setText(String.format("%.2f", price*ItemFragmento.gorjeta.getValor()));
 
         return view;
     }
@@ -100,10 +100,10 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         heading.setText(produto.getNome().trim());
         TextView productPrice = (TextView) view.findViewById(R.id.productPrice);
         productPrice.setText(String.format("%.2f",produto.getPreco()));
-        if (ItemsActivity.gorjeta.getAtivo() == false)
+        if (ItemFragmento.gorjeta.getAtivo() == false)
             productPrice.setText(String.format("%.2f",produto.getPreco()));
         else
-            productPrice.setText(String.format("%.2f",produto.getPreco()*ItemsActivity.gorjeta.getValor()));
+            productPrice.setText(String.format("%.2f",produto.getPreco()*ItemFragmento.gorjeta.getValor()));
 
         return view;
     }
