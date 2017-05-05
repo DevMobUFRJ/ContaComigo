@@ -4,7 +4,7 @@
     <item
         android:id="@+id/restIcon"
         android:enabled="true"
-        android:icon="@drawable/ic_about"
+        android:icon="@drawable/ic_rest"
         android:title="Restaurante" />
     <item
         android:id="@+id/moneyIcon"
@@ -19,6 +19,7 @@
         android:enabled="true"
         android:icon="@drawable/ic_home"
         android:title="TEMP" />
+
 
 
 
