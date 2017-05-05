@@ -11,7 +11,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class PessoaDAO extends SQLiteOpenHelper {
 
     public PessoaDAO(Context context){
-        super(context, "ContaComigo", null, 1);
+        super(context, "ContaComigo", null, 2);
     }
 
     @Override
@@ -19,7 +19,8 @@ public class PessoaDAO extends SQLiteOpenHelper {
         String sql = "CREATE TABLE Pessoa(" +
                 "id INTEGER PRIMARY KEY, " +
                 "nome VARCHAR(255) NOT NULL, " +
-                "precoTotal REAL NOT NULL" +
+                "precoTotal REAL NOT NULL," +
+                ""+
                 ");";
         db.execSQL(sql);
     }
