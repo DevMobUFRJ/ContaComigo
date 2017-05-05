@@ -17,6 +17,8 @@
         android:hint="Preço"
         android:inputType="numberDecimal" />
 
+
+
     <Button
         android:id="@+id/salvar"
         android:layout_width="match_parent"

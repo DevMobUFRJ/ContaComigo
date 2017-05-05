@@ -16,30 +16,26 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by DevMachine on 29/03/2017.
+ * Created by DevMob on 05/05/2017.
  */
 
-// GROUP EH O PRODUTO, CHILD EH PESSOA
-
-public class ExpandableListAdapter extends BaseExpandableListAdapter {
+public class PessoaExpandableListAdapter extends BaseExpandableListAdapter {
     private Context context;
-    private ArrayList<Produto> deptList;
+    private ArrayList<Produto> pessoaList;
 
-    public ExpandableListAdapter(Context context, ArrayList<Produto> deptList) {
+    public PessoaExpandableListAdapter(Context context, ArrayList<Produto> pessoaList) {
         this.context = context;
-        this.deptList = deptList;
+        this.pessoaList = pessoaList;
     }
 
     @Override
     public Object getChild(int indiceProduto, int indicePessoa) {
-        List<Pessoa> consumidores = deptList.get(indiceProduto).getConsumidores();
-        return consumidores.get(indicePessoa);
+        List<Pessoa> produtos = pessoaList.get(indiceProduto).getConsumidores();
+        return produtos.get(indicePessoa);
     }
 
     public void updateLista(Produto novo) {
-        //deptList.clear();
-        //deptList.addAll(newlist);
-        deptList.add(novo);
+        pessoaList.add(novo);
         this.notifyDataSetChanged();
     }
 
@@ -59,7 +55,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         double price = produto.getPreco()/produto.getConsumidores().size();
         if (view == null) {
             LayoutInflater infalInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            view = infalInflater.inflate(R.layout.list_pessoa, null);
+            view = infalInflater.inflate(R.layout.listProduto_pessoa, null);
         }
 
         TextView pessoa = (TextView) view.findViewById(R.id.pessoa);
@@ -75,17 +71,17 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
 
     @Override
     public int getChildrenCount(int indiceProduto) {
-        return deptList.get(indiceProduto).getConsumidores().size();
+        return pessoaList.get(indiceProduto).getConsumidores().size();
     }
 
     @Override
     public Object getGroup(int indiceProduto) {
-        return deptList.get(indiceProduto);
+        return pessoaList.get(indiceProduto);
     }
 
     @Override
     public int getGroupCount() {
-        return deptList.size();
+        return pessoaList.size();
     }
 
     @Override
@@ -100,7 +96,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         Produto produto = (Produto) getGroup(indiceProduto);
         if (view == null) {
             LayoutInflater inf = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            view = inf.inflate(R.layout.list_produto, null);
+            view = inf.inflate(R.layout.listProduto_produto, null);
         }
 
         TextView heading = (TextView) view.findViewById(R.id.heading);

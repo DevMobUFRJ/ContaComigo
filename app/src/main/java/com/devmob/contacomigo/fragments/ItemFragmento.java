@@ -1,6 +1,5 @@
 package com.devmob.contacomigo.fragments;
 
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
@@ -22,7 +21,7 @@ import android.widget.NumberPicker;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.devmob.contacomigo.ExpandableList.ExpandableListAdapter;
+import com.devmob.contacomigo.ExpandableList.ProdutoExpandableListAdapter;
 import com.devmob.contacomigo.R;
 import com.devmob.contacomigo.activities.AddProdutoActivity;
 import com.devmob.contacomigo.dao.ProdutoDAO;
@@ -45,7 +44,7 @@ public class ItemFragmento extends Fragment {
 
 
     private LinkedHashMap<Integer, Produto> produtos = new LinkedHashMap<>();
-    public static ExpandableListAdapter listAdapter;
+    public static ProdutoExpandableListAdapter listAdapter;
     public SwitchCompat switchGorjeta;
     private ExpandableListView itemsExpandableListView;
     public FloatingActionButton addFAB;
@@ -67,8 +66,8 @@ public class ItemFragmento extends Fragment {
         switchGorjeta = (SwitchCompat) view.findViewById(R.id.switchGorjeta);
         gorjetaValor = (TextView) view.findViewById(R.id.gorjetaValor);
         gorjeta = new Gorjeta();
-        itemsExpandableListView = (ExpandableListView) view.findViewById(R.id.simpleExpandableListView);
-        listAdapter = new ExpandableListAdapter(getActivity(), new ArrayList<>(produtos.values()));
+        itemsExpandableListView = (ExpandableListView) view.findViewById(R.id.produtosExpandableListView);
+        listAdapter = new ProdutoExpandableListAdapter(getActivity(), new ArrayList<>(produtos.values()));
         itemsExpandableListView.setAdapter(listAdapter);
         addFAB = (FloatingActionButton) view.findViewById(R.id.addFAB);
 

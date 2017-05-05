@@ -8,19 +8,20 @@ import android.database.sqlite.SQLiteOpenHelper;
  * Created by silviomm on 12/04/17.
  */
 
-public class PessoaDAO extends SQLiteOpenHelper {
+public class PessoaProdutoDAO extends SQLiteOpenHelper {
 
-    public PessoaDAO(Context context){
+    public PessoaProdutoDAO(Context context){
         super(context, "ContaComigo", null, 2);
     }
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String sql = "CREATE TABLE Pessoa(" +
-                "id INTEGER PRIMARY KEY, " +
-                "nome VARCHAR(255) NOT NULL, " +
-                "precoTotal REAL NOT NULL," +
-                ""+
+        String sql = "CREATE TABLE PessoaProduto(" +
+                "idPessoa INTEGER, " +
+                "idProduto INTEGER," +
+                "PRIMARY KEY(idPessoa, idProduto),"+
+                "FOREIGN KEY(idPessoa) REFERENCES Pessoa(id),"+
+                "FOREIGN KEY(idProduto) REFERENCES Produto(id)"+
                 ");";
         db.execSQL(sql);
     }

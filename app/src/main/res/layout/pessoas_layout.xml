@@ -3,4 +3,14 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <ExpandableListView
+        android:id="@+id/pessoasExpandableListView"
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent"
+        android:childDivider="@android:color/transparent"
+        android:divider="@android:color/holo_blue_bright"
+        android:dividerHeight="0dp"
+        android:paddingBottom="85sp"
+        android:clipToPadding="false" />
+
 </LinearLayout>
