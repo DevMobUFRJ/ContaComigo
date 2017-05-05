@@ -1,5 +1,6 @@
 package com.devmob.contacomigo.activities;
 
+import android.content.ClipData;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -12,7 +13,10 @@ import android.widget.Toast;
 
 import com.devmob.contacomigo.R;
 import com.devmob.contacomigo.dao.ProdutoDAO;
+import com.devmob.contacomigo.fragments.ItemFragmento;
 import com.devmob.contacomigo.model.Produto;
+
+import java.util.ArrayList;
 
 public class AddProdutoActivity extends AppCompatActivity {
     public EditText nomeT;
@@ -42,9 +46,8 @@ public class AddProdutoActivity extends AppCompatActivity {
                 ProdutoDAO dao = new ProdutoDAO(AddProdutoActivity.this);
                 dao.insere(produto);
                 dao.close();
-
+                ItemFragmento.listAdapter.updateLista(produto);
                 Toast.makeText(AddProdutoActivity.this, "Produto salvo com sucesso!", Toast.LENGTH_SHORT).show();
-
 
                 intent.putExtra("booleanItem", true);
                 setResult(RESULT_OK, intent);

@@ -36,6 +36,13 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         return consumidores.get(indicePessoa);
     }
 
+    public void updateLista(Produto novo) {
+        //deptList.clear();
+        //deptList.addAll(newlist);
+        deptList.add(novo);
+        this.notifyDataSetChanged();
+    }
+
     @Override
     public long getChildId(int indiceProduto, int indicePessoa) {
         return indicePessoa;

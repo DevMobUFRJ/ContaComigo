@@ -45,7 +45,7 @@ public class ItemFragmento extends Fragment {
 
 
     private LinkedHashMap<Integer, Produto> produtos = new LinkedHashMap<>();
-    private ExpandableListAdapter listAdapter;
+    public static ExpandableListAdapter listAdapter;
     public SwitchCompat switchGorjeta;
     private ExpandableListView itemsExpandableListView;
     public FloatingActionButton addFAB;
@@ -242,8 +242,8 @@ public class ItemFragmento extends Fragment {
         if (itemAdicionado==true) {
             System.out.println("AEEEEE");
             System.out.println(produtos.get(produtos.size() - 1).getNome());
-
             adicionaProduto(produtos.get(produtos.size() - 1));
+            Toast.makeText(getActivity(), "Resumido", Toast.LENGTH_SHORT).show();
             listAdapter.notifyDataSetChanged();
         }
     }
@@ -277,10 +277,12 @@ public class ItemFragmento extends Fragment {
         if (requestCode == 1) {
             if(resultCode == RESULT_OK) {
                 itemAdicionado = data.getExtras().getBoolean("booleanItem");
-                Toast.makeText(getActivity(), String.valueOf(itemAdicionado), Toast.LENGTH_SHORT).show();
+                listAdapter.notifyDataSetChanged();
+
             }
         }
     }
+
 
 }
 
