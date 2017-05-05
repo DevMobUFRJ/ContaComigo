@@ -7,7 +7,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -62,6 +64,15 @@ public class AddProdutoActivity extends AppCompatActivity {
                 finish();
             }
         });
+
+        String[] array = new String[]{"Apple", "Google", "Meupau", "Noteucu"};
+        ViewGroup checkboxContainer = (ViewGroup) findViewById(R.id.checkbox_container);
+
+        for (int i = 0; i < array.length; i++) {
+            CheckBox checkBox = new CheckBox(this);
+            checkBox.setText(array[i]);
+            checkboxContainer.addView(checkBox);
+        }
     }
     //  create a textWatcher member
     private TextWatcher mTextWatcher = new TextWatcher() {
