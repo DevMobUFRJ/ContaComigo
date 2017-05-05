@@ -28,6 +28,8 @@ public class PessoaProdutoDAO extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-
+        String sql = "DROP TABLE IF EXISTS PessoaProduto;";
+        db.execSQL(sql);
+        onCreate(db);
     }
 }
