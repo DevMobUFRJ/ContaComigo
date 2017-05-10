@@ -70,7 +70,8 @@ public class AddProdutoActivity extends AppCompatActivity {
 
         PessoaDAO pessoaDAO = new PessoaDAO(AddProdutoActivity.this);
         List<Pessoa> pessoas = pessoaDAO.buscaPessoas();
-        String[] array = new String[]{"Apple", "Google", "Meupau", "Noteucu"};
+
+        String[] array = new String[]{"Apple", "Google"};
         ViewGroup checkboxContainer = (ViewGroup) findViewById(R.id.checkbox_container);
         for (Pessoa pessoa : pessoas){
             CheckBox checkBox = new CheckBox(this);
