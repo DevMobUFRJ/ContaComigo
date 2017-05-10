@@ -139,7 +139,6 @@ public class ItemsActivity extends AppCompatActivity {
                 Toast.makeText(ItemsActivity.this, "Add", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(ItemsActivity.this, AddProdutoActivity.class);
                 startActivity(intent);
-                listAdapter.notifyDataSetChanged();
                 return true;
             }
         });
@@ -169,13 +168,26 @@ public class ItemsActivity extends AppCompatActivity {
 
     }
 
+    /*TODO pegar do banco apenas o ultimo, e nao todos e pegar o ultimo na lista*/
+    private void adicionaUltimoProdutoCriado(){
+
+        System.out.println("OLAAAAA");
+
+        ProdutoDAO dao = new ProdutoDAO(this);
+        List<Produto> produtos = dao.buscaProdutos();
+
+        //hardcoded, tirar isso depois
+        ProdutoInfo teste = new ProdutoInfo();
+        Pessoa silvio = new Pessoa("Silvio", 2);
+
+        teste = fooAdicionaProduto(produtos.get(produtos.size()-1));
+        fooAdicionaPessoa(silvio, teste);
+    }
+
     //DATA SETADA POR HARDCODING TEMPORARIO
     private void carregamentoDeDados() {
 
-        System.out.println("Entrei");
-
         Pessoa william = new Pessoa("William", 1);
-        Pessoa silvio = new Pessoa("Silvio", 2);
         Pessoa daniel = new Pessoa("Daniel", 3);
 
         ProdutoDAO dao = new ProdutoDAO(this);
@@ -184,7 +196,6 @@ public class ItemsActivity extends AppCompatActivity {
 
         ProdutoInfo teste = new ProdutoInfo();
         for (Produto produto : produtos) {
-            System.out.println(produto.getNome());
             teste = fooAdicionaProduto(produto);
             fooAdicionaPessoa(william, teste);
             fooAdicionaPessoa(daniel, teste);
@@ -197,12 +208,6 @@ public class ItemsActivity extends AppCompatActivity {
         addProduto(daniel, cebola);/*/
 
 
-    }
-
-    @Override
-    public void onResume(){
-        super.onResume();
-        listAdapter.notifyDataSetChanged();
     }
 
     //PREENCHIMENTO DE CLASSES

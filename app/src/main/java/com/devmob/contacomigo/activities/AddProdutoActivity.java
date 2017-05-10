@@ -15,7 +15,7 @@ import com.devmob.contacomigo.model.Produto;
 public class AddProdutoActivity extends AppCompatActivity {
 
     @Override
-    protected void onCreate(final Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_produto);
 
