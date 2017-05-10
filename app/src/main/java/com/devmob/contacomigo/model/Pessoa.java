@@ -13,7 +13,8 @@ public class Pessoa {
     private double precoTotal;
 
     //TODO remove id from constructor, must be auto-incremented(sql)
-    public Pessoa(String nome, int id) {
+    public Pessoa(int id, String nome, double precoTotal) {
+        this.precoTotal = precoTotal;
         this.nome = nome;
         this.id = id;
     }

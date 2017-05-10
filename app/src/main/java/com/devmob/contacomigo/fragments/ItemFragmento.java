@@ -217,9 +217,9 @@ public class ItemFragmento extends Fragment {
 
         System.out.println("Entrei");
 
-        Pessoa william = new Pessoa("William", 1);
-        Pessoa silvio = new Pessoa("Silvio", 2);
-        Pessoa daniel = new Pessoa("Daniel", 3);
+        Pessoa william = new Pessoa(1,"William", 23);
+        Pessoa silvio = new Pessoa(2,"Silvio",24);
+        Pessoa daniel = new Pessoa(3,"Daniel",2);
 
         ProdutoDAO dao = new ProdutoDAO(getActivity());
         List<Produto> produtos = dao.buscaProdutos();
