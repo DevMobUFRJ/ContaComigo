@@ -65,7 +65,7 @@ public class AddProdutoActivity extends AppCompatActivity {
             }
         });
 
-        String[] array = new String[]{"Apple", "Google", "Meupau", "Noteucu"};
+        String[] array = new String[]{"Apple", "Google"};
         ViewGroup checkboxContainer = (ViewGroup) findViewById(R.id.checkbox_container);
 
         for (int i = 0; i < array.length; i++) {
