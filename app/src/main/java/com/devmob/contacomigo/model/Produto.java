@@ -1,5 +1,8 @@
 package com.devmob.contacomigo.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by silviomm on 05/04/17.
  */
@@ -11,6 +14,16 @@ public class Produto {
     private String nome;
 
     private float preco;
+
+    private List<Pessoa> consumidores = new ArrayList<>();
+
+    public List<Pessoa> getConsumidores(){
+        return this.consumidores;
+    }
+
+    public void setConsumidores(List<Pessoa> consumidores){
+        this.consumidores = consumidores;
+    }
 
     public Produto(String nome, float preco){
         this.nome = nome;
@@ -34,5 +47,9 @@ public class Produto {
 
     public double getPreco() {
         return preco;
+    }
+
+    public int getId() {
+        return id;
     }
 }

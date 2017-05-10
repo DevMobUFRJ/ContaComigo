@@ -8,29 +8,35 @@ import android.widget.BaseExpandableListAdapter;
 import android.widget.TextView;
 
 import com.devmob.contacomigo.R;
-import com.devmob.contacomigo.activities.ItemsActivity;
+import com.devmob.contacomigo.fragments.ItemFragmento;
+import com.devmob.contacomigo.model.Pessoa;
+import com.devmob.contacomigo.model.Produto;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
- * Created by DevMachine on 29/03/2017.
+ * Created by DevMob on 05/05/2017.
  */
 
-// GROUP EH O PRODUTO, CHILD EH PESSOA
-
-public class ExpandableListAdapter extends BaseExpandableListAdapter {
+public class PessoaExpandableListAdapter extends BaseExpandableListAdapter {
     private Context context;
-    private ArrayList<ProdutoInfo> deptList;
+    private ArrayList<Produto> pessoaList;
 
-    public ExpandableListAdapter(Context context, ArrayList<ProdutoInfo> deptList) {
+    public PessoaExpandableListAdapter(Context context, ArrayList<Produto> pessoaList) {
         this.context = context;
-        this.deptList = deptList;
+        this.pessoaList = pessoaList;
     }
 
     @Override
     public Object getChild(int indiceProduto, int indicePessoa) {
-        ArrayList<PessoaInfo> productList = deptList.get(indiceProduto).getListProduto();
-        return productList.get(indicePessoa);
+        List<Pessoa> produtos = pessoaList.get(indiceProduto).getConsumidores();
+        return produtos.get(indicePessoa);
+    }
+
+    public void updateLista(Produto novo) {
+        pessoaList.add(novo);
+        this.notifyDataSetChanged();
     }
 
     @Override
@@ -43,39 +49,39 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
     public View getChildView(int indiceProduto, int indicePessoa, boolean isLastChild,
                              View view, ViewGroup parent) {
 
-        PessoaInfo detailInfo = (PessoaInfo) getChild(indiceProduto, indicePessoa);
+        Pessoa detailInfo = (Pessoa) getChild(indiceProduto, indicePessoa);
+        Produto produto = (Produto) getGroup(indiceProduto);
+
+        double price = produto.getPreco()/produto.getConsumidores().size();
         if (view == null) {
             LayoutInflater infalInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            view = infalInflater.inflate(R.layout.list_pessoa, null);
+            view = infalInflater.inflate(R.layout.list_produto_pessoa, null);
         }
 
         TextView pessoa = (TextView) view.findViewById(R.id.pessoa);
-        pessoa.setText(detailInfo.getNomePessoa().trim());
+        pessoa.setText(detailInfo.getNome().trim());
         TextView pessoaPreco = (TextView) view.findViewById(R.id.pessoaPreco);
-        if (ItemsActivity.gorjeta.getAtivo() == false)
-            pessoaPreco.setText(String.format("%.2f",detailInfo.getPreco()));
+        if (ItemFragmento.gorjeta.getAtivo() == false)
+            pessoaPreco.setText(String.format("%.2f",price));
         else
-            pessoaPreco.setText(String.format("%.2f", detailInfo.getPreco()*ItemsActivity.gorjeta.getValor()));
+            pessoaPreco.setText(String.format("%.2f", price*ItemFragmento.gorjeta.getValor()));
 
         return view;
     }
 
     @Override
     public int getChildrenCount(int indiceProduto) {
-
-        ArrayList<PessoaInfo> listProduto = deptList.get(indiceProduto).getListProduto();
-        return listProduto.size();
-
+        return pessoaList.get(indiceProduto).getConsumidores().size();
     }
 
     @Override
     public Object getGroup(int indiceProduto) {
-        return deptList.get(indiceProduto);
+        return pessoaList.get(indiceProduto);
     }
 
     @Override
     public int getGroupCount() {
-        return deptList.size();
+        return pessoaList.size();
     }
 
     @Override
@@ -87,20 +93,20 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
     public View getGroupView(int indiceProduto, boolean isLastChild, View view,
                              ViewGroup parent) {
 
-        ProdutoInfo produtoInfo = (ProdutoInfo) getGroup(indiceProduto);
+        Produto produto = (Produto) getGroup(indiceProduto);
         if (view == null) {
             LayoutInflater inf = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            view = inf.inflate(R.layout.list_produto, null);
+            view = inf.inflate(R.layout.list_produto_produto, null);
         }
 
         TextView heading = (TextView) view.findViewById(R.id.heading);
-        heading.setText(produtoInfo.getNomeProduto().trim());
+        heading.setText(produto.getNome().trim());
         TextView productPrice = (TextView) view.findViewById(R.id.productPrice);
-        productPrice.setText(String.format("%.2f",produtoInfo.getProdutoPreco()));
-        if (ItemsActivity.gorjeta.getAtivo() == false)
-            productPrice.setText(String.format("%.2f",produtoInfo.getProdutoPreco()));
+        productPrice.setText(String.format("%.2f",produto.getPreco()));
+        if (ItemFragmento.gorjeta.getAtivo() == false)
+            productPrice.setText(String.format("%.2f",produto.getPreco()));
         else
-            productPrice.setText(String.format("%.2f",produtoInfo.getProdutoPreco()*ItemsActivity.gorjeta.getValor()));
+            productPrice.setText(String.format("%.2f",produto.getPreco()*ItemFragmento.gorjeta.getValor()));
 
         return view;
     }

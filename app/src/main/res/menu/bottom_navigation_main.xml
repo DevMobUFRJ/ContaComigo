@@ -2,6 +2,11 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
+        android:id="@+id/restIcon"
+        android:enabled="true"
+        android:icon="@drawable/ic_rest"
+        android:title="Restaurante" />
+    <item
         android:id="@+id/moneyIcon"
         android:icon="@drawable/ic_money"
         android:title="@string/text_money" />
@@ -14,5 +19,8 @@
         android:enabled="true"
         android:icon="@drawable/ic_home"
         android:title="TEMP" />
+
+
+
 
 </menu>
