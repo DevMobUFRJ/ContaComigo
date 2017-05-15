@@ -3,6 +3,7 @@ package com.devmob.contacomigo.fragments;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.support.design.widget.BottomSheetDialogFragment;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
@@ -89,6 +90,11 @@ public class ItemFragmento extends Fragment {
                 //LONG CLICK NO PRODUTO
                 else if(ExpandableListView.getPackedPositionType(id) == ExpandableListView.PACKED_POSITION_TYPE_GROUP){
                     Toast.makeText(getActivity(), produto.getNome() + " " + produto.getPreco(), Toast.LENGTH_SHORT).show();
+                    BottomSheetDialogFragment bottomSheetDialogFragment = new BottomSheetMenu();
+                    bottomSheetDialogFragment.show(getActivity().getSupportFragmentManager(), bottomSheetDialogFragment.getTag());
+                    Bundle b = new Bundle();
+                    b.putInt("idProd", produto.getId());
+                    bottomSheetDialogFragment.setArguments(b);
                     return true;
                 }
 

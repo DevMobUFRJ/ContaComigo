@@ -17,7 +17,8 @@
             android:layout_height="wrap_content"
             android:layout_toLeftOf="@+id/iv_fab"
             android:layout_marginRight="@dimen/activity_vertical_margin"
-            android:text="Attachment"
+            android:text=""
+            android:id="@+id/titulo"
             android:textColor="#0A0909"
             android:textSize="@dimen/bs_header_text" />
 
@@ -51,6 +52,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/activity_vertical_margin"
             android:text="Contact"
+            android:id="@+id/Contact"
             android:textColor="@color/bs_text_color"
             android:textSize="@dimen/bs_item_text" />
 

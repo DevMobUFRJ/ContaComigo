@@ -47,5 +47,21 @@ public class ProdutoDAO extends DBAdapter{
         return produtos;
     }
 
+    public Produto getProdutoById(int id){
+        open();
+        Cursor cursor = db.rawQuery("SELECT * FROM Produto;", null);
+        while(cursor.moveToNext()){
+            Produto produto = new Produto(
+                    cursor.getInt(cursor.getColumnIndex("id")),
+                    cursor.getString(cursor.getColumnIndex("nome")),
+                    cursor.getFloat(cursor.getColumnIndex("preco"))
+            );
+            if (produto.getId() == id){
+                return produto;
+            }
+        }
+        close();
+        return null;
+    }
 
 }
