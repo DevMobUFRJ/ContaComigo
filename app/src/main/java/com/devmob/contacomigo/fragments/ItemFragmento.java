@@ -75,23 +75,26 @@ public class ItemFragmento extends Fragment {
         itemsExpandableListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                int indiceProduto = ExpandableListView.getPackedPositionGroup(id);
+                int indicePessoa = ExpandableListView.getPackedPositionChild(id);
+                //get the group header
+                List<Produto> listProdutos = new ArrayList<Produto>(produtos.values());
+                Produto produto = listProdutos.get(indiceProduto);
+                //LONG CLICK NA PESSOA
                 if (ExpandableListView.getPackedPositionType(id) == ExpandableListView.PACKED_POSITION_TYPE_CHILD) {
-                    int indiceProduto = ExpandableListView.getPackedPositionGroup(id);
-                    int indicePessoa = ExpandableListView.getPackedPositionChild(id);
-                    //get the group header
-                    List<Produto> listProdutos = new ArrayList<Produto>(produtos.values());
-                    Produto produto = listProdutos.get(indiceProduto);
-                    //get the child info
                     Pessoa pessoa = produto.getConsumidores().get(indicePessoa);
                     Toast.makeText(getActivity(), pessoa.getNome() + "/" + indicePessoa + " deve " + pessoa.getPrecoTotal(), Toast.LENGTH_SHORT).show();
+                    return true;
+                }
+                //LONG CLICK NO PRODUTO
+                else if(ExpandableListView.getPackedPositionType(id) == ExpandableListView.PACKED_POSITION_TYPE_GROUP){
+                    Toast.makeText(getActivity(), produto.getNome() + " " + produto.getPreco(), Toast.LENGTH_SHORT).show();
                     return true;
                 }
 
                 return false;
             }
         });
-
-
         // CLICK EM CADA CHILD (PESSOA E PREÇO)
         itemsExpandableListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
             @Override
