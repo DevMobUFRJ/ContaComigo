@@ -14,11 +14,14 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.devmob.contacomigo.R;
+import com.devmob.contacomigo.dao.PessoaDAO;
 import com.devmob.contacomigo.dao.ProdutoDAO;
 import com.devmob.contacomigo.fragments.ItemFragmento;
+import com.devmob.contacomigo.model.Pessoa;
 import com.devmob.contacomigo.model.Produto;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class AddProdutoActivity extends AppCompatActivity {
     public EditText nomeT;
@@ -27,7 +30,7 @@ public class AddProdutoActivity extends AppCompatActivity {
     public Button botaoCancelar;
     Intent intent;
     @Override
-    protected void onCreate(final Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_produto);
         intent = getIntent();
@@ -65,9 +68,16 @@ public class AddProdutoActivity extends AppCompatActivity {
             }
         });
 
+        PessoaDAO pessoaDAO = new PessoaDAO(AddProdutoActivity.this);
+        List<Pessoa> pessoas = pessoaDAO.buscaPessoas();
+
         String[] array = new String[]{"Apple", "Google"};
         ViewGroup checkboxContainer = (ViewGroup) findViewById(R.id.checkbox_container);
-
+        for (Pessoa pessoa : pessoas){
+            CheckBox checkBox = new CheckBox(this);
+            checkBox.setText(pessoa.getNome());
+            checkboxContainer.addView(checkBox);
+        }
         for (int i = 0; i < array.length; i++) {
             CheckBox checkBox = new CheckBox(this);
             checkBox.setText(array[i]);
