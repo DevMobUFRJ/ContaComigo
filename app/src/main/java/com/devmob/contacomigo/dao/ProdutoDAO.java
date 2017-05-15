@@ -4,7 +4,6 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
 
 import com.devmob.contacomigo.model.Produto;
 
@@ -15,43 +14,25 @@ import java.util.List;
  * Created by silviomm on 12/04/17.
  */
 
-public class ProdutoDAO extends SQLiteOpenHelper {
+public class ProdutoDAO extends DBAdapter{
 
     public ProdutoDAO(Context context) {
-        super(context, "ContaComigo", null, 67);
+        super(context);
     }
 
-
-    @Override
-    public void onCreate(SQLiteDatabase db) {
-        String sql = "CREATE TABLE Produto(" +
-                "id INTEGER PRIMARY KEY," +
-                "nome VARCHAR(255) NOT NULL, " +
-                "preco REAL NOT NULL" +
-                ");";
-        db.execSQL(sql);
-    }
-
-
-    public void deletaTudo(){
-        SQLiteDatabase db = getWritableDatabase();
-        String sql = "DROP TABLE Produto";
-        db.execSQL(sql);
-        onCreate(db);
-
-    }
 
     public void insere(Produto produto){
-        SQLiteDatabase db = getWritableDatabase();
+        open();
         ContentValues dados = new ContentValues();
         dados.put("nome", produto.getNome());
         dados.put("preco", produto.getPreco());
 
         db.insert("Produto", null, dados);
+        close();
     }
 
     public List<Produto> buscaProdutos(){
-        SQLiteDatabase db = getReadableDatabase();
+        open();
         Cursor cursor = db.rawQuery("SELECT * FROM Produto;", null);
         List<Produto> produtos = new ArrayList<>();
         while(cursor.moveToNext()){
@@ -62,14 +43,9 @@ public class ProdutoDAO extends SQLiteOpenHelper {
             );
             produtos.add(produto);
         }
+        close();
         return produtos;
     }
 
 
-    @Override
-    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        String sql = "DROP TABLE IF EXISTS Produto;";
-        db.execSQL(sql);
-        onCreate(db);
-    }
 }

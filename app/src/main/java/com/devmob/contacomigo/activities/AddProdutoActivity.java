@@ -68,6 +68,7 @@ public class AddProdutoActivity extends AppCompatActivity {
             }
         });
 
+
         PessoaDAO pessoaDAO = new PessoaDAO(AddProdutoActivity.this);
         List<Pessoa> pessoas = pessoaDAO.buscaPessoas();
 
