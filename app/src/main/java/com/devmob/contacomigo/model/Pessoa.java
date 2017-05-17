@@ -19,6 +19,11 @@ public class Pessoa {
         this.id = id;
     }
 
+    public Pessoa(String nome, double precoTotal) {
+        this.precoTotal = precoTotal;
+        this.nome = nome;
+    }
+
     public int getId() { return id; }
 
     public String getNome() {
