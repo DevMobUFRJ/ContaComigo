@@ -61,16 +61,16 @@ public class AddProdutoActivity extends AppCompatActivity {
                 PessoaProdutoDAO pessoaproduto = new PessoaProdutoDAO(AddProdutoActivity.this);
                 dao.insere(produto);
                 dao.close();
-                ItemFragmento.listAdapter.updateLista(produto);
+                ItemFragmento.listAdapter.insereLista(produto);
                 Toast.makeText(AddProdutoActivity.this, "Produto salvo com sucesso!", Toast.LENGTH_SHORT).show();
                 for (int i = 0; i < checkboxContainer.getChildCount(); i++) {
                     View v = checkboxContainer.getChildAt(i);
                     if (v instanceof CheckBox) {
                         if (((CheckBox) v).isChecked()) {
                             pessoaproduto.insere(v.getId(), produto.getId());
-                            Toast.makeText(AddProdutoActivity.this, "Adicionei!", Toast.LENGTH_SHORT).show();
+                            //Toast.makeText(AddProdutoActivity.this, "Adicionei!", Toast.LENGTH_SHORT).show();
                         } else {
-                            Toast.makeText(AddProdutoActivity.this, "Não adicionei " + ((CheckBox) v).getText(), Toast.LENGTH_SHORT).show();
+                            //Toast.makeText(AddProdutoActivity.this, "Não adicionei " + ((CheckBox) v).getText(), Toast.LENGTH_SHORT).show();
                         }
                     }
                 }

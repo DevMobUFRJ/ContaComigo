@@ -45,6 +45,7 @@ import static android.app.Activity.RESULT_OK;
 public class ItemFragmento extends Fragment {
     private static final String TAG = "ItemFragmento";
 
+    
 
     private LinkedHashMap<Integer, Produto> produtos = new LinkedHashMap<>();
     public static ProdutoExpandableListAdapter listAdapter;
@@ -92,10 +93,12 @@ public class ItemFragmento extends Fragment {
                 //LONG CLICK NO PRODUTO
                 else if(ExpandableListView.getPackedPositionType(id) == ExpandableListView.PACKED_POSITION_TYPE_GROUP){
                     Toast.makeText(getActivity(), produto.getNome() + " " + produto.getPreco(), Toast.LENGTH_SHORT).show();
+                    Log.d("Long", indiceProduto + "");
                     BottomSheetDialogFragment bottomSheetDialogFragment = new BottomSheetMenu();
                     bottomSheetDialogFragment.show(getActivity().getSupportFragmentManager(), bottomSheetDialogFragment.getTag());
                     Bundle b = new Bundle();
                     b.putInt("idProd", produto.getId());
+                    Log.d("IDPROD", ""+produto.getId());
                     bottomSheetDialogFragment.setArguments(b);
                     return true;
                 }
@@ -110,7 +113,7 @@ public class ItemFragmento extends Fragment {
                 List<Produto> listProdutos = new ArrayList<Produto>(produtos.values());
                 Produto produto = listProdutos.get(indiceProduto);
                 Pessoa pessoa = produto.getConsumidores().get(indicePessoa);
-                Toast.makeText(getActivity(), " Clicked on :: " + pessoa.getNome() + "/" + indiceProduto + "/" + pessoa.getPrecoTotal(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), " Clicked on :: " + indiceProduto + "/" + indiceProduto + "/" + pessoa.getPrecoTotal(), Toast.LENGTH_SHORT).show();
                 return false;
             }
         });
@@ -120,7 +123,7 @@ public class ItemFragmento extends Fragment {
             public boolean onGroupClick(ExpandableListView parent, View v, int indiceProduto, long id) {
                 List<Produto> listProdutos = new ArrayList<Produto>(produtos.values());
                 Produto produto = listProdutos.get(indiceProduto);
-                Toast.makeText(getActivity(), " Header is :: " + produto.getNome(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), " ID GRUPO " + indiceProduto, Toast.LENGTH_SHORT).show();
                 return false;
             }
         });
@@ -254,7 +257,7 @@ public class ItemFragmento extends Fragment {
             System.out.println(produtos.get(produtos.size() - 1).getNome());
             adicionaProduto(produtos.get(produtos.size() - 1));
             Toast.makeText(getActivity(), "Resumido", Toast.LENGTH_SHORT).show();
-            listAdapter.notifyDataSetChanged();
+            //listAdapter.notifyDataSetChanged();
         }
     }
 

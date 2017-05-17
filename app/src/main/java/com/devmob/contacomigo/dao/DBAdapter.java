@@ -42,6 +42,8 @@ public abstract class DBAdapter {
 
     protected final Context mCtx;
 
+
+
     protected static class DatabaseHelper extends SQLiteOpenHelper {
 
         DatabaseHelper(Context context) {
@@ -64,6 +66,7 @@ public abstract class DBAdapter {
             db.execSQL("DROP TABLE IF EXISTS PessoaProduto");
             onCreate(db);
         }
+
     }
 
     /**
