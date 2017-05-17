@@ -1,16 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
     android:layout_height="match_parent">
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/addFAB"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end|bottom"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="16sp"
+        app:backgroundTint="@color/red"
+        android:src="@drawable/ic_add_button_circle" />
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/layoutTopo"
+
+        android:layout_alignParentTop="true"
+        >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/pessoaTxt"
+            android:text="Pessoas"
+            android:textSize="25sp"
+            android:layout_marginLeft="16sp"
+            android:layout_marginRight="16sp"
+            android:layout_marginTop="16sp"
+            android:layout_marginBottom="8sp"
+            android:layout_alignParentTop="true"/>
+
+    </LinearLayout>
+
 
     <ExpandableListView
         android:id="@+id/pessoasExpandableListView"
         android:layout_width="match_parent"
         android:layout_height="fill_parent"
         android:childDivider="@android:color/transparent"
+        android:layout_below="@+id/layoutTopo"
         android:divider="@android:color/holo_blue_bright"
         android:dividerHeight="0dp"
         android:paddingBottom="85sp"
         android:clipToPadding="false" />
 
-</LinearLayout>
+
+</RelativeLayout>
