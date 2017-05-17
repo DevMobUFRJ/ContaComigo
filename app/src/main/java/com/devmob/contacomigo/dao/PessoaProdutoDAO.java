@@ -31,7 +31,6 @@ public class PessoaProdutoDAO extends DBAdapter {
         ContentValues dados = new ContentValues();
         dados.put("idPessoa", idPessoa);
         dados.put("idProduto", idProduto);
-        Log.d(TAG, "Insere - Pessoa - " + idPessoa + "  Prod - " + idProduto );
         db.insert("PessoaProduto", null, dados);
         close();
     }
@@ -60,5 +59,31 @@ public class PessoaProdutoDAO extends DBAdapter {
         }
         close();
         return produtos;
+    }
+
+    public List<Pessoa> buscaPessoasDeUmProduto(Produto produto) {
+        open();
+        Cursor cursor = db.rawQuery("SELECT * FROM PessoaProduto WHERE idProduto = ?",
+                new String[]{"" + produto.getId()});
+        List<Integer> ids = new ArrayList<>();
+        while (cursor.moveToNext()) {
+            Integer id = new Integer(cursor.getInt(cursor.getColumnIndex("idPessoa")));
+            ids.add(id);
+        }
+        close();
+        open();
+        List<Pessoa> pessoas = new ArrayList<>();
+        for (Integer i : ids) {
+            Cursor cursor2 = db.rawQuery("SELECT * FROM Pessoa WHERE id = ?", new String[]{"" + i});
+            if (cursor2 != null)
+                cursor2.moveToFirst();
+            Pessoa pessoa = new Pessoa(
+                    cursor2.getInt(cursor2.getColumnIndex("id")),
+                    cursor2.getString(cursor2.getColumnIndex("nome")),
+                    cursor2.getFloat(cursor2.getColumnIndex("precoTotal")));
+            pessoas.add(pessoa);
+        }
+        close();
+        return pessoas;
     }
 }
