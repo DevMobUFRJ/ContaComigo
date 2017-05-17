@@ -16,6 +16,8 @@ import java.util.List;
 
 public class ProdutoDAO extends DBAdapter{
 
+    private static final String TAG = "ProdutoDAO";
+
     public ProdutoDAO(Context context) {
         super(context);
     }
@@ -27,7 +29,8 @@ public class ProdutoDAO extends DBAdapter{
         dados.put("nome", produto.getNome());
         dados.put("preco", produto.getPreco());
 
-        db.insert("Produto", null, dados);
+        produto.setId((int)db.insert("Produto", null, dados));
+
         close();
     }
 
@@ -47,5 +50,21 @@ public class ProdutoDAO extends DBAdapter{
         return produtos;
     }
 
+    public Produto getProdutoById(int id){
+        open();
+        Cursor cursor = db.rawQuery("SELECT * FROM Produto;", null);
+        while(cursor.moveToNext()){
+            Produto produto = new Produto(
+                    cursor.getInt(cursor.getColumnIndex("id")),
+                    cursor.getString(cursor.getColumnIndex("nome")),
+                    cursor.getFloat(cursor.getColumnIndex("preco"))
+            );
+            if (produto.getId() == id){
+                return produto;
+            }
+        }
+        close();
+        return null;
+    }
 
 }

@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -15,20 +16,28 @@ import android.widget.Toast;
 
 import com.devmob.contacomigo.R;
 import com.devmob.contacomigo.dao.PessoaDAO;
+import com.devmob.contacomigo.dao.PessoaProdutoDAO;
 import com.devmob.contacomigo.dao.ProdutoDAO;
 import com.devmob.contacomigo.fragments.ItemFragmento;
 import com.devmob.contacomigo.model.Pessoa;
+import com.devmob.contacomigo.model.PessoaProduto;
 import com.devmob.contacomigo.model.Produto;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class AddProdutoActivity extends AppCompatActivity {
+
+    private static final String TAG = "AddProdutoActivity";
+
     public EditText nomeT;
     public EditText precoT;
     public Button botaoSalvar;
     public Button botaoCancelar;
+    ViewGroup checkboxContainer;
+
     Intent intent;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,19 +50,30 @@ public class AddProdutoActivity extends AppCompatActivity {
         nomeT.addTextChangedListener(mTextWatcher);
         precoT.addTextChangedListener(mTextWatcher);
         checkFieldsForEmptyValues();
+        checkboxContainer = (ViewGroup) findViewById(R.id.checkbox_container);
         botaoSalvar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 String nome = nomeT.getText().toString();
                 float preco = Float.parseFloat(precoT.getText().toString());
                 Produto produto = new Produto(nome, preco);
-
                 ProdutoDAO dao = new ProdutoDAO(AddProdutoActivity.this);
+                PessoaProdutoDAO pessoaproduto = new PessoaProdutoDAO(AddProdutoActivity.this);
                 dao.insere(produto);
                 dao.close();
                 ItemFragmento.listAdapter.updateLista(produto);
                 Toast.makeText(AddProdutoActivity.this, "Produto salvo com sucesso!", Toast.LENGTH_SHORT).show();
-
+                for (int i = 0; i < checkboxContainer.getChildCount(); i++) {
+                    View v = checkboxContainer.getChildAt(i);
+                    if (v instanceof CheckBox) {
+                        if (((CheckBox) v).isChecked()) {
+                            pessoaproduto.insere(v.getId(), produto.getId());
+                            Toast.makeText(AddProdutoActivity.this, "Adicionei!", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(AddProdutoActivity.this, "Não adicionei " + ((CheckBox) v).getText(), Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                }
                 intent.putExtra("booleanItem", true);
                 setResult(RESULT_OK, intent);
                 finish();
@@ -70,21 +90,27 @@ public class AddProdutoActivity extends AppCompatActivity {
 
 
         PessoaDAO pessoaDAO = new PessoaDAO(AddProdutoActivity.this);
+        /*Pessoa gordinho = new Pessoa(0, null, 0);
+        gordinho.setNome("gordinho");
+        gordinho.setId(1);
+        gordinho.setPrecoTotal(0);
+        pessoaDAO.insere(gordinho);
+        Pessoa magrao = new Pessoa(0, null, 0);
+        magrao.setNome("magrao");
+        magrao.setId(2);
+        magrao.setPrecoTotal(0);
+        pessoaDAO.insere(magrao);
+        */
         List<Pessoa> pessoas = pessoaDAO.buscaPessoas();
-
-        String[] array = new String[]{"Apple", "Google"};
-        ViewGroup checkboxContainer = (ViewGroup) findViewById(R.id.checkbox_container);
-        for (Pessoa pessoa : pessoas){
+        for (Pessoa pessoa : pessoas) {
             CheckBox checkBox = new CheckBox(this);
             checkBox.setText(pessoa.getNome());
+            checkBox.setId(pessoa.getId());
             checkboxContainer.addView(checkBox);
         }
-        for (int i = 0; i < array.length; i++) {
-            CheckBox checkBox = new CheckBox(this);
-            checkBox.setText(array[i]);
-            checkboxContainer.addView(checkBox);
-        }
+
     }
+
     //  create a textWatcher member
     private TextWatcher mTextWatcher = new TextWatcher() {
         @Override
@@ -102,11 +128,11 @@ public class AddProdutoActivity extends AppCompatActivity {
         }
     };
 
-    void checkFieldsForEmptyValues(){
+    void checkFieldsForEmptyValues() {
         String s1 = nomeT.getText().toString();
         String s2 = precoT.getText().toString();
 
-        if(s1.equals("")|| s2.equals("")){
+        if (s1.equals("") || s2.equals("")) {
             botaoSalvar.setEnabled(false);
         } else {
             botaoSalvar.setEnabled(true);
