@@ -16,6 +16,8 @@ import android.widget.Toast;
 
 import com.devmob.contacomigo.R;
 import com.devmob.contacomigo.dao.PessoaDAO;
+import com.devmob.contacomigo.fragments.ItemFragmento;
+import com.devmob.contacomigo.fragments.PessoaFragmento;
 import com.devmob.contacomigo.model.Pessoa;
 
 import java.util.ArrayList;
@@ -54,9 +56,13 @@ public class AddPessoaActivity extends AppCompatActivity {
                 for (EditText pessoa : pessoas) {
                     String nome = pessoa.getText().toString();
                     if (!nome.equals("")) {
-                        dao.insere(new Pessoa(nome, 0));
+                        Pessoa p = new Pessoa(nome, 0);
+                        dao.insere(p);
+                        PessoaFragmento.listAdapter.insereLista(p);
+
                     }
                 }
+
                 finish();
             }
         });
