@@ -34,6 +34,27 @@
             android:layout_marginTop="16sp"
             android:layout_marginBottom="8sp"
             android:layout_alignParentTop="true"/>
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/gorjetaValor"
+            android:text="10%"
+            android:textStyle="bold"
+            android:textSize="18sp"
+            android:textColor="@color/black"
+            />
+        <android.support.v7.widget.SwitchCompat
+            android:id="@+id/switchGorjeta"
+            android:layout_alignParentRight="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:button="@null"
+            android:padding="20dp"/>
 
     </LinearLayout>
 

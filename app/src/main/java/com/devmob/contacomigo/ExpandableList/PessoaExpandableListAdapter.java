@@ -21,62 +21,53 @@ import java.util.List;
 
 public class PessoaExpandableListAdapter extends BaseExpandableListAdapter {
     private Context context;
-    private ArrayList<Produto> pessoaList;
+    private ArrayList<Pessoa> pessoaList;
 
-    public PessoaExpandableListAdapter(Context context, ArrayList<Produto> pessoaList) {
+    public PessoaExpandableListAdapter(Context context, ArrayList<Pessoa> pessoaList) {
         this.context = context;
         this.pessoaList = pessoaList;
     }
 
     @Override
-    public Object getChild(int indiceProduto, int indicePessoa) {
-        List<Pessoa> produtos = pessoaList.get(indiceProduto).getConsumidores();
+    public Object getChild(int indicePessoa, int indiceProduto) {
+        List<Produto> produtos = pessoaList.get(indiceProduto).getProdutos();
         return produtos.get(indicePessoa);
     }
 
-    public void updateLista(Produto novo) {
+    public void insereLista(Pessoa novo) {
         pessoaList.add(novo);
         this.notifyDataSetChanged();
     }
 
     @Override
-    public long getChildId(int indiceProduto, int indicePessoa) {
+    public long getChildId(int indicePessoa, int indiceProduto) {
         return indicePessoa;
     }
 
 
     @Override
-    public View getChildView(int indiceProduto, int indicePessoa, boolean isLastChild,
+    public View getChildView(int indicePessoa, int indiceProduto, boolean isLastChild,
                              View view, ViewGroup parent) {
 
-        Pessoa detailInfo = (Pessoa) getChild(indiceProduto, indicePessoa);
-        Produto produto = (Produto) getGroup(indiceProduto);
+        Produto detailInfo = (Produto) getChild(indicePessoa, indiceProduto);
+        Pessoa pessoa = (Pessoa)  getGroup(indicePessoa);
 
-        double price = produto.getPreco()/produto.getConsumidores().size();
         if (view == null) {
             LayoutInflater infalInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            view = infalInflater.inflate(R.layout.list_produto_pessoa, null);
+            view = infalInflater.inflate(R.layout.listpessoa_produto, null);
         }
-
-        TextView pessoa = (TextView) view.findViewById(R.id.pessoa);
-        pessoa.setText(detailInfo.getNome().trim());
-        TextView pessoaPreco = (TextView) view.findViewById(R.id.pessoaPreco);
-        if (ItemFragmento.gorjeta.getAtivo() == false)
-            pessoaPreco.setText(String.format("%.2f",price));
-        else
-            pessoaPreco.setText(String.format("%.2f", price*ItemFragmento.gorjeta.getValor()));
 
         return view;
     }
 
     @Override
-    public int getChildrenCount(int indiceProduto) {
-        return pessoaList.get(indiceProduto).getConsumidores().size();
+    public int getChildrenCount(int indicePessoa) {
+        return pessoaList.get(indicePessoa).getProdutos().size();
     }
 
     @Override
-    public Object getGroup(int indiceProduto) {
-        return pessoaList.get(indiceProduto);
+    public Object getGroup(int indicePessoa) {
+        return pessoaList.get(indicePessoa);
     }
 
     @Override
@@ -85,28 +76,19 @@ public class PessoaExpandableListAdapter extends BaseExpandableListAdapter {
     }
 
     @Override
-    public long getGroupId(int indiceProduto) {
-        return indiceProduto;
+    public long getGroupId(int indicePessoa) {
+        return indicePessoa;
     }
 
     @Override
-    public View getGroupView(int indiceProduto, boolean isLastChild, View view,
+    public View getGroupView(int indicePessoa, boolean isLastChild, View view,
                              ViewGroup parent) {
 
-        Produto produto = (Produto) getGroup(indiceProduto);
+        Pessoa pessoa = (Pessoa) getGroup(indicePessoa);
         if (view == null) {
             LayoutInflater inf = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            view = inf.inflate(R.layout.list_produto_produto, null);
+            view = inf.inflate(R.layout.listpessoa_pessoa, null);
         }
-
-        TextView heading = (TextView) view.findViewById(R.id.heading);
-        heading.setText(produto.getNome().trim());
-        TextView productPrice = (TextView) view.findViewById(R.id.productPrice);
-        productPrice.setText(String.format("%.2f",produto.getPreco()));
-        if (ItemFragmento.gorjeta.getAtivo() == false)
-            productPrice.setText(String.format("%.2f",produto.getPreco()));
-        else
-            productPrice.setText(String.format("%.2f",produto.getPreco()*ItemFragmento.gorjeta.getValor()));
 
         return view;
     }
@@ -117,7 +99,7 @@ public class PessoaExpandableListAdapter extends BaseExpandableListAdapter {
     }
 
     @Override
-    public boolean isChildSelectable(int indiceProduto, int indicePessoa) {
+    public boolean isChildSelectable(int indicePessoa, int indiceProduto) {
         return true;
     }
 }

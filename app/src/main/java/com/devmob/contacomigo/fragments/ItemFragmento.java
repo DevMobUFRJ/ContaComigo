@@ -250,7 +250,6 @@ public class ItemFragmento extends Fragment {
         ProdutoDAO dao = new ProdutoDAO(getActivity());
         List<Produto> produtos = dao.buscaProdutos();
         if (itemAdicionado==true) {
-            System.out.println("AEEEEE");
             System.out.println(produtos.get(produtos.size() - 1).getNome());
             adicionaProduto(produtos.get(produtos.size() - 1));
             Toast.makeText(getActivity(), "Resumido", Toast.LENGTH_SHORT).show();
@@ -264,12 +263,13 @@ public class ItemFragmento extends Fragment {
     }
 
     private void adicionaPessoa(Pessoa pessoa, Produto produto) {
-        double price = produtos.get(produto.getId()).getPreco();
+    /*    double price = produtos.get(produto.getId()).getPreco();
         List<Pessoa> consumidores = produtos.get(produto.getId()).getConsumidores();
         consumidores.add(pessoa);
         for (Pessoa person : consumidores) {
             person.setPrecoTotal(price/consumidores.size());
         }
+        */
     }
 
 

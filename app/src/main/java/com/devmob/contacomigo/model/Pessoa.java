@@ -1,5 +1,8 @@
 package com.devmob.contacomigo.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by silviomm on 05/04/17.
  */
@@ -11,6 +14,16 @@ public class Pessoa {
     private String nome;
 
     private double precoTotal;
+
+    private List<Produto> produtos = new ArrayList<>();
+
+    public List<Produto> getProdutos() {
+        return produtos;
+    }
+
+    public void setProdutos(List<Produto> produtos) {
+        this.produtos = produtos;
+    }
 
     //TODO remove id from constructor, must be auto-incremented(sql)
     public Pessoa(int id, String nome, double precoTotal) {

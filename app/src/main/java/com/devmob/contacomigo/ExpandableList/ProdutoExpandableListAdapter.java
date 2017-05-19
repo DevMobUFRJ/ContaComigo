@@ -36,7 +36,7 @@ public class ProdutoExpandableListAdapter extends BaseExpandableListAdapter {
         return consumidores.get(indicePessoa);
     }
 
-    public void updateLista(Produto novo) {
+    public void insereLista(Produto novo) {
         //prodList.clear();
         //prodList.addAll(newlist);
         prodList.add(novo);

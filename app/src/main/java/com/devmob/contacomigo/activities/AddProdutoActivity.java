@@ -1,12 +1,10 @@
 package com.devmob.contacomigo.activities;
 
-import android.content.ClipData;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -20,10 +18,8 @@ import com.devmob.contacomigo.dao.PessoaProdutoDAO;
 import com.devmob.contacomigo.dao.ProdutoDAO;
 import com.devmob.contacomigo.fragments.ItemFragmento;
 import com.devmob.contacomigo.model.Pessoa;
-import com.devmob.contacomigo.model.PessoaProduto;
 import com.devmob.contacomigo.model.Produto;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class AddProdutoActivity extends AppCompatActivity {
@@ -61,7 +57,7 @@ public class AddProdutoActivity extends AppCompatActivity {
                 PessoaProdutoDAO pessoaproduto = new PessoaProdutoDAO(AddProdutoActivity.this);
                 dao.insere(produto);
                 dao.close();
-                ItemFragmento.listAdapter.updateLista(produto);
+                ItemFragmento.listAdapter.insereLista(produto);
                 Toast.makeText(AddProdutoActivity.this, "Produto salvo com sucesso!", Toast.LENGTH_SHORT).show();
                 for (int i = 0; i < checkboxContainer.getChildCount(); i++) {
                     View v = checkboxContainer.getChildAt(i);
