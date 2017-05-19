@@ -49,7 +49,7 @@ public class PessoaFragmento extends Fragment {
     private static final String TAG = "ItemFragmento";
 
 
-    private List<Pessoa> pessoas;
+    private List<Pessoa> pessoas = new ArrayList<>();
     public static PessoaExpandableListAdapter listAdapter;
     private ExpandableListView pessoasExpandableListView;
     public FloatingActionButton addFAB;
@@ -73,6 +73,11 @@ public class PessoaFragmento extends Fragment {
         PessoaDAO dao = new PessoaDAO(getActivity());
         List<Pessoa> pessoas = dao.buscaPessoas();
         dao.close();
+
+        for (Pessoa p:pessoas){
+            Log.d(TAG, p.getNome());
+        }
+
         listAdapter = new PessoaExpandableListAdapter(getActivity(), new ArrayList<>(pessoas));
         pessoasExpandableListView.setAdapter(listAdapter);
         addFAB = (FloatingActionButton) view.findViewById(R.id.addFAB);
@@ -271,7 +276,7 @@ public class PessoaFragmento extends Fragment {
     }
 
     private void adicionaProduto(Produto produto, Pessoa pessoa) {
-        List<Produto> produtos = pessoas.get(pessoa.getId()).getProdutos();
+        List<Produto> produtos = pessoa.getProdutos();
         produtos.add(produto);
 
     }

@@ -52,10 +52,21 @@ public class PessoaExpandableListAdapter extends BaseExpandableListAdapter {
         Produto detailInfo = (Produto) getChild(indicePessoa, indiceProduto);
         Pessoa pessoa = (Pessoa)  getGroup(indicePessoa);
 
+        double price = pessoa.getPrecoTotal()/pessoa.getProdutos().size();
+
         if (view == null) {
             LayoutInflater infalInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            view = infalInflater.inflate(R.layout.listpessoa_produto, null);
+            view = infalInflater.inflate(R.layout.list_de_pessoa_item_produto, null);
         }
+
+        TextView produto = (TextView) view.findViewById(R.id.produto);
+        produto.setText(detailInfo.getNome().trim());
+        TextView produtoPreco = (TextView) view.findViewById(R.id.produtoPreco);
+        if (ItemFragmento.gorjeta.getAtivo() == false)
+            produtoPreco.setText(String.format("%.2f",price));
+        else
+            produtoPreco.setText(String.format("%.2f", price*ItemFragmento.gorjeta.getValor()));
+
 
         return view;
     }
@@ -87,8 +98,17 @@ public class PessoaExpandableListAdapter extends BaseExpandableListAdapter {
         Pessoa pessoa = (Pessoa) getGroup(indicePessoa);
         if (view == null) {
             LayoutInflater inf = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            view = inf.inflate(R.layout.listpessoa_pessoa, null);
+            view = inf.inflate(R.layout.list_de_pessoa_item_pessoa, null);
         }
+        TextView heading = (TextView) view.findViewById(R.id.heading);
+        heading.setText(pessoa.getNome().trim());
+        TextView pessoaPrice = (TextView) view.findViewById(R.id.pessoaPrice);
+        pessoaPrice.setText(String.format("%.2f",pessoa.getPrecoTotal()));
+        if (ItemFragmento.gorjeta.getAtivo() == false)
+            pessoaPrice.setText(String.format("%.2f",pessoa.getPrecoTotal()));
+        else
+            pessoaPrice.setText(String.format("%.2f",pessoa.getPrecoTotal()*ItemFragmento.gorjeta.getValor()));
+
 
         return view;
     }

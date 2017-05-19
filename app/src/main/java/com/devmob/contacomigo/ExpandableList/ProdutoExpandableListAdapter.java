@@ -70,7 +70,7 @@ public class ProdutoExpandableListAdapter extends BaseExpandableListAdapter {
         double price = produto.getPreco()/produto.getConsumidores().size();
         if (view == null) {
             LayoutInflater infalInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            view = infalInflater.inflate(R.layout.list_produto_pessoa, null);
+            view = infalInflater.inflate(R.layout.list_de_produto_item_pessoa, null);
         }
 
         TextView pessoa = (TextView) view.findViewById(R.id.pessoa);
@@ -111,7 +111,7 @@ public class ProdutoExpandableListAdapter extends BaseExpandableListAdapter {
         Produto produto = (Produto) getGroup(indiceProduto);
         if (view == null) {
             LayoutInflater inf = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            view = inf.inflate(R.layout.list_produto_produto, null);
+            view = inf.inflate(R.layout.list_de_produto_item_produto, null);
         }
 
         TextView heading = (TextView) view.findViewById(R.id.heading);

@@ -96,7 +96,8 @@ public class AddProdutoActivity extends AppCompatActivity {
         magrao.setId(2);
         magrao.setPrecoTotal(0);
         pessoaDAO.insere(magrao);
-        */
+    */
+
         List<Pessoa> pessoas = pessoaDAO.buscaPessoas();
         for (Pessoa pessoa : pessoas) {
             CheckBox checkBox = new CheckBox(this);
