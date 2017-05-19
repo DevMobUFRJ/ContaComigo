@@ -1,5 +1,6 @@
 package com.devmob.contacomigo.fragments;
 
+import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
@@ -26,6 +27,7 @@ import android.widget.Toast;
 import com.devmob.contacomigo.ExpandableList.ProdutoExpandableListAdapter;
 import com.devmob.contacomigo.R;
 import com.devmob.contacomigo.activities.AddProdutoActivity;
+import com.devmob.contacomigo.dao.PessoaProdutoDAO;
 import com.devmob.contacomigo.dao.ProdutoDAO;
 import com.devmob.contacomigo.model.Gorjeta;
 import com.devmob.contacomigo.model.Pessoa;
@@ -45,7 +47,8 @@ public class ItemFragmento extends Fragment {
     private static final String TAG = "ItemFragmento";
 
 
-    private LinkedHashMap<Integer, Produto> produtos = new LinkedHashMap<>();
+
+    private List<Produto> produtos = new ArrayList<>();
     public static ProdutoExpandableListAdapter listAdapter;
     public SwitchCompat switchGorjeta;
     private ExpandableListView itemsExpandableListView;
@@ -69,7 +72,8 @@ public class ItemFragmento extends Fragment {
         gorjetaValor = (TextView) view.findViewById(R.id.gorjetaValor);
         gorjeta = new Gorjeta();
         itemsExpandableListView = (ExpandableListView) view.findViewById(R.id.produtosExpandableListView);
-        listAdapter = new ProdutoExpandableListAdapter(getActivity(), new ArrayList<>(produtos.values()));
+        ProdutoDAO dao = new ProdutoDAO(getActivity());
+        listAdapter = new ProdutoExpandableListAdapter(getActivity(), new ArrayList<>(dao.buscaProdutos()));
         itemsExpandableListView.setAdapter(listAdapter);
         addFAB = (FloatingActionButton) view.findViewById(R.id.addFAB);
 
@@ -80,8 +84,10 @@ public class ItemFragmento extends Fragment {
                 int indiceProduto = ExpandableListView.getPackedPositionGroup(id);
                 int indicePessoa = ExpandableListView.getPackedPositionChild(id);
                 //get the group header
-                List<Produto> listProdutos = new ArrayList<Produto>(produtos.values());
-                Produto produto = listProdutos.get(indiceProduto);
+                ProdutoDAO dao = new ProdutoDAO(getActivity());
+                List<Produto> produtos = dao.buscaProdutos();
+                dao.close();
+                Produto produto = produtos.get(indiceProduto);
                 //LONG CLICK NA PESSOA
                 if (ExpandableListView.getPackedPositionType(id) == ExpandableListView.PACKED_POSITION_TYPE_CHILD) {
                     Pessoa pessoa = produto.getConsumidores().get(indicePessoa);
@@ -91,10 +97,12 @@ public class ItemFragmento extends Fragment {
                 //LONG CLICK NO PRODUTO
                 else if(ExpandableListView.getPackedPositionType(id) == ExpandableListView.PACKED_POSITION_TYPE_GROUP){
                     Toast.makeText(getActivity(), produto.getNome() + " " + produto.getPreco(), Toast.LENGTH_SHORT).show();
+                    Log.d("Long", indiceProduto + "");
                     BottomSheetDialogFragment bottomSheetDialogFragment = new BottomSheetMenu();
                     bottomSheetDialogFragment.show(getActivity().getSupportFragmentManager(), bottomSheetDialogFragment.getTag());
                     Bundle b = new Bundle();
                     b.putInt("idProd", produto.getId());
+                    Log.d("IDPROD", ""+produto.getId());
                     bottomSheetDialogFragment.setArguments(b);
                     return true;
                 }
@@ -106,10 +114,12 @@ public class ItemFragmento extends Fragment {
         itemsExpandableListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
             @Override
             public boolean onChildClick(ExpandableListView parent, View v, int indiceProduto, int indicePessoa, long id) {
-                List<Produto> listProdutos = new ArrayList<Produto>(produtos.values());
-                Produto produto = listProdutos.get(indiceProduto);
+                ProdutoDAO dao = new ProdutoDAO(getActivity());
+                List<Produto> produtos = dao.buscaProdutos();
+                dao.close();
+                Produto produto = produtos.get(indiceProduto);
                 Pessoa pessoa = produto.getConsumidores().get(indicePessoa);
-                Toast.makeText(getActivity(), " Clicked on :: " + pessoa.getNome() + "/" + indiceProduto + "/" + pessoa.getPrecoTotal(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), " Clicked on :: " + indiceProduto + "/" + indiceProduto + "/" + pessoa.getPrecoTotal(), Toast.LENGTH_SHORT).show();
                 return false;
             }
         });
@@ -117,9 +127,11 @@ public class ItemFragmento extends Fragment {
         itemsExpandableListView.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
             @Override
             public boolean onGroupClick(ExpandableListView parent, View v, int indiceProduto, long id) {
-                List<Produto> listProdutos = new ArrayList<Produto>(produtos.values());
-                Produto produto = listProdutos.get(indiceProduto);
-                Toast.makeText(getActivity(), " Header is :: " + produto.getNome(), Toast.LENGTH_SHORT).show();
+                ProdutoDAO dao = new ProdutoDAO(getActivity());
+                List<Produto> produtos = dao.buscaProdutos();
+                dao.close();
+                Produto produto = produtos.get(indiceProduto);
+                Toast.makeText(getActivity(), " ID GRUPO " + indiceProduto, Toast.LENGTH_SHORT).show();
                 return false;
             }
         });
@@ -253,18 +265,18 @@ public class ItemFragmento extends Fragment {
             System.out.println(produtos.get(produtos.size() - 1).getNome());
             adicionaProduto(produtos.get(produtos.size() - 1));
             Toast.makeText(getActivity(), "Resumido", Toast.LENGTH_SHORT).show();
-            listAdapter.notifyDataSetChanged();
+            //listAdapter.notifyDataSetChanged();
         }
     }
 
 
     private void adicionaProduto(Produto produto) {
-        produtos.put(produto.getId(), produto);
+        produtos.add(produto);
     }
 
     private void adicionaPessoa(Pessoa pessoa, Produto produto) {
-        double price = produtos.get(produto.getId()).getPreco();
-        List<Pessoa> consumidores = produtos.get(produto.getId()).getConsumidores();
+        double price = produto.getPreco();
+        List<Pessoa> consumidores = produto.getConsumidores();
         consumidores.add(pessoa);
         for (Pessoa person : consumidores) {
             person.setPrecoTotal(price/consumidores.size());

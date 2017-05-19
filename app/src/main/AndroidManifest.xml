@@ -17,6 +17,10 @@
             </intent-filter>
         </activity>
         <activity android:name=".activities.AddProdutoActivity" />
+        <activity
+            android:name=".activities.AddPessoaActivity"
+            android:label="@string/title_activity_add_pessoa"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

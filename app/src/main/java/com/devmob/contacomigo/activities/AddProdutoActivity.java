@@ -1,6 +1,5 @@
 package com.devmob.contacomigo.activities;
 
-import android.content.ClipData;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -19,13 +18,14 @@ import com.devmob.contacomigo.dao.PessoaProdutoDAO;
 import com.devmob.contacomigo.dao.ProdutoDAO;
 import com.devmob.contacomigo.fragments.ItemFragmento;
 import com.devmob.contacomigo.model.Pessoa;
-import com.devmob.contacomigo.model.PessoaProduto;
 import com.devmob.contacomigo.model.Produto;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class AddProdutoActivity extends AppCompatActivity {
+
+    private static final String TAG = "AddProdutoActivity";
+
     public EditText nomeT;
     public EditText precoT;
     public Button botaoSalvar;
@@ -33,6 +33,7 @@ public class AddProdutoActivity extends AppCompatActivity {
     ViewGroup checkboxContainer;
 
     Intent intent;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,25 +57,19 @@ public class AddProdutoActivity extends AppCompatActivity {
                 PessoaProdutoDAO pessoaproduto = new PessoaProdutoDAO(AddProdutoActivity.this);
                 dao.insere(produto);
                 dao.close();
-                ItemFragmento.listAdapter.updateLista(produto);
+                ItemFragmento.listAdapter.insereLista(produto);
                 Toast.makeText(AddProdutoActivity.this, "Produto salvo com sucesso!", Toast.LENGTH_SHORT).show();
                 for (int i = 0; i < checkboxContainer.getChildCount(); i++) {
                     View v = checkboxContainer.getChildAt(i);
                     if (v instanceof CheckBox) {
-                        if (((CheckBox) v).isChecked()){
-                            pessoaproduto.insere(v.getId(),produto.getId());
-                            Toast.makeText(AddProdutoActivity.this, "Adicionei!", Toast.LENGTH_SHORT).show();
-                        }
-                        else{
-                            Toast.makeText(AddProdutoActivity.this, "Não adicionei "+((CheckBox) v).getText(), Toast.LENGTH_SHORT).show();
+                        if (((CheckBox) v).isChecked()) {
+                            pessoaproduto.insere(v.getId(), produto.getId());
+                            //Toast.makeText(AddProdutoActivity.this, "Adicionei!", Toast.LENGTH_SHORT).show();
+                        } else {
+                            //Toast.makeText(AddProdutoActivity.this, "Não adicionei " + ((CheckBox) v).getText(), Toast.LENGTH_SHORT).show();
                         }
                     }
                 }
-                List<PessoaProduto> pelista = pessoaproduto.buscaPessoaProduto();
-                for (PessoaProduto pp : pelista){
-                    Toast.makeText(AddProdutoActivity.this, ""+pp.getIdPessoa()+" "+pp.getIdProduto(), Toast.LENGTH_SHORT).show();
-                }
-
                 intent.putExtra("booleanItem", true);
                 setResult(RESULT_OK, intent);
                 finish();
@@ -91,19 +86,19 @@ public class AddProdutoActivity extends AppCompatActivity {
 
 
         PessoaDAO pessoaDAO = new PessoaDAO(AddProdutoActivity.this);
-        List<Pessoa> pessoas = pessoaDAO.buscaPessoas();
-        Pessoa gordinho = new Pessoa(0,null,0);
+        /*Pessoa gordinho = new Pessoa(0, null, 0);
         gordinho.setNome("gordinho");
         gordinho.setId(1);
         gordinho.setPrecoTotal(0);
         pessoaDAO.insere(gordinho);
-        Pessoa magrao = new Pessoa(0,null,0);
+        Pessoa magrao = new Pessoa(0, null, 0);
         magrao.setNome("magrao");
         magrao.setId(2);
         magrao.setPrecoTotal(0);
         pessoaDAO.insere(magrao);
-
-        for (Pessoa pessoa : pessoas){
+        */
+        List<Pessoa> pessoas = pessoaDAO.buscaPessoas();
+        for (Pessoa pessoa : pessoas) {
             CheckBox checkBox = new CheckBox(this);
             checkBox.setText(pessoa.getNome());
             checkBox.setId(pessoa.getId());
@@ -129,11 +124,11 @@ public class AddProdutoActivity extends AppCompatActivity {
         }
     };
 
-    void checkFieldsForEmptyValues(){
+    void checkFieldsForEmptyValues() {
         String s1 = nomeT.getText().toString();
         String s2 = precoT.getText().toString();
 
-        if(s1.equals("")|| s2.equals("")){
+        if (s1.equals("") || s2.equals("")) {
             botaoSalvar.setEnabled(false);
         } else {
             botaoSalvar.setEnabled(true);

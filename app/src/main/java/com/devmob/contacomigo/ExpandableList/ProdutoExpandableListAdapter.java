@@ -36,12 +36,23 @@ public class ProdutoExpandableListAdapter extends BaseExpandableListAdapter {
         return consumidores.get(indicePessoa);
     }
 
-    public void updateLista(Produto novo) {
+    public void insereLista(Produto novo) {
         //prodList.clear();
         //prodList.addAll(newlist);
         prodList.add(novo);
         this.notifyDataSetChanged();
     }
+
+    public void deletaLista(Produto novo) {
+        for (Produto p: prodList) {
+            if (p.getId() == novo.getId()){
+                prodList.remove(p);
+                break;
+            }
+        }
+        this.notifyDataSetChanged();
+    }
+
 
     @Override
     public long getChildId(int indiceProduto, int indicePessoa) {

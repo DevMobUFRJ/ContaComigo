@@ -21,26 +21,28 @@ public abstract class DBAdapter {
                     "id INTEGER PRIMARY KEY, " +
                     "nome VARCHAR(255) NOT NULL, " +
                     "precoTotal REAL NOT NULL " +
-            ");";
+                    ");";
     protected static final String CREATE_PRODUTO =
             "CREATE TABLE Produto(" +
                     "id INTEGER PRIMARY KEY," +
                     "nome VARCHAR(255) NOT NULL, " +
                     "preco REAL NOT NULL" +
-            ");";
+                    ");";
     protected static final String CREATE_PESSOAPRODUTO =
             "CREATE TABLE PessoaProduto(" +
-                "idPessoa INTEGER, " +
-                "idProduto INTEGER," +
-                "PRIMARY KEY(idPessoa, idProduto),"+
-                "FOREIGN KEY(idPessoa) REFERENCES Pessoa(id),"+
-                "FOREIGN KEY(idProduto) REFERENCES Produto(id)"+
-            ");";;
+                    "id INTEGER PRIMARY KEY, " +
+                    "idPessoa INTEGER, " +
+                    "idProduto INTEGER," +
+                    "FOREIGN KEY(idPessoa) REFERENCES Pessoa(id)," +
+                    "FOREIGN KEY(idProduto) REFERENCES Produto(id)" +
+                    ");";
 
     protected static final String DATABASE_NAME = "ContaComigo";
     protected static final int DATABASE_VERSION = 100;
 
     protected final Context mCtx;
+
+
 
     protected static class DatabaseHelper extends SQLiteOpenHelper {
 
@@ -64,6 +66,7 @@ public abstract class DBAdapter {
             db.execSQL("DROP TABLE IF EXISTS PessoaProduto");
             onCreate(db);
         }
+
     }
 
     /**

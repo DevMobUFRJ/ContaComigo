@@ -28,7 +28,7 @@ public class PessoaDAO extends DBAdapter {
         dados.put("nome", pessoa.getNome());
         dados.put("precoTotal", pessoa.getPrecoTotal());
 
-        db.insert("Pessoa", null, dados);
+        pessoa.setId((int)db.insert("Pessoa", null, dados));
         close();
     }
 

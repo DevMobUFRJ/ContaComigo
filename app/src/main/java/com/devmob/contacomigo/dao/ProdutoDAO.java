@@ -16,6 +16,8 @@ import java.util.List;
 
 public class ProdutoDAO extends DBAdapter{
 
+    private static final String TAG = "ProdutoDAO";
+
     public ProdutoDAO(Context context) {
         super(context);
     }
@@ -27,7 +29,8 @@ public class ProdutoDAO extends DBAdapter{
         dados.put("nome", produto.getNome());
         dados.put("preco", produto.getPreco());
 
-        db.insert("Produto", null, dados);
+        produto.setId((int)db.insert("Produto", null, dados));
+
         close();
     }
 
@@ -65,4 +68,9 @@ public class ProdutoDAO extends DBAdapter{
         return null;
     }
 
+    public void deletaProduto(Produto produto) {
+        open();
+        db.execSQL("DELETE FROM Produto WHERE id = ?;", new String[]{"" + produto.getId()});
+        close();
+    }
 }
