@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.devmob.contacomigo.R;
@@ -34,14 +35,25 @@ public class PessoaExpandableListAdapter extends BaseExpandableListAdapter {
         return produtos.get(indicePessoa);
     }
 
+
+    @Override
+    public long getChildId(int indicePessoa, int indiceProduto) {
+        return indicePessoa;
+    }
+
     public void insereLista(Pessoa novo) {
         pessoaList.add(novo);
         this.notifyDataSetChanged();
     }
 
-    @Override
-    public long getChildId(int indicePessoa, int indiceProduto) {
-        return indicePessoa;
+    public void deletaLista(Pessoa novo) {
+        for (Pessoa p: pessoaList) {
+            if (p.getId() == novo.getId()){
+                pessoaList.remove(p);
+                break;
+            }
+        }
+        this.notifyDataSetChanged();
     }
 
 
