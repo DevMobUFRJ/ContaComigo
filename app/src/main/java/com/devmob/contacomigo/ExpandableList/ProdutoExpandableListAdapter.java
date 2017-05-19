@@ -37,8 +37,6 @@ public class ProdutoExpandableListAdapter extends BaseExpandableListAdapter {
     }
 
     public void insereLista(Produto novo) {
-        //prodList.clear();
-        //prodList.addAll(newlist);
         prodList.add(novo);
         this.notifyDataSetChanged();
     }

@@ -4,11 +4,14 @@
     android:background="#F3F3F3"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:divider="@android:color/black">
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/bs_item_height"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginRight="@dimen/activity_horizontal_margin">
 
         <TextView
             android:layout_centerInParent="true"
@@ -35,87 +38,93 @@
 
     </RelativeLayout>
 
-    <LinearLayout
+    <View
+        style="@style/divider" />
+
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/bs_item_height"
         android:gravity="center_vertical"
-        android:orientation="horizontal">
+        android:id="@+id/rl1"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:background="?attr/selectableItemBackground">
 
         <ImageView
             android:layout_width="@dimen/bs_icon_size"
             android:layout_height="@dimen/bs_icon_size"
             android:layout_marginRight="@dimen/activity_vertical_margin"
-            android:src="@drawable/ic_favorite" />
-
-        <Button
-            android:layout_marginBottom="8dp"
-            android:layout_marginTop="@dimen/activity_vertical_margin"
-            android:text="Cancel"
-            style="@style/action_button_bs"
-            android:textColor="#D04D5B"
-            android:id="@+id/btn_teste"/>
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/bs_item_height"
-        android:gravity="center_vertical"
-        android:orientation="horizontal">
-
-        <ImageView
-            android:layout_width="@dimen/bs_icon_size"
-            android:layout_height="@dimen/bs_icon_size"
-            android:layout_marginRight="@dimen/activity_vertical_margin"
+            android:layout_centerVertical="true"
             android:src="@drawable/ic_home" />
 
         <TextView
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
             android:layout_marginLeft="@dimen/activity_vertical_margin"
             android:text="Document"
-            android:textColor="@color/bs_text_color"
-            android:textSize="@dimen/bs_item_text" />
+            android:textSize = "22sp"
+            android:textColor="@color/gray"
+            android:textAllCaps = "false" />
+    </RelativeLayout>
 
-    </LinearLayout>
-
-
-
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/bs_item_height"
         android:gravity="center_vertical"
-        android:orientation="horizontal">
+        android:id="@+id/btn_delete"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:background="?attr/selectableItemBackground">
 
         <ImageView
             android:layout_width="@dimen/bs_icon_size"
             android:layout_height="@dimen/bs_icon_size"
             android:layout_marginRight="@dimen/activity_vertical_margin"
-            android:src="@drawable/ic_money" />
+            android:layout_centerVertical="true"
+            android:src="@drawable/ic_home" />
 
         <TextView
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
             android:layout_marginLeft="@dimen/activity_vertical_margin"
-            android:text="Location"
-            android:textColor="@color/bs_text_color"
-            android:textSize="@dimen/bs_item_text" />
+            android:text="Delete"
+            android:textSize = "22sp"
+            android:textColor="@color/gray"
+            android:textAllCaps = "false" />
+    </RelativeLayout>
+    <View style="@style/divider" />
 
-    </LinearLayout>
-    
-    <Button
-        android:layout_marginBottom="8dp"
-        android:layout_marginTop="@dimen/activity_vertical_margin"
-        android:text="Cancel"
-        style="@style/action_button_bs"
-        android:textColor="#D04D5B"
-        android:id="@+id/btn_cancel"/>
-    <Button
-        android:layout_marginBottom="8dp"
-        android:layout_marginTop="@dimen/activity_vertical_margin"
-        android:text="Deletar"
-        style="@style/action_button_bs"
-        android:textColor="#D04D5B"
-        android:id="@+id/btn_delete"/>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/bs_item_height"
+        android:gravity="center_vertical"
+        android:id="@+id/btn_cancel"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:background="?attr/selectableItemBackground">
+
+        <ImageView
+            android:layout_width="@dimen/bs_icon_size"
+            android:layout_height="@dimen/bs_icon_size"
+            android:layout_marginRight="@dimen/activity_vertical_margin"
+            android:layout_centerVertical="true"
+            android:src="@drawable/ic_home" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_marginLeft="@dimen/activity_vertical_margin"
+            android:text="Cancel"
+            android:textSize = "22sp"
+            android:textColor="@color/darkred"
+            android:textAllCaps = "false" />
+    </RelativeLayout>
+
+
+
+
 
 </LinearLayout>

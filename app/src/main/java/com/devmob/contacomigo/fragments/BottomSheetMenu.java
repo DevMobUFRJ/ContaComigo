@@ -8,6 +8,7 @@ import android.support.design.widget.CoordinatorLayout;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,9 +25,10 @@ import com.devmob.contacomigo.model.Produto;
 public class BottomSheetMenu extends BottomSheetDialogFragment {
 
     Produto produto;
-    Button btn_cancel;
+    RelativeLayout btn_cancel;
     TextView mTitulo;
-    public Button btn_delete;
+    RelativeLayout mRL1;
+    public RelativeLayout btn_delete;
     private BottomSheetBehavior.BottomSheetCallback mBottomSheetBehaviorCallback = new BottomSheetBehavior.BottomSheetCallback() {
 
         @Override
@@ -53,8 +55,11 @@ public class BottomSheetMenu extends BottomSheetDialogFragment {
 
         CoordinatorLayout.LayoutParams params = (CoordinatorLayout.LayoutParams) ((View) contentView.getParent()).getLayoutParams();
         CoordinatorLayout.Behavior behavior = params.getBehavior();
-        btn_cancel = (Button) contentView.findViewById(R.id.btn_cancel);
-        btn_delete = (Button) contentView.findViewById(R.id.btn_delete);
+        btn_cancel = (RelativeLayout) contentView.findViewById(R.id.btn_cancel);
+        btn_delete = (RelativeLayout) contentView.findViewById(R.id.btn_delete);
+        mRL1 = (RelativeLayout) contentView.findViewById(R.id.rl1);
+        mTitulo = (TextView) contentView.findViewById(R.id.titulo);
+        mTitulo.setText(produto.getNome());
         btn_cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -69,6 +74,12 @@ public class BottomSheetMenu extends BottomSheetDialogFragment {
                 Toast.makeText(getActivity(), "deletando " + produto.getNome(), Toast.LENGTH_SHORT).show();
                 dismiss();
 
+            }
+        });
+        mRL1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getActivity(), "Relative tocado", Toast.LENGTH_SHORT).show();
             }
         });
         mTitulo = (TextView) contentView.findViewById(R.id.titulo);
