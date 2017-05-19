@@ -50,6 +50,7 @@ public class ProdutoDAO extends DBAdapter{
     public Produto getProdutoById(int id){
         open();
         Cursor cursor = db.rawQuery("SELECT * FROM Produto;", null);
+
         while(cursor.moveToNext()){
             Produto produto = new Produto(
                     cursor.getInt(cursor.getColumnIndex("id")),
