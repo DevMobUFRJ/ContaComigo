@@ -67,7 +67,6 @@ public class ItemFragmento extends Fragment {
         gorjetaValor = (TextView) view.findViewById(R.id.gorjetaValor);
         //Inicialização
         apagaTudo = (Button) view.findViewById(R.id.deletaTudo);
-        carregamentoDeDados();
         switchGorjeta = (SwitchCompat) view.findViewById(R.id.switchGorjeta);
         gorjetaValor = (TextView) view.findViewById(R.id.gorjetaValor);
         gorjeta = new Gorjeta();
@@ -130,11 +129,14 @@ public class ItemFragmento extends Fragment {
                 ProdutoDAO dao = new ProdutoDAO(getActivity());
                 List<Produto> produtos = dao.buscaProdutos();
                 dao.close();
-                Produto produto = produtos.get(indiceProduto);
-                Toast.makeText(getActivity(), " ID GRUPO " + indiceProduto, Toast.LENGTH_SHORT).show();
+                if(produtos.get(indiceProduto) != null){
+                    Toast.makeText(getActivity(), "AAAA->"+produtos.get(indiceProduto).getConsumidores().size(), Toast.LENGTH_SHORT).show();
+                }
+                Toast.makeText(getActivity(), "GROUP ID" + indiceProduto, Toast.LENGTH_SHORT).show();
                 return false;
             }
         });
+        //BOTAO ADICIONAR PESSOA
         addFAB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -233,45 +235,31 @@ public class ItemFragmento extends Fragment {
 
     }
 
-
-    //DATA SETADA POR HARDCODING TEMPORARIO
-    private void carregamentoDeDados() {
-
-        System.out.println("Entrei");
-
-        Pessoa william = new Pessoa(1,"William", 23);
-        Pessoa silvio = new Pessoa(2,"Silvio",24);
-        Pessoa daniel = new Pessoa(3,"Daniel",2);
-
-        ProdutoDAO dao = new ProdutoDAO(getActivity());
-        List<Produto> produtos = dao.buscaProdutos();
-        dao.close();
-
-        for (Produto produto : produtos) {
-            System.out.println(produto.getNome());
-            adicionaProduto(produto);
-            adicionaPessoa(william, produto);
-            adicionaPessoa(daniel, produto);
-        }
+    public void adicionaProduto(Produto produto){
+        produtos.add(produto);
+        listAdapter.insereProdutoNaLista(produto);
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        ProdutoDAO dao = new ProdutoDAO(getActivity());
-        List<Produto> produtos = dao.buscaProdutos();
+
+        //busca produtos
+        ProdutoDAO pdao = new ProdutoDAO(getActivity());
+        List<Produto> produtos = pdao.buscaProdutos();
+
         if (itemAdicionado==true) {
-            System.out.println("AEEEEE");
-            System.out.println(produtos.get(produtos.size() - 1).getNome());
-            adicionaProduto(produtos.get(produtos.size() - 1));
-            Toast.makeText(getActivity(), "Resumido", Toast.LENGTH_SHORT).show();
-            //listAdapter.notifyDataSetChanged();
+            //pega ultimo produto adicionado
+            Produto produto = produtos.get(produtos.size() - 1);
+
+            //pega consumidores relacionados a esse produto
+            PessoaProdutoDAO ppdao = new PessoaProdutoDAO(getActivity());
+            List<Pessoa> consumidores = ppdao.buscaPessoasDeUmProduto(produto);
+
+            produto.setConsumidores(consumidores);
+
+            adicionaProduto(produto);
         }
-    }
-
-
-    private void adicionaProduto(Produto produto) {
-        produtos.add(produto);
     }
 
     private void adicionaPessoa(Pessoa pessoa, Produto produto) {

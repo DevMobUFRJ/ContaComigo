@@ -20,6 +20,7 @@ import com.devmob.contacomigo.fragments.ItemFragmento;
 import com.devmob.contacomigo.model.Pessoa;
 import com.devmob.contacomigo.model.Produto;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class AddProdutoActivity extends AppCompatActivity {
@@ -57,16 +58,13 @@ public class AddProdutoActivity extends AppCompatActivity {
                 PessoaProdutoDAO pessoaproduto = new PessoaProdutoDAO(AddProdutoActivity.this);
                 dao.insere(produto);
                 dao.close();
-                ItemFragmento.listAdapter.insereLista(produto);
                 Toast.makeText(AddProdutoActivity.this, "Produto salvo com sucesso!", Toast.LENGTH_SHORT).show();
+                List<Integer> idsConsumidores = new ArrayList<Integer>();
                 for (int i = 0; i < checkboxContainer.getChildCount(); i++) {
                     View v = checkboxContainer.getChildAt(i);
                     if (v instanceof CheckBox) {
                         if (((CheckBox) v).isChecked()) {
                             pessoaproduto.insere(v.getId(), produto.getId());
-                            //Toast.makeText(AddProdutoActivity.this, "Adicionei!", Toast.LENGTH_SHORT).show();
-                        } else {
-                            //Toast.makeText(AddProdutoActivity.this, "Não adicionei " + ((CheckBox) v).getText(), Toast.LENGTH_SHORT).show();
                         }
                     }
                 }
