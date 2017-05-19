@@ -67,4 +67,9 @@ public class ProdutoDAO extends DBAdapter{
         return null;
     }
 
+    public void deletaProduto(Produto produto) {
+        open();
+        db.execSQL("DELETE FROM Produto WHERE id = ?;", new String[]{"" + produto.getId()});
+        close();
+    }
 }

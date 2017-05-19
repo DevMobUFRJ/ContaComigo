@@ -43,6 +43,17 @@ public class ProdutoExpandableListAdapter extends BaseExpandableListAdapter {
         this.notifyDataSetChanged();
     }
 
+    public void deletaLista(Produto novo) {
+        for (Produto p: prodList) {
+            if (p.getId() == novo.getId()){
+                prodList.remove(p);
+                break;
+            }
+        }
+        this.notifyDataSetChanged();
+    }
+
+
     @Override
     public long getChildId(int indiceProduto, int indicePessoa) {
         return indicePessoa;

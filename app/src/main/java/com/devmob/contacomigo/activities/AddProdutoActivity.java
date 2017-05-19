@@ -64,9 +64,9 @@ public class AddProdutoActivity extends AppCompatActivity {
                     if (v instanceof CheckBox) {
                         if (((CheckBox) v).isChecked()) {
                             pessoaproduto.insere(v.getId(), produto.getId());
-                            Toast.makeText(AddProdutoActivity.this, "Adicionei!", Toast.LENGTH_SHORT).show();
+                            //Toast.makeText(AddProdutoActivity.this, "Adicionei!", Toast.LENGTH_SHORT).show();
                         } else {
-                            Toast.makeText(AddProdutoActivity.this, "Não adicionei " + ((CheckBox) v).getText(), Toast.LENGTH_SHORT).show();
+                            //Toast.makeText(AddProdutoActivity.this, "Não adicionei " + ((CheckBox) v).getText(), Toast.LENGTH_SHORT).show();
                         }
                     }
                 }

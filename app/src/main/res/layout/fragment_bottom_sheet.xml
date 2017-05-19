@@ -111,4 +111,12 @@
         style="@style/action_button_bs"
         android:textColor="#D04D5B"
         android:id="@+id/btn_cancel"/>
+    <Button
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:text="Deletar"
+        style="@style/action_button_bs"
+        android:textColor="#D04D5B"
+        android:id="@+id/btn_delete"/>
+
 </LinearLayout>
