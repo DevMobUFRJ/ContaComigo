@@ -48,6 +48,7 @@ public class BottomSheetMenu extends BottomSheetDialogFragment {
     public void setupDialog(Dialog dialog, int style) {
         super.setupDialog(dialog, style);
         final ProdutoDAO dao = new ProdutoDAO(getActivity());
+        final PessoaProdutoDAO dao2 = new PessoaProdutoDAO(getActivity());
         produto = dao.getProdutoById(getArguments().getInt("idProd"));
 
         View contentView = View.inflate(getContext(), R.layout.fragment_bottom_sheet, null);
@@ -70,6 +71,7 @@ public class BottomSheetMenu extends BottomSheetDialogFragment {
             @Override
             public void onClick(View view) {
                 dao.deletaProduto(produto);
+                dao.deletaRelacao(produto);
                 ItemFragmento.listAdapter.deletaLista(produto);
                 Toast.makeText(getActivity(), "deletando " + produto.getNome(), Toast.LENGTH_SHORT).show();
                 dismiss();

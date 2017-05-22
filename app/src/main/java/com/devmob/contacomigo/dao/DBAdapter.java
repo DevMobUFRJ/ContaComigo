@@ -10,6 +10,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import com.devmob.contacomigo.model.Produto;
+
 public abstract class DBAdapter {
 
     protected static final String TAG = "DBAdapter";
@@ -30,7 +32,6 @@ public abstract class DBAdapter {
                     ");";
     protected static final String CREATE_PESSOAPRODUTO =
             "CREATE TABLE PessoaProduto(" +
-                    "id INTEGER PRIMARY KEY, " +
                     "idPessoa INTEGER, " +
                     "idProduto INTEGER," +
                     "FOREIGN KEY(idPessoa) REFERENCES Pessoa(id)," +
@@ -41,6 +42,7 @@ public abstract class DBAdapter {
     protected static final int DATABASE_VERSION = 100;
 
     protected final Context mCtx;
+
 
 
 
