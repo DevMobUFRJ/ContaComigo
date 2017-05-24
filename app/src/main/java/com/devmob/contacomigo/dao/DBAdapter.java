@@ -35,7 +35,8 @@ public abstract class DBAdapter {
                     "idPessoa INTEGER, " +
                     "idProduto INTEGER," +
                     "FOREIGN KEY(idPessoa) REFERENCES Pessoa(id)," +
-                    "FOREIGN KEY(idProduto) REFERENCES Produto(id)" +
+                    "FOREIGN KEY(idProduto) REFERENCES Produto(id)," +
+                    "PRIMARY KEY(idPessoa,idProduto)" +
                     ");";
 
     protected static final String DATABASE_NAME = "ContaComigo";
