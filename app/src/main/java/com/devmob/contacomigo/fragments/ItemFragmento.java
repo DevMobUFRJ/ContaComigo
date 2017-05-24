@@ -72,7 +72,12 @@ public class ItemFragmento extends Fragment {
         gorjeta = new Gorjeta();
         itemsExpandableListView = (ExpandableListView) view.findViewById(R.id.produtosExpandableListView);
         ProdutoDAO dao = new ProdutoDAO(getActivity());
-        listAdapter = new ProdutoExpandableListAdapter(getActivity(), new ArrayList<>(dao.buscaProdutos()));
+        List<Produto> produtos = dao.buscaProdutos();
+        PessoaProdutoDAO ppdao = new PessoaProdutoDAO(getActivity());
+        for(Produto produto : produtos){
+            produto.setConsumidores(ppdao.buscaPessoasDeUmProduto(produto));
+        }
+        listAdapter = new ProdutoExpandableListAdapter(getActivity(), new ArrayList<>(produtos));
         itemsExpandableListView.setAdapter(listAdapter);
         addFAB = (FloatingActionButton) view.findViewById(R.id.addFAB);
 
@@ -130,7 +135,7 @@ public class ItemFragmento extends Fragment {
                 List<Produto> produtos = dao.buscaProdutos();
                 dao.close();
                 if(produtos.get(indiceProduto) != null){
-                    Toast.makeText(getActivity(), "AAAA->"+produtos.get(indiceProduto).getConsumidores().size(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), "GROUP ID " + indiceProduto + "  size->"+produtos.get(indiceProduto).getConsumidores().size(), Toast.LENGTH_SHORT).show();
                 }
                 Toast.makeText(getActivity(), "GROUP ID" + indiceProduto, Toast.LENGTH_SHORT).show();
                 return false;
@@ -255,6 +260,7 @@ public class ItemFragmento extends Fragment {
             //pega consumidores relacionados a esse produto
             PessoaProdutoDAO ppdao = new PessoaProdutoDAO(getActivity());
             List<Pessoa> consumidores = ppdao.buscaPessoasDeUmProduto(produto);
+            Toast.makeText(getActivity(), "Cons"+consumidores.size(), Toast.LENGTH_SHORT).show();
 
             produto.setConsumidores(consumidores);
 
