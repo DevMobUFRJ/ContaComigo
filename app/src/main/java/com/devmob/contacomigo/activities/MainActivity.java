@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import com.devmob.contacomigo.R;
 import com.devmob.contacomigo.fragments.ItemFragmento;
+import com.devmob.contacomigo.fragments.NonSwipeableViewPager;
 import com.devmob.contacomigo.fragments.PessoaFragmento;
 import com.devmob.contacomigo.fragments.RestauranteFragmento;
 import com.devmob.contacomigo.fragments.SectionsStatePagerAdapter;
@@ -35,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     private SectionsStatePagerAdapter mSectionsStatePagerAdapter;
-    private ViewPager mViewPager;
+    private NonSwipeableViewPager mViewPager;
     //TESTE
     public static BottomSheetBehavior mBottomSheetBehavior;
     @Override
@@ -64,9 +65,10 @@ public class MainActivity extends AppCompatActivity {
 
         mSectionsStatePagerAdapter = new SectionsStatePagerAdapter(getSupportFragmentManager());
 
-        mViewPager = (ViewPager) findViewById(R.id.containter);
+        mViewPager = (NonSwipeableViewPager) findViewById(R.id.containter);
         //setup the pager
         setupViewPager(mViewPager);
+
 
         final BottomNavigationView bottomNavigationView = (BottomNavigationView)
                 findViewById(R.id.bottom_navigation);
