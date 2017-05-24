@@ -20,7 +20,7 @@
         <activity
             android:name=".activities.AddPessoaActivity"
             android:label="@string/title_activity_add_pessoa"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>

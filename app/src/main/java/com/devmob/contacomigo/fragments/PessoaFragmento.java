@@ -151,14 +151,6 @@ public class PessoaFragmento extends Fragment {
         });
 
 
-        /*/apagaTudo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //TODO fazer apagaTudo
-            }
-        });/*/
-
-
         switchGorjeta.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -267,6 +259,7 @@ public class PessoaFragmento extends Fragment {
             adicionaPessoa(pessoas.get(pessoas.size() - 1));
             Toast.makeText(getActivity(), "Resumido", Toast.LENGTH_SHORT).show();
             listAdapter.notifyDataSetChanged();
+            itemAdicionado = false;
         }
     }
 

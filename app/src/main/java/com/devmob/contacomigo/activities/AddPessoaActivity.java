@@ -1,6 +1,7 @@
 package com.devmob.contacomigo.activities;
 
 import android.app.ActionBar;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -32,11 +33,13 @@ public class AddPessoaActivity extends AppCompatActivity {
     private Button botaoSalvar;
     private Button botaoCancelar;
     private List<EditText> pessoas;
+    Intent intent;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        intent = getIntent();
         setContentView(R.layout.activity_add_pessoa);
 
         botaoCancelar = (Button) findViewById(R.id.cancelar);
@@ -62,7 +65,7 @@ public class AddPessoaActivity extends AppCompatActivity {
 
                     }
                 }
-
+                intent.putExtra("booleanItem", true);
                 finish();
             }
         });
@@ -82,7 +85,6 @@ public class AddPessoaActivity extends AppCompatActivity {
                 novaPessoa.setHint("Nova Pessoa");
                 pessoas.add(novaPessoa);
                 myLayout.addView(novaPessoa);
-                listAdapter.notifyDataSetChanged();
             }
         });
     }
@@ -112,6 +114,13 @@ public class AddPessoaActivity extends AppCompatActivity {
         } else {
             botaoSalvar.setEnabled(true);
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        intent.putExtra("booleanItem", false);
+        setResult(RESULT_OK, intent);
+        finish();
     }
 
 }

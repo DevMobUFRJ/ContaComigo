@@ -9,12 +9,21 @@ import android.view.ViewGroup;
 
 import com.devmob.contacomigo.R;
 
+import io.github.luizgrp.sectionedrecyclerviewadapter.SectionedRecyclerViewAdapter;
+
 /**
  * Created by devmob on 03/05/17.
  */
 
 public class TotalFragmento extends Fragment {
+
+
     private static final String TAG = "TotalFragmento";
+
+
+    SectionedRecyclerViewAdapter sectionAdapter;
+
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {

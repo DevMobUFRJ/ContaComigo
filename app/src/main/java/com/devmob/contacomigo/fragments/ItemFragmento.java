@@ -259,6 +259,7 @@ public class ItemFragmento extends Fragment {
             produto.setConsumidores(consumidores);
 
             adicionaProduto(produto);
+            itemAdicionado = false;
         }
     }
 
