@@ -58,6 +58,11 @@ public class ItemFragmento extends Fragment {
     private TextView gorjetaValor;
     private int qntdDeProdutos = 0;
     boolean itemAdicionado;
+    private String nomeFragmento = "Item";
+
+    public String getNome(){
+        return nomeFragmento;
+    }
 
     @Nullable
     @Override
@@ -73,10 +78,6 @@ public class ItemFragmento extends Fragment {
         itemsExpandableListView = (ExpandableListView) view.findViewById(R.id.produtosExpandableListView);
         ProdutoDAO dao = new ProdutoDAO(getActivity());
         List<Produto> produtos = dao.buscaProdutos();
-        PessoaProdutoDAO ppdao = new PessoaProdutoDAO(getActivity());
-        for(Produto produto : produtos){
-            produto.setConsumidores(ppdao.buscaPessoasDeUmProduto(produto));
-        }
         listAdapter = new ProdutoExpandableListAdapter(getActivity(), new ArrayList<>(produtos));
         itemsExpandableListView.setAdapter(listAdapter);
         addFAB = (FloatingActionButton) view.findViewById(R.id.addFAB);
@@ -88,10 +89,7 @@ public class ItemFragmento extends Fragment {
                 int indiceProduto = ExpandableListView.getPackedPositionGroup(id);
                 int indicePessoa = ExpandableListView.getPackedPositionChild(id);
                 //get the group header
-                ProdutoDAO dao = new ProdutoDAO(getActivity());
-                List<Produto> produtos = dao.buscaProdutos();
-                dao.close();
-                Produto produto = produtos.get(indiceProduto);
+                Produto produto = ItemFragmento.this.produtos.get(indiceProduto);
                 //LONG CLICK NA PESSOA
                 if (ExpandableListView.getPackedPositionType(id) == ExpandableListView.PACKED_POSITION_TYPE_CHILD) {
                     Pessoa pessoa = produto.getConsumidores().get(indicePessoa);

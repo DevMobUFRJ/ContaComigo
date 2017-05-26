@@ -19,7 +19,7 @@ public class TotalFragmento extends Fragment {
 
 
     private static final String TAG = "TotalFragmento";
-
+    private String nomeFragmento = "Total";
 
     SectionedRecyclerViewAdapter sectionAdapter;
 
@@ -30,5 +30,9 @@ public class TotalFragmento extends Fragment {
         View view  = inflater.inflate(R.layout.total_layout, container, false);
 
         return view;
+    }
+
+    public String getNome(){
+        return nomeFragmento;
     }
 }

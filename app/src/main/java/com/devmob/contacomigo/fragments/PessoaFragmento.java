@@ -58,6 +58,11 @@ public class PessoaFragmento extends Fragment {
     public static Gorjeta gorjeta;
     private TextView gorjetaValor;
     public SwitchCompat switchGorjeta;
+    private String nomeFragmento = "Pessoa";
+
+    public String getNome(){
+        return nomeFragmento;
+    }
 
     @Nullable
     @Override
