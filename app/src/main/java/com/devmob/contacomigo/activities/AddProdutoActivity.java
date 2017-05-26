@@ -54,19 +54,23 @@ public class AddProdutoActivity extends AppCompatActivity {
                 String nome = nomeT.getText().toString();
                 float preco = Float.parseFloat(precoT.getText().toString());
                 Produto produto = new Produto(nome, preco);
-                ProdutoDAO dao = new ProdutoDAO(AddProdutoActivity.this);
-                PessoaProdutoDAO pessoaproduto = new PessoaProdutoDAO(AddProdutoActivity.this);
-                dao.insere(produto);
-                dao.close();
+                ProdutoDAO produtodao = new ProdutoDAO(AddProdutoActivity.this);
+                PessoaProdutoDAO ppd = new PessoaProdutoDAO(AddProdutoActivity.this);
+                produtodao.insere(produto);
+                produtodao.close();
                 Toast.makeText(AddProdutoActivity.this, "Produto salvo com sucesso!", Toast.LENGTH_SHORT).show();
                 List<Integer> idsConsumidores = new ArrayList<Integer>();
                 for (int i = 0; i < checkboxContainer.getChildCount(); i++) {
                     View v = checkboxContainer.getChildAt(i);
                     if (v instanceof CheckBox) {
                         if (((CheckBox) v).isChecked()) {
-                            pessoaproduto.insere(v.getId(), produto.getId());
+                            idsConsumidores.add(v.getId());
                         }
                     }
+                }
+                float precoPorPessoa = (float)(produto.getPreco()/idsConsumidores.size());
+                for (Integer id : idsConsumidores) {
+                    ppd.insere(id, produto.getId(), precoPorPessoa);
                 }
                 intent.putExtra("booleanItem", true);
                 setResult(RESULT_OK, intent);

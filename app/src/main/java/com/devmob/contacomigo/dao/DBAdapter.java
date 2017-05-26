@@ -33,7 +33,8 @@ public abstract class DBAdapter {
     protected static final String CREATE_PESSOAPRODUTO =
             "CREATE TABLE PessoaProduto(" +
                     "idPessoa INTEGER, " +
-                    "idProduto INTEGER," +
+                    "idProduto INTEGER, " +
+                    "precoPago REAL NOT NULL, " +
                     "FOREIGN KEY(idPessoa) REFERENCES Pessoa(id)," +
                     "FOREIGN KEY(idProduto) REFERENCES Produto(id)," +
                     "PRIMARY KEY(idPessoa,idProduto)" +

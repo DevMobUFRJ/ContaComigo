@@ -26,11 +26,12 @@ public class PessoaProdutoDAO extends DBAdapter {
         super(context);
     }
 
-    public void insere(int idPessoa, int idProduto) {
+    public void insere(int idPessoa, int idProduto, float precoPago) {
         open();
         ContentValues dados = new ContentValues();
         dados.put("idPessoa", idPessoa);
         dados.put("idProduto", idProduto);
+        dados.put("precoPago", precoPago);
         db.insert("PessoaProduto", null, dados);
         close();
     }
