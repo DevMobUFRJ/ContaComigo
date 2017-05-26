@@ -58,6 +58,11 @@ public class ItemFragmento extends Fragment {
     private TextView gorjetaValor;
     private int qntdDeProdutos = 0;
     boolean itemAdicionado;
+    private String nomeFragmento = "Item";
+
+    public String getNome(){
+        return nomeFragmento;
+    }
 
     @Nullable
     @Override
