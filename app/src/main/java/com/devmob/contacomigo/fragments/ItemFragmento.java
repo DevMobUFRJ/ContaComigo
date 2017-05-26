@@ -89,10 +89,7 @@ public class ItemFragmento extends Fragment {
                 int indiceProduto = ExpandableListView.getPackedPositionGroup(id);
                 int indicePessoa = ExpandableListView.getPackedPositionChild(id);
                 //get the group header
-                ProdutoDAO dao = new ProdutoDAO(getActivity());
-                List<Produto> produtos = dao.buscaProdutos();
-                dao.close();
-                Produto produto = produtos.get(indiceProduto);
+                Produto produto = ItemFragmento.this.produtos.get(indiceProduto);
                 //LONG CLICK NA PESSOA
                 if (ExpandableListView.getPackedPositionType(id) == ExpandableListView.PACKED_POSITION_TYPE_CHILD) {
                     Pessoa pessoa = produto.getConsumidores().get(indicePessoa);

@@ -43,6 +43,10 @@ public class PessoaDAO extends DBAdapter {
                     cursor.getFloat(cursor.getColumnIndex("precoTotal")));
             pessoas.add(pessoa);
         }
+        PessoaProdutoDAO ppdao = new PessoaProdutoDAO(mCtx);
+        for(Pessoa pessoa : pessoas){
+            pessoa.setProdutos(ppdao.buscaProdutosDeUmaPessoa(pessoa));
+        }
         close();
         return pessoas;
     }
