@@ -46,6 +46,10 @@ public class ProdutoDAO extends DBAdapter{
             );
             produtos.add(produto);
         }
+        PessoaProdutoDAO ppdao = new PessoaProdutoDAO(mCtx);
+        for(Produto produto : produtos){
+            produto.setConsumidores(ppdao.buscaPessoasDeUmProduto(produto));
+        }
         close();
         return produtos;
     }

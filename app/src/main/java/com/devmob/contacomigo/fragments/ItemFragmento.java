@@ -78,10 +78,6 @@ public class ItemFragmento extends Fragment {
         itemsExpandableListView = (ExpandableListView) view.findViewById(R.id.produtosExpandableListView);
         ProdutoDAO dao = new ProdutoDAO(getActivity());
         List<Produto> produtos = dao.buscaProdutos();
-        PessoaProdutoDAO ppdao = new PessoaProdutoDAO(getActivity());
-        for(Produto produto : produtos){
-            produto.setConsumidores(ppdao.buscaPessoasDeUmProduto(produto));
-        }
         listAdapter = new ProdutoExpandableListAdapter(getActivity(), new ArrayList<>(produtos));
         itemsExpandableListView.setAdapter(listAdapter);
         addFAB = (FloatingActionButton) view.findViewById(R.id.addFAB);
