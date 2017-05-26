@@ -97,7 +97,7 @@ public class PessoaFragmento extends Fragment {
                 //LONG CLICK NA PESSOA
                 if (ExpandableListView.getPackedPositionType(id) == ExpandableListView.PACKED_POSITION_TYPE_CHILD) {
                     Produto produto = pessoa.getProdutos().get(indicePessoa);
-                    Toast.makeText(getActivity(), pessoa.getNome() + "/" + indicePessoa + " deve " + pessoa.getPrecoTotal(), Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(getActivity(), pessoa.getNome() + "/" + indicePessoa + " deve " + pessoa.getPrecoTotal(), Toast.LENGTH_SHORT).show();
                     return true;
                 }
                 //LONG CLICK NO PRODUTO
@@ -124,7 +124,7 @@ public class PessoaFragmento extends Fragment {
                 List<Pessoa> listPessoas = new ArrayList<Pessoa>(pessoas);
                 Pessoa pessoa = listPessoas.get(indicePessoa);
                 Produto produto = pessoa.getProdutos().get(indiceProduto);
-                Toast.makeText(getActivity(), " Clicked on :: " + pessoa.getNome() + "/" + indiceProduto + "/" + pessoa.getPrecoTotal(), Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getActivity(), " Clicked on :: " + pessoa.getNome() + "/" + indiceProduto + "/" + pessoa.getPrecoTotal(), Toast.LENGTH_SHORT).show();
                 return false;
             }
         });
@@ -144,7 +144,7 @@ public class PessoaFragmento extends Fragment {
         addFAB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getActivity(), "Add", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getActivity(), "Add", Toast.LENGTH_SHORT).show();
                 telaAdicionar();
                 listAdapter.notifyDataSetChanged();
             }
