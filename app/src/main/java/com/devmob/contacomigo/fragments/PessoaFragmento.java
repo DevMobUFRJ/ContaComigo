@@ -56,8 +56,8 @@ public class PessoaFragmento extends Fragment {
     public Button apagaTudo;
     boolean itemAdicionado;
     public static Gorjeta gorjeta;
-    private TextView gorjetaValor;
-    public SwitchCompat switchGorjeta;
+    public static TextView gorjetaValor;
+    public static SwitchCompat switchGorjeta;
     private String nomeFragmento = "Pessoa";
 
     public String getNome(){
@@ -73,6 +73,7 @@ public class PessoaFragmento extends Fragment {
         apagaTudo = (Button) view.findViewById(R.id.deletaTudo);
         switchGorjeta = (SwitchCompat) view.findViewById(R.id.switchGorjeta);
         gorjetaValor = (TextView) view.findViewById(R.id.gorjetaValor);
+        gorjeta = ItemFragmento.gorjeta;
         carregamentoDeDados();
         pessoasExpandableListView = (ExpandableListView) view.findViewById(R.id.pessoasExpandableListView);
         PessoaDAO dao = new PessoaDAO(getActivity());
@@ -102,7 +103,7 @@ public class PessoaFragmento extends Fragment {
                 //LONG CLICK NA PESSOA
                 if (ExpandableListView.getPackedPositionType(id) == ExpandableListView.PACKED_POSITION_TYPE_CHILD) {
                     Produto produto = pessoa.getProdutos().get(indicePessoa);
-                    Toast.makeText(getActivity(), pessoa.getNome() + "/" + indicePessoa + " deve " + pessoa.getPrecoTotal(), Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(getActivity(), pessoa.getNome() + "/" + indicePessoa + " deve " + pessoa.getPrecoTotal(), Toast.LENGTH_SHORT).show();
                     return true;
                 }
                 //LONG CLICK NO PRODUTO
@@ -129,7 +130,7 @@ public class PessoaFragmento extends Fragment {
                 List<Pessoa> listPessoas = new ArrayList<Pessoa>(pessoas);
                 Pessoa pessoa = listPessoas.get(indicePessoa);
                 Produto produto = pessoa.getProdutos().get(indiceProduto);
-                Toast.makeText(getActivity(), " Clicked on :: " + pessoa.getNome() + "/" + indiceProduto + "/" + pessoa.getPrecoTotal(), Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getActivity(), " Clicked on :: " + pessoa.getNome() + "/" + indiceProduto + "/" + pessoa.getPrecoTotal(), Toast.LENGTH_SHORT).show();
                 return false;
             }
         });
@@ -149,7 +150,7 @@ public class PessoaFragmento extends Fragment {
         addFAB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getActivity(), "Add", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getActivity(), "Add", Toast.LENGTH_SHORT).show();
                 telaAdicionar();
                 listAdapter.notifyDataSetChanged();
             }
@@ -164,11 +165,17 @@ public class PessoaFragmento extends Fragment {
                         if (!isChecked) {
                             gorjetaValor.setTextColor(Color.BLACK);
                             gorjeta.setAtivo(false);
+                            ItemFragmento.gorjetaValor.setTextColor(Color.BLACK);
+                            ItemFragmento.gorjeta.setAtivo(false);
+                            ItemFragmento.switchGorjeta.setChecked(false);
                             listAdapter.notifyDataSetChanged();
                             //Toast.makeText(ItemsActivity.this, String.valueOf(gorjeta.getValor()), Toast.LENGTH_SHORT).show();
                         } else {
                             gorjetaValor.setTextColor(Color.RED);
                             gorjeta.setAtivo(true);
+                            ItemFragmento.gorjetaValor.setTextColor(Color.RED);
+                            ItemFragmento.gorjeta.setAtivo(true);
+                            ItemFragmento.switchGorjeta.setChecked(true);
                             listAdapter.notifyDataSetChanged();
                             //Toast.makeText(ItemsActivity.this, String.valueOf(gorjeta.getValor()), Toast.LENGTH_SHORT).show();
                         }
@@ -218,6 +225,8 @@ public class PessoaFragmento extends Fragment {
                             public void onClick(DialogInterface dialog, int id) {
                                 gorjetaValor.setText(String.valueOf(np.getValue()) + "%");
                                 gorjeta.setPorcentagem(np.getValue());
+                                ItemFragmento.gorjetaValor.setText(String.valueOf(np.getValue()) + "%");
+                                ItemFragmento.gorjeta.setPorcentagem(np.getValue());
                                 listAdapter.notifyDataSetChanged();
                             }
                         })

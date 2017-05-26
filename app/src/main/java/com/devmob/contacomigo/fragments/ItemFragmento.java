@@ -50,12 +50,12 @@ public class ItemFragmento extends Fragment {
 
     private List<Produto> produtos = new ArrayList<>();
     public static ProdutoExpandableListAdapter listAdapter;
-    public SwitchCompat switchGorjeta;
+    public static SwitchCompat switchGorjeta;
     private ExpandableListView itemsExpandableListView;
     public FloatingActionButton addFAB;
     public Button apagaTudo;
     public static Gorjeta gorjeta;
-    private TextView gorjetaValor;
+    public static TextView gorjetaValor;
     private int qntdDeProdutos = 0;
     boolean itemAdicionado;
     private String nomeFragmento = "Item";
@@ -69,7 +69,6 @@ public class ItemFragmento extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         View view  = inflater.inflate(R.layout.items_layout, container, false);
 
-        gorjetaValor = (TextView) view.findViewById(R.id.gorjetaValor);
         //Inicialização
         apagaTudo = (Button) view.findViewById(R.id.deletaTudo);
         switchGorjeta = (SwitchCompat) view.findViewById(R.id.switchGorjeta);
@@ -93,12 +92,12 @@ public class ItemFragmento extends Fragment {
                 //LONG CLICK NA PESSOA
                 if (ExpandableListView.getPackedPositionType(id) == ExpandableListView.PACKED_POSITION_TYPE_CHILD) {
                     Pessoa pessoa = produto.getConsumidores().get(indicePessoa);
-                    Toast.makeText(getActivity(), pessoa.getNome() + "/" + indicePessoa + " deve " + pessoa.getPrecoTotal(), Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(getActivity(), pessoa.getNome() + "/" + indicePessoa + " deve " + pessoa.getPrecoTotal(), Toast.LENGTH_SHORT).show();
                     return true;
                 }
                 //LONG CLICK NO PRODUTO
                 else if(ExpandableListView.getPackedPositionType(id) == ExpandableListView.PACKED_POSITION_TYPE_GROUP){
-                    Toast.makeText(getActivity(), produto.getNome() + " " + produto.getPreco(), Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(getActivity(), produto.getNome() + " " + produto.getPreco(), Toast.LENGTH_SHORT).show();
                     Log.d("Long", indiceProduto + "");
                     BottomSheetDialogFragment bottomSheetDialogFragment = new BottomSheetMenu();
                     bottomSheetDialogFragment.show(getActivity().getSupportFragmentManager(), bottomSheetDialogFragment.getTag());
@@ -121,7 +120,7 @@ public class ItemFragmento extends Fragment {
                 dao.close();
                 Produto produto = produtos.get(indiceProduto);
                 Pessoa pessoa = produto.getConsumidores().get(indicePessoa);
-                Toast.makeText(getActivity(), " Clicked on :: " + indiceProduto + "/" + indiceProduto + "/" + pessoa.getPrecoTotal(), Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getActivity(), " Clicked on :: " + indiceProduto + "/" + indiceProduto + "/" + pessoa.getPrecoTotal(), Toast.LENGTH_SHORT).show();
                 return false;
             }
         });
@@ -133,9 +132,9 @@ public class ItemFragmento extends Fragment {
                 List<Produto> produtos = dao.buscaProdutos();
                 dao.close();
                 if(produtos.get(indiceProduto) != null){
-                    Toast.makeText(getActivity(), "GROUP ID " + indiceProduto + "  size->"+produtos.get(indiceProduto).getConsumidores().size(), Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(getActivity(), "GROUP ID " + indiceProduto + "  size->"+produtos.get(indiceProduto).getConsumidores().size(), Toast.LENGTH_SHORT).show();
                 }
-                Toast.makeText(getActivity(), "GROUP ID" + indiceProduto, Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getActivity(), "GROUP ID" + indiceProduto, Toast.LENGTH_SHORT).show();
                 return false;
             }
         });
@@ -143,7 +142,7 @@ public class ItemFragmento extends Fragment {
         addFAB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getActivity(), "Add", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getActivity(), "Add", Toast.LENGTH_SHORT).show();
                 telaAdicionar();
                 listAdapter.notifyDataSetChanged();
             }
@@ -166,11 +165,17 @@ public class ItemFragmento extends Fragment {
                         if (!isChecked) {
                             gorjetaValor.setTextColor(Color.BLACK);
                             gorjeta.setAtivo(false);
+                            PessoaFragmento.gorjetaValor.setTextColor(Color.BLACK);
+                            PessoaFragmento.gorjeta.setAtivo(false);
+                            PessoaFragmento.switchGorjeta.setChecked(false);
                             listAdapter.notifyDataSetChanged();
                             //Toast.makeText(ItemsActivity.this, String.valueOf(gorjeta.getValor()), Toast.LENGTH_SHORT).show();
                         } else {
                             gorjetaValor.setTextColor(Color.RED);
                             gorjeta.setAtivo(true);
+                            PessoaFragmento.gorjetaValor.setTextColor(Color.RED);
+                            PessoaFragmento.gorjeta.setAtivo(true);
+                            PessoaFragmento.switchGorjeta.setChecked(true);
                             listAdapter.notifyDataSetChanged();
                             //Toast.makeText(ItemsActivity.this, String.valueOf(gorjeta.getValor()), Toast.LENGTH_SHORT).show();
                         }
@@ -221,6 +226,8 @@ public class ItemFragmento extends Fragment {
                             public void onClick(DialogInterface dialog, int id) {
                                 gorjetaValor.setText(String.valueOf(np.getValue()) + "%");
                                 gorjeta.setPorcentagem(np.getValue());
+                                PessoaFragmento.gorjetaValor.setText(String.valueOf(np.getValue()) + "%");
+                                PessoaFragmento.gorjeta.setPorcentagem(np.getValue());
                                 listAdapter.notifyDataSetChanged();
                             }
                         })
@@ -258,7 +265,7 @@ public class ItemFragmento extends Fragment {
             //pega consumidores relacionados a esse produto
             PessoaProdutoDAO ppdao = new PessoaProdutoDAO(getActivity());
             List<Pessoa> consumidores = ppdao.buscaPessoasDeUmProduto(produto);
-            Toast.makeText(getActivity(), "Cons"+consumidores.size(), Toast.LENGTH_SHORT).show();
+            //Toast.makeText(getActivity(), "Cons"+consumidores.size(), Toast.LENGTH_SHORT).show();
 
             produto.setConsumidores(consumidores);
 
