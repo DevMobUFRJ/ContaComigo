@@ -50,12 +50,12 @@ public class ItemFragmento extends Fragment {
 
     private List<Produto> produtos = new ArrayList<>();
     public static ProdutoExpandableListAdapter listAdapter;
-    public SwitchCompat switchGorjeta;
+    public static SwitchCompat switchGorjeta;
     private ExpandableListView itemsExpandableListView;
     public FloatingActionButton addFAB;
     public Button apagaTudo;
     public static Gorjeta gorjeta;
-    private TextView gorjetaValor;
+    public static TextView gorjetaValor;
     private int qntdDeProdutos = 0;
     boolean itemAdicionado;
     private String nomeFragmento = "Item";
@@ -69,7 +69,6 @@ public class ItemFragmento extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         View view  = inflater.inflate(R.layout.items_layout, container, false);
 
-        gorjetaValor = (TextView) view.findViewById(R.id.gorjetaValor);
         //Inicialização
         apagaTudo = (Button) view.findViewById(R.id.deletaTudo);
         switchGorjeta = (SwitchCompat) view.findViewById(R.id.switchGorjeta);
@@ -166,11 +165,17 @@ public class ItemFragmento extends Fragment {
                         if (!isChecked) {
                             gorjetaValor.setTextColor(Color.BLACK);
                             gorjeta.setAtivo(false);
+                            PessoaFragmento.gorjetaValor.setTextColor(Color.BLACK);
+                            PessoaFragmento.gorjeta.setAtivo(false);
+                            PessoaFragmento.switchGorjeta.setChecked(false);
                             listAdapter.notifyDataSetChanged();
                             //Toast.makeText(ItemsActivity.this, String.valueOf(gorjeta.getValor()), Toast.LENGTH_SHORT).show();
                         } else {
                             gorjetaValor.setTextColor(Color.RED);
                             gorjeta.setAtivo(true);
+                            PessoaFragmento.gorjetaValor.setTextColor(Color.RED);
+                            PessoaFragmento.gorjeta.setAtivo(true);
+                            PessoaFragmento.switchGorjeta.setChecked(true);
                             listAdapter.notifyDataSetChanged();
                             //Toast.makeText(ItemsActivity.this, String.valueOf(gorjeta.getValor()), Toast.LENGTH_SHORT).show();
                         }
@@ -221,6 +226,8 @@ public class ItemFragmento extends Fragment {
                             public void onClick(DialogInterface dialog, int id) {
                                 gorjetaValor.setText(String.valueOf(np.getValue()) + "%");
                                 gorjeta.setPorcentagem(np.getValue());
+                                PessoaFragmento.gorjetaValor.setText(String.valueOf(np.getValue()) + "%");
+                                PessoaFragmento.gorjeta.setPorcentagem(np.getValue());
                                 listAdapter.notifyDataSetChanged();
                             }
                         })
