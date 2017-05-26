@@ -5,8 +5,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.BottomSheetBehavior;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -21,9 +19,6 @@ import com.devmob.contacomigo.fragments.PessoaFragmento;
 import com.devmob.contacomigo.fragments.RestauranteFragmento;
 import com.devmob.contacomigo.fragments.SectionsStatePagerAdapter;
 import com.devmob.contacomigo.fragments.TotalFragmento;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by devmob on 03/05/17.
@@ -75,6 +70,23 @@ public class MainActivity extends AppCompatActivity {
         setupViewPager(mViewPager);
 
 
+        mViewPager.setPageTransformer(false, new ViewPager.PageTransformer() {
+            @Override
+            public void transformPage(View page, float position) {
+                if(position <= -1.0F || position >= 1.0F) {
+                    page.setTranslationX(page.getWidth() * position);
+                    page.setAlpha(0.0F);
+                } else if( position == 0.0F ) {
+                    page.setTranslationX(page.getWidth() * position);
+                    page.setAlpha(1.0F);
+                } else {
+                    // position is between -1.0F & 0.0F OR 0.0F & 1.0F
+                    page.setTranslationX(page.getWidth() * -position);
+                    page.setAlpha(1.0F - Math.abs(position));
+                }
+            }
+        });
+
 
         final BottomNavigationView bottomNavigationView = (BottomNavigationView)
                 findViewById(R.id.bottom_navigation);
@@ -88,11 +100,12 @@ public class MainActivity extends AppCompatActivity {
                                 setViewPager(RESTAURANTEFRAG);
                                 break;
                             case R.id.moneyIcon:
-                                getSupportFragmentManager()
-                                        .beginTransaction()
-                                        .setTransition( FragmentTransaction.TRANSIT_FRAGMENT_OPEN )
-                                        .show( fragmento )
-                                        .commit();
+                                //textFavorites.setVisibility(View.VISIBLE);
+                                //textSchedules.setVisibility(View.GONE);
+                                //item.setIcon(R.drawable.ic_people_black_48dp);
+                                item.setChecked(true);
+                                setViewPager(ITEMFRAG);
+                                //Toast.makeText(ItemsActivity.this, "Money", Toast.LENGTH_SHORT).show();
                                 break;
                             case R.id.personIcon:
                                 item.setChecked(true);
@@ -114,20 +127,6 @@ public class MainActivity extends AppCompatActivity {
 
     private void setupViewPager(ViewPager viewPager){
         SectionsStatePagerAdapter adapter = new SectionsStatePagerAdapter(getSupportFragmentManager());
-
-        List<Fragment> fragmentos = new ArrayList<>();
-        fragmentos.add(new RestauranteFragmento());
-        fragmentos.add(new ItemFragmento());
-        fragmentos.add(new PessoaFragmento());
-        fragmentos.add(new TotalFragmento());
-        for(Fragment fragmento : fragmentos){
-            getSupportFragmentManager()
-                    .beginTransaction()
-                    .setTransition( FragmentTransaction.TRANSIT_FRAGMENT_OPEN )
-                    .show( fragmento )
-                    .commit();
-        }
-
         adapter.addFragment(new RestauranteFragmento(), "Restaurante");
         adapter.addFragment(new ItemFragmento(), "Item");
         adapter.addFragment(new PessoaFragmento(), "Pessoa");
