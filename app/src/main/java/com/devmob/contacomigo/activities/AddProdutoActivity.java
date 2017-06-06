@@ -69,8 +69,10 @@ public class AddProdutoActivity extends AppCompatActivity {
                     }
                 }
                 float precoPorPessoa = (float)(produto.getPreco()/idsConsumidores.size());
+                //temporário
+                float quantidadeConsumida = 1/idsConsumidores.size();
                 for (Integer id : idsConsumidores) {
-                    ppd.insere(id, produto.getId(), precoPorPessoa);
+                    ppd.insere(id, produto.getId(), quantidadeConsumida, precoPorPessoa);
                 }
                 intent.putExtra("booleanItem", true);
                 setResult(RESULT_OK, intent);
