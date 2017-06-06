@@ -1,6 +1,5 @@
 package com.devmob.contacomigo.fragments;
 
-import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
@@ -24,19 +23,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.devmob.contacomigo.ExpandableList.PessoaExpandableListAdapter;
-import com.devmob.contacomigo.ExpandableList.ProdutoExpandableListAdapter;
 import com.devmob.contacomigo.R;
 import com.devmob.contacomigo.activities.AddPessoaActivity;
-import com.devmob.contacomigo.activities.AddProdutoActivity;
 import com.devmob.contacomigo.dao.PessoaDAO;
-import com.devmob.contacomigo.dao.PessoaProdutoDAO;
-import com.devmob.contacomigo.dao.ProdutoDAO;
 import com.devmob.contacomigo.model.Gorjeta;
 import com.devmob.contacomigo.model.Pessoa;
 import com.devmob.contacomigo.model.Produto;
 
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
 
 import static android.app.Activity.RESULT_OK;
@@ -102,7 +96,7 @@ public class PessoaFragmento extends Fragment {
                 Pessoa pessoa = listPessoas.get(indicePessoa);
                 //LONG CLICK NA PESSOA
                 if (ExpandableListView.getPackedPositionType(id) == ExpandableListView.PACKED_POSITION_TYPE_CHILD) {
-                    Produto produto = pessoa.getProdutos().get(indicePessoa);
+                    Produto produto = pessoa.getProdutosNomes().get(indicePessoa);
                     //Toast.makeText(getActivity(), pessoa.getNome() + "/" + indicePessoa + " deve " + pessoa.getPrecoTotal(), Toast.LENGTH_SHORT).show();
                     return true;
                 }
@@ -129,7 +123,7 @@ public class PessoaFragmento extends Fragment {
                 dao.close();
                 List<Pessoa> listPessoas = new ArrayList<Pessoa>(pessoas);
                 Pessoa pessoa = listPessoas.get(indicePessoa);
-                Produto produto = pessoa.getProdutos().get(indiceProduto);
+                Produto produto = pessoa.getProdutosNomes().get(indiceProduto);
                 //Toast.makeText(getActivity(), " Clicked on :: " + pessoa.getNome() + "/" + indiceProduto + "/" + pessoa.getPrecoTotal(), Toast.LENGTH_SHORT).show();
                 return false;
             }
@@ -283,7 +277,7 @@ public class PessoaFragmento extends Fragment {
     }
 
     private void adicionaProduto(Produto produto, Pessoa pessoa) {
-        List<Produto> produtos = pessoa.getProdutos();
+        List<Produto> produtos = pessoa.getProdutosNomes();
         produtos.add(produto);
 
     }

@@ -12,6 +12,7 @@ import com.devmob.contacomigo.model.PessoaProduto;
 import com.devmob.contacomigo.model.Produto;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 /**
@@ -36,7 +37,7 @@ public class PessoaProdutoDAO extends DBAdapter {
         close();
     }
 
-    public List<Produto> buscaProdutosDeUmaPessoa(Pessoa pessoa) {
+    public LinkedHashMap<Produto, LinkedHashMap<Float, Integer>> buscaProdutosDeUmaPessoa(Pessoa pessoa) {
         open();
         Cursor cursor = db.rawQuery("SELECT * FROM PessoaProduto WHERE idPessoa = ?",
                 new String[]{"" + pessoa.getId()});
