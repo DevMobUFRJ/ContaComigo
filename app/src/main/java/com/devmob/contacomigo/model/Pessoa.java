@@ -16,14 +16,14 @@ public class Pessoa {
 
     private double precoTotal;
 
-    private LinkedHashMap<Produto, LinkedHashMap<Float, Float>> produtos = new LinkedHashMap<>();
+    private LinkedHashMap<Produto, List<Float>> produtos = new LinkedHashMap<>();
 
     public List<Produto> getProdutosNomes() {
         List<Produto> prod = new ArrayList<>(produtos.keySet());
         return prod;
     }
 
-    public void setProdutos(LinkedHashMap<Produto, LinkedHashMap<Float, Float>> produtos) {
+    public void setProdutos(LinkedHashMap<Produto, List<Float>> produtos) {
         this.produtos = produtos;
     }
 
