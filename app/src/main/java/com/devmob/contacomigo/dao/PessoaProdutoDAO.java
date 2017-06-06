@@ -12,6 +12,7 @@ import com.devmob.contacomigo.model.PessoaProduto;
 import com.devmob.contacomigo.model.Produto;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 /**
@@ -37,18 +38,26 @@ public class PessoaProdutoDAO extends DBAdapter {
         close();
     }
 
-    public List<Produto> buscaProdutosDeUmaPessoa(Pessoa pessoa) {
+    public LinkedHashMap<Produto, List<Float> > buscaProdutosDeUmaPessoa(Pessoa pessoa) {
         open();
         Cursor cursor = db.rawQuery("SELECT * FROM PessoaProduto WHERE idPessoa = ?",
                 new String[]{"" + pessoa.getId()});
         List<Integer> ids = new ArrayList<>();
+        LinkedHashMap<Integer, List<Float> > l = new LinkedHashMap<>();
         while (cursor.moveToNext()) {
             Integer id = new Integer(cursor.getInt(cursor.getColumnIndex("idProduto")));
+            float quantidadeTemporaria = cursor.getFloat(cursor.getColumnIndex("quantidadeConsumida"));
+            float precoTemporario = cursor.getFloat(cursor.getColumnIndex("precoPago"));
+            List<Float> lista = new ArrayList<>();
+            lista.add(quantidadeTemporaria);
+            lista.add(precoTemporario);
+            l.put(id, lista);
             ids.add(id);
+
         }
         close();
         open();
-        List<Produto> produtos = new ArrayList<>();
+        LinkedHashMap<Produto, List <Float> > produtos = new LinkedHashMap<>();
         for (Integer i : ids) {
             Cursor cursor2 = db.rawQuery("SELECT * FROM Produto WHERE id = ?", new String[]{"" + i});
             if (cursor2 != null)
@@ -57,7 +66,8 @@ public class PessoaProdutoDAO extends DBAdapter {
                     cursor2.getInt(cursor2.getColumnIndex("id")),
                     cursor2.getString(cursor2.getColumnIndex("nome")),
                     cursor2.getFloat(cursor2.getColumnIndex("preco")));
-            produtos.add(produto);
+
+            produtos.put(produto,l.get(i));
         }
         close();
         return produtos;
