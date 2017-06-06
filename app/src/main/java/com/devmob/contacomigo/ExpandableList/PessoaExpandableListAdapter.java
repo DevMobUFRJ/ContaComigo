@@ -5,7 +5,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
-import android.widget.EditText;
 import android.widget.TextView;
 
 import com.devmob.contacomigo.R;
@@ -31,7 +30,7 @@ public class PessoaExpandableListAdapter extends BaseExpandableListAdapter {
 
     @Override
     public Object getChild(int indicePessoa, int indiceProduto) {
-        List<Produto> produtos = pessoaList.get(indiceProduto).getProdutos();
+        List<Produto> produtos = pessoaList.get(indiceProduto).getProdutosNomes();
         return produtos.get(indicePessoa);
     }
 
@@ -64,7 +63,7 @@ public class PessoaExpandableListAdapter extends BaseExpandableListAdapter {
         Produto detailInfo = (Produto) getChild(indicePessoa, indiceProduto);
         Pessoa pessoa = (Pessoa)  getGroup(indicePessoa);
 
-        double price = pessoa.getPrecoTotal()/pessoa.getProdutos().size();
+        double price = pessoa.getPrecoTotal()/pessoa.getProdutosNomes().size();
 
         if (view == null) {
             LayoutInflater infalInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -85,7 +84,7 @@ public class PessoaExpandableListAdapter extends BaseExpandableListAdapter {
 
     @Override
     public int getChildrenCount(int indicePessoa) {
-        return pessoaList.get(indicePessoa).getProdutos().size();
+        return pessoaList.get(indicePessoa).getProdutosNomes().size();
     }
 
     @Override

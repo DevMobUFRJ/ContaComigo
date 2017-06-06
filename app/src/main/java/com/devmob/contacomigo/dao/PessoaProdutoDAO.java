@@ -38,7 +38,9 @@ public class PessoaProdutoDAO extends DBAdapter {
         close();
     }
 
+
     public LinkedHashMap<Produto, List<Float> > buscaProdutosDeUmaPessoa(Pessoa pessoa) {
+
         open();
         Cursor cursor = db.rawQuery("SELECT * FROM PessoaProduto WHERE idPessoa = ?",
                 new String[]{"" + pessoa.getId()});
