@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import com.devmob.contacomigo.model.Pessoa;
 import com.devmob.contacomigo.model.Produto;
+import com.devmob.contacomigo.model.ProdutoConsumido;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,6 +46,11 @@ public class PessoaDAO extends DBAdapter {
         PessoaProdutoDAO ppdao = new PessoaProdutoDAO(mCtx);
         for(Pessoa pessoa : pessoas){
             pessoa.setProdutosConsumidos(ppdao.buscaProdutosDeUmaPessoa(pessoa));
+            float soma = 0;
+            for(ProdutoConsumido pc : pessoa.getProdutosConsumidos()){
+                soma += pc.getPrecoPago();
+            }
+            pessoa.setPrecoTotal(soma);
         }
         close();
         return pessoas;

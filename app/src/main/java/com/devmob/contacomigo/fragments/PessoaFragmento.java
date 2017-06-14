@@ -263,10 +263,8 @@ public class PessoaFragmento extends Fragment {
         PessoaDAO dao = new PessoaDAO(getActivity());
         List<Pessoa> pessoas = dao.buscaPessoas();
         if (itemAdicionado == true) {
-            System.out.println(pessoas.get(pessoas.size() - 1).getNome());
+            System.out.println("AAAAAAAAAA"+pessoas.get(0));
             adicionaPessoa(pessoas.get(pessoas.size() - 1));
-            Toast.makeText(getActivity(), "Resumido", Toast.LENGTH_SHORT).show();
-            listAdapter.notifyDataSetChanged();
             itemAdicionado = false;
         }
     }
@@ -274,6 +272,7 @@ public class PessoaFragmento extends Fragment {
 
     private void adicionaPessoa(Pessoa pessoa) {
         pessoas.add(pessoa);
+        listAdapter.inserePessoaNaLista(pessoa);
     }
 
 

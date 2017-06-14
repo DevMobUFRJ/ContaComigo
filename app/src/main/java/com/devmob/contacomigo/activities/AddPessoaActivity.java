@@ -59,7 +59,7 @@ public class AddPessoaActivity extends AppCompatActivity {
                 for (EditText pessoa : pessoas) {
                     String nome = pessoa.getText().toString();
                     if (!nome.equals("")) {
-                        Pessoa p = new Pessoa(nome, 0);
+                        Pessoa p = new Pessoa(nome);
                         dao.insere(p);
                         PessoaFragmento.listAdapter.insereLista(p);
 

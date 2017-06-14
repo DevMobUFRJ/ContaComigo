@@ -134,4 +134,9 @@ public class PessoaExpandableListAdapter extends BaseExpandableListAdapter {
     public boolean isChildSelectable(int indicePessoa, int indiceProduto) {
         return true;
     }
+
+    public void inserePessoaNaLista(Pessoa pessoa) {
+        pessoaList.add(pessoa);
+        this.notifyDataSetChanged();
+    }
 }

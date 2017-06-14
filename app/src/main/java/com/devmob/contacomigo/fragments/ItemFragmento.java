@@ -274,19 +274,6 @@ public class ItemFragmento extends Fragment {
         }
     }
 
-    private void adicionaPessoa(Pessoa pessoa, Produto produto) {
-        double price = produto.getPreco();
-        List<Pessoa> consumidores = produto.getConsumidores();
-        consumidores.add(pessoa);
-        for (Pessoa person : consumidores) {
-            person.setPrecoTotal(price/consumidores.size());
-        }
-    }
-
-
-
-
-
     private void telaAdicionar() {
         Intent intent = new Intent(getActivity(), AddProdutoActivity.class);
         //intent.putExtra(getString(R.string.key_name), name);

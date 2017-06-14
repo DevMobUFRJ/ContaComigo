@@ -41,21 +41,21 @@ public class PessoaProdutoDAO extends DBAdapter {
         Cursor cursor = db.rawQuery("SELECT * FROM PessoaProduto WHERE idPessoa = ?",
                 new String[]{"" + pessoa.getId()});
         List<Integer> ids = new ArrayList<>();
-        List<ProdutoConsumido> l = new ArrayList<>();
+        List<Integer> quantidades = new ArrayList<>();
+        List<Float> precos= new ArrayList<>();
+        int cont = 0;
         while (cursor.moveToNext()) {
             Integer id = new Integer(cursor.getInt(cursor.getColumnIndex("idProduto")));
             int quantidadeTemporaria = cursor.getInt(cursor.getColumnIndex("quantidadeConsumida"));
             float precoTemporario = cursor.getFloat(cursor.getColumnIndex("precoPago"));
-            List<Float> lista = new ArrayList<>();
-            lista.add(quantidadeTemporaria);
-            lista.add(precoTemporario);
-            l.add(id, lista);
+            quantidades.add(quantidadeTemporaria);
+            precos.add(precoTemporario);
             ids.add(id);
 
         }
         close();
         open();
-        LinkedHashMap<Produto, List <Float> > produtos = new LinkedHashMap<>();
+        List<ProdutoConsumido> produtos= new ArrayList<>();
         for (Integer i : ids) {
             Cursor cursor2 = db.rawQuery("SELECT * FROM Produto WHERE id = ?", new String[]{"" + i});
             if (cursor2 != null)
@@ -64,8 +64,10 @@ public class PessoaProdutoDAO extends DBAdapter {
                     cursor2.getInt(cursor2.getColumnIndex("id")),
                     cursor2.getString(cursor2.getColumnIndex("nome")),
                     cursor2.getFloat(cursor2.getColumnIndex("preco")));
+            ProdutoConsumido produtoConsumido = new ProdutoConsumido(produto, quantidades.get(cont), precos.get(cont));
+            cont++;
 
-            produtos.put(produto,l.get(i));
+            produtos.add(produtoConsumido);
         }
         close();
         return produtos;

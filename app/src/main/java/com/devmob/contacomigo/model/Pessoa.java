@@ -16,6 +16,8 @@ public class Pessoa {
 
     private List<ProdutoConsumido> produtosConsumidos = new ArrayList<>();
 
+    private float precoTotal;
+
     //TODO remove id from constructor, must be auto-incremented(sql)
     public Pessoa(int id, String nome) {
         this.nome = nome;
@@ -27,11 +29,7 @@ public class Pessoa {
     }
 
     public float getPrecoTotal(){
-        float precoTotal = 0;
-        for (ProdutoConsumido produtoC: produtosConsumidos) {
-            precoTotal += produtoC.getPrecoPago();
-        }
-        return precoTotal;
+        return this.precoTotal;
     }
 
     public List<ProdutoConsumido> getProdutosConsumidos() {
@@ -56,4 +54,7 @@ public class Pessoa {
 
     public void setId(int id){ this.id = id; }
 
+    public void setPrecoTotal(float precoTotal) {
+        this.precoTotal = precoTotal;
+    }
 }
