@@ -96,7 +96,7 @@ public class PessoaFragmento extends Fragment {
                 Pessoa pessoa = listPessoas.get(indicePessoa);
                 //LONG CLICK NA PESSOA
                 if (ExpandableListView.getPackedPositionType(id) == ExpandableListView.PACKED_POSITION_TYPE_CHILD) {
-                    Produto produto = pessoa.getProdutosNomes().get(indicePessoa);
+                    //Produto produto = pessoa.getProdutosConsumidos().get(indiceProduto);
                     //Toast.makeText(getActivity(), pessoa.getNome() + "/" + indicePessoa + " deve " + pessoa.getPrecoTotal(), Toast.LENGTH_SHORT).show();
                     return true;
                 }
@@ -123,7 +123,7 @@ public class PessoaFragmento extends Fragment {
                 dao.close();
                 List<Pessoa> listPessoas = new ArrayList<Pessoa>(pessoas);
                 Pessoa pessoa = listPessoas.get(indicePessoa);
-                Produto produto = pessoa.getProdutosNomes().get(indiceProduto);
+                //Produto produto = pessoa.getProdutosConsumidos().get(indiceProduto);
                 //Toast.makeText(getActivity(), " Clicked on :: " + pessoa.getNome() + "/" + indiceProduto + "/" + pessoa.getPrecoTotal(), Toast.LENGTH_SHORT).show();
                 return false;
             }
@@ -274,12 +274,6 @@ public class PessoaFragmento extends Fragment {
 
     private void adicionaPessoa(Pessoa pessoa) {
         pessoas.add(pessoa);
-    }
-
-    private void adicionaProduto(Produto produto, Pessoa pessoa) {
-        List<Produto> produtos = pessoa.getProdutosNomes();
-        produtos.add(produto);
-
     }
 
 

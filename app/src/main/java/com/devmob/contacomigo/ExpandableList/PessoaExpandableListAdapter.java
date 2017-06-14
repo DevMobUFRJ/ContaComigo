@@ -11,6 +11,7 @@ import com.devmob.contacomigo.R;
 import com.devmob.contacomigo.fragments.ItemFragmento;
 import com.devmob.contacomigo.model.Pessoa;
 import com.devmob.contacomigo.model.Produto;
+import com.devmob.contacomigo.model.ProdutoConsumido;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,14 +31,14 @@ public class PessoaExpandableListAdapter extends BaseExpandableListAdapter {
 
     @Override
     public Object getChild(int indicePessoa, int indiceProduto) {
-        List<Produto> produtos = pessoaList.get(indiceProduto).getProdutosNomes();
-        return produtos.get(indicePessoa);
+        List<ProdutoConsumido> produtos = pessoaList.get(indicePessoa).getProdutosConsumidos();
+        return produtos.get(indiceProduto);
     }
 
 
     @Override
     public long getChildId(int indicePessoa, int indiceProduto) {
-        return indicePessoa;
+        return indiceProduto;
     }
 
     public void insereLista(Pessoa novo) {
@@ -63,7 +64,7 @@ public class PessoaExpandableListAdapter extends BaseExpandableListAdapter {
         Produto detailInfo = (Produto) getChild(indicePessoa, indiceProduto);
         Pessoa pessoa = (Pessoa)  getGroup(indicePessoa);
 
-        double price = pessoa.getPrecoTotal()/pessoa.getProdutosNomes().size();
+        double price = pessoa.getPrecoTotal();
 
         if (view == null) {
             LayoutInflater infalInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -84,7 +85,7 @@ public class PessoaExpandableListAdapter extends BaseExpandableListAdapter {
 
     @Override
     public int getChildrenCount(int indicePessoa) {
-        return pessoaList.get(indicePessoa).getProdutosNomes().size();
+        return pessoaList.get(indicePessoa).getProdutosConsumidos().size();
     }
 
     @Override

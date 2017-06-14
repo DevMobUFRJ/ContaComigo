@@ -70,7 +70,8 @@ public class AddProdutoActivity extends AppCompatActivity {
                 }
                 float precoPorPessoa = (float)(produto.getPreco()/idsConsumidores.size());
                 //temporário
-                float quantidadeConsumida = 1/idsConsumidores.size();
+                //TODO PEGAR DA TELA DE ADICIONAR
+                int quantidadeConsumida = 1;
                 for (Integer id : idsConsumidores) {
                     ppd.insere(id, produto.getId(), quantidadeConsumida, precoPorPessoa);
                 }
