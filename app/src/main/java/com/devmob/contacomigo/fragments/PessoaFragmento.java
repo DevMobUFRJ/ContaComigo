@@ -43,7 +43,6 @@ public class PessoaFragmento extends Fragment {
     private static final String TAG = "PessoaFragmento";
 
 
-    private List<Pessoa> pessoas = new ArrayList<>();
     public static PessoaExpandableListAdapter listAdapter;
     private ExpandableListView pessoasExpandableListView;
     public FloatingActionButton addFAB;
@@ -240,6 +239,7 @@ public class PessoaFragmento extends Fragment {
 
     public void onResume() {
         super.onResume();
+        listAdapter.notifyDataSetChanged();
         if (itemAdicionado == true) {
             itemAdicionado = false;
         }

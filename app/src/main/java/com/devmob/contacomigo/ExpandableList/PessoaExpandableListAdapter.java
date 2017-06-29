@@ -68,7 +68,7 @@ public class PessoaExpandableListAdapter extends BaseExpandableListAdapter {
         Produto detailInfo = pc.getProduto();
         Pessoa pessoa = (Pessoa)  getGroup(indicePessoa);
 
-        double price = pessoa.getPrecoTotal();
+        double price = pc.getPrecoPago();
 
         if (view == null) {
             LayoutInflater infalInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);

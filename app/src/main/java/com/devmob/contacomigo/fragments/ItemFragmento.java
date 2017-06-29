@@ -56,7 +56,6 @@ public class ItemFragmento extends Fragment {
     public Button apagaTudo;
     public static Gorjeta gorjeta;
     public static TextView gorjetaValor;
-    private int qntdDeProdutos = 0;
     boolean itemAdicionado;
     private String nomeFragmento = "Item";
 
@@ -76,10 +75,11 @@ public class ItemFragmento extends Fragment {
         gorjeta = new Gorjeta();
         itemsExpandableListView = (ExpandableListView) view.findViewById(R.id.produtosExpandableListView);
         ProdutoDAO dao = new ProdutoDAO(getActivity());
-        List<Produto> produtos = dao.buscaProdutos();
+        produtos = dao.buscaProdutos();
         listAdapter = new ProdutoExpandableListAdapter(getActivity(), new ArrayList<>(produtos));
         itemsExpandableListView.setAdapter(listAdapter);
         addFAB = (FloatingActionButton) view.findViewById(R.id.addFAB);
+
         //LONG CLICK EM CADA CHILD (PESSOA E PREÇO)
         itemsExpandableListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
@@ -97,7 +97,8 @@ public class ItemFragmento extends Fragment {
                 //LONG CLICK NO PRODUTO
                 else if(ExpandableListView.getPackedPositionType(id) == ExpandableListView.PACKED_POSITION_TYPE_GROUP){
                     //Toast.makeText(getActivity(), produto.getNome() + " " + produto.getPreco(), Toast.LENGTH_SHORT).show();
-                    BottomSheetDialogFragment bottomSheetDialogFragment = new BottomSheetMenu();
+                    BottomSheetMenu bottomSheetDialogFragment = new BottomSheetMenu();
+                    bottomSheetDialogFragment.setItemFragmento(ItemFragmento.this);
                     bottomSheetDialogFragment.show(getActivity().getSupportFragmentManager(), bottomSheetDialogFragment.getTag());
                     Bundle b = new Bundle();
                     b.putInt("idProd", produto.getId());
@@ -245,6 +246,7 @@ public class ItemFragmento extends Fragment {
     public void adicionaProduto(Produto produto){
         produtos.add(produto);
         listAdapter.insereProdutoNaLista(produto);
+
     }
 
     @Override
@@ -252,7 +254,7 @@ public class ItemFragmento extends Fragment {
         super.onResume();
         //busca produtos
         ProdutoDAO pdao = new ProdutoDAO(getActivity());
-        List<Produto> produtos = pdao.buscaProdutos();
+        produtos = pdao.buscaProdutos();
 
         if (itemAdicionado==true) {
             //pega ultimo produto adicionado
@@ -267,12 +269,19 @@ public class ItemFragmento extends Fragment {
             adicionaProduto(produto);
             itemAdicionado = false;
         }
+
     }
 
     private void telaAdicionar() {
         Intent intent = new Intent(getActivity(), AddProdutoActivity.class);
         //intent.putExtra(getString(R.string.key_name), name);
         startActivityForResult(intent, 1);
+    }
+    
+    public void atualizaListas(){
+        ProdutoDAO pdao = new ProdutoDAO(getActivity());
+        produtos = pdao.buscaProdutos();
+
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -284,6 +293,7 @@ public class ItemFragmento extends Fragment {
 
             }
         }
+
     }
 
 

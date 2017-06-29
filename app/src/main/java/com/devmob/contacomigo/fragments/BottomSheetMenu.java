@@ -1,10 +1,12 @@
 package com.devmob.contacomigo.fragments;
 
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.BottomSheetDialogFragment;
 import android.support.design.widget.CoordinatorLayout;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -23,8 +25,10 @@ import com.devmob.contacomigo.model.Produto;
  */
 
 public class BottomSheetMenu extends BottomSheetDialogFragment {
+    private static final String TAG = "BottomSheet";
 
     Produto produto;
+    ItemFragmento itemFragmento;
     RelativeLayout btn_cancel;
     TextView mTitulo;
     RelativeLayout mRL1;
@@ -43,6 +47,10 @@ public class BottomSheetMenu extends BottomSheetDialogFragment {
         public void onSlide(@NonNull View bottomSheet, float slideOffset) {
         }
     };
+
+    public void setItemFragmento(ItemFragmento frag){
+        itemFragmento = frag;
+    }
 
     @Override
     public void setupDialog(Dialog dialog, int style) {
@@ -90,5 +98,13 @@ public class BottomSheetMenu extends BottomSheetDialogFragment {
         if( behavior != null && behavior instanceof BottomSheetBehavior ) {
             ((BottomSheetBehavior) behavior).setBottomSheetCallback(mBottomSheetBehaviorCallback);
         }
+    }
+    @Override
+    public void onDismiss(DialogInterface dialog)
+    {
+        super.onDismiss(dialog);
+        // this works fine but fires one time too often for my use case, it fires on screen rotation as well, although this is a temporarily dismiss only
+        Log.d(TAG, "onDismiss: FOI");
+        itemFragmento.atualizaListas();
     }
 }
