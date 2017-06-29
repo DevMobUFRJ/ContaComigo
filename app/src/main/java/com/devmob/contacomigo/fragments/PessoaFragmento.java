@@ -40,7 +40,7 @@ import static android.app.Activity.RESULT_OK;
  */
 
 public class PessoaFragmento extends Fragment {
-    private static final String TAG = "ItemFragmento";
+    private static final String TAG = "PessoaFragmento";
 
 
     private List<Pessoa> pessoas = new ArrayList<>();
@@ -68,7 +68,6 @@ public class PessoaFragmento extends Fragment {
         switchGorjeta = (SwitchCompat) view.findViewById(R.id.switchGorjeta);
         gorjetaValor = (TextView) view.findViewById(R.id.gorjetaValor);
         gorjeta = ItemFragmento.gorjeta;
-        carregamentoDeDados();
         pessoasExpandableListView = (ExpandableListView) view.findViewById(R.id.pessoasExpandableListView);
         PessoaDAO dao = new PessoaDAO(getActivity());
         List<Pessoa> pessoas = dao.buscaPessoas();
@@ -239,41 +238,15 @@ public class PessoaFragmento extends Fragment {
     }
 
 
-        //DATA SETADA POR HARDCODING TEMPORARIO
-    private void carregamentoDeDados() {
-
-        System.out.println("Entrei");
-
-        //Pessoa william = new Pessoa(1,"William", 23);
-        //Pessoa silvio = new Pessoa(2,"Silvio",24);
-        //Pessoa daniel = new Pessoa(3,"Daniel",2);
-
-        PessoaDAO dao = new PessoaDAO(getActivity());
-        List<Pessoa> pessoas = dao.buscaPessoas();
-        dao.close();
-
-        for (Pessoa pessoa : pessoas) {
-            System.out.println(pessoa.getNome());
-            adicionaPessoa(pessoa);
-        }
-    }
-
     public void onResume() {
         super.onResume();
-        PessoaDAO dao = new PessoaDAO(getActivity());
-        List<Pessoa> pessoas = dao.buscaPessoas();
         if (itemAdicionado == true) {
-            System.out.println("AAAAAAAAAA"+pessoas.get(0));
-            adicionaPessoa(pessoas.get(pessoas.size() - 1));
             itemAdicionado = false;
         }
     }
 
 
-    private void adicionaPessoa(Pessoa pessoa) {
-        pessoas.add(pessoa);
-        listAdapter.inserePessoaNaLista(pessoa);
-    }
+
 
 
     private void telaAdicionar() {

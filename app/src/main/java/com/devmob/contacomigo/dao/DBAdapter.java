@@ -34,8 +34,8 @@ public abstract class DBAdapter {
             "CREATE TABLE PessoaProduto(" +
                     "idPessoa INTEGER, " +
                     "idProduto INTEGER, " +
-                    "quantidadeConsumida INTEGER" +
-                    "precoPago REAL NOT NULL, " +
+                    "quantidadeConsumida INTEGER, " +
+                    "precoPago FLOAT, " +
                     "FOREIGN KEY(idPessoa) REFERENCES Pessoa(id)," +
                     "FOREIGN KEY(idProduto) REFERENCES Produto(id)," +
                     "PRIMARY KEY(idPessoa,idProduto)" +

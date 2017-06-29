@@ -91,17 +91,6 @@ public class AddProdutoActivity extends AppCompatActivity {
 
 
         PessoaDAO pessoaDAO = new PessoaDAO(AddProdutoActivity.this);
-        /*Pessoa gordinho = new Pessoa(0, null, 0);
-        gordinho.setNome("gordinho");
-        gordinho.setId(1);
-        gordinho.setPrecoTotal(0);
-        pessoaDAO.insere(gordinho);
-        Pessoa magrao = new Pessoa(0, null, 0);
-        magrao.setNome("magrao");
-        magrao.setId(2);
-        magrao.setPrecoTotal(0);
-        pessoaDAO.insere(magrao);
-    */
 
         List<Pessoa> pessoas = pessoaDAO.buscaPessoas();
         for (Pessoa pessoa : pessoas) {

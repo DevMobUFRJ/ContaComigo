@@ -1,6 +1,7 @@
 package com.devmob.contacomigo.ExpandableList;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +22,8 @@ import java.util.List;
  */
 
 public class PessoaExpandableListAdapter extends BaseExpandableListAdapter {
+    private static final String TAG = "PessoaExListAdapter";
+
     private Context context;
     private ArrayList<Pessoa> pessoaList;
 
@@ -61,7 +64,8 @@ public class PessoaExpandableListAdapter extends BaseExpandableListAdapter {
     public View getChildView(int indicePessoa, int indiceProduto, boolean isLastChild,
                              View view, ViewGroup parent) {
 
-        Produto detailInfo = (Produto) getChild(indicePessoa, indiceProduto);
+        ProdutoConsumido pc = (ProdutoConsumido) getChild(indicePessoa, indiceProduto);
+        Produto detailInfo = pc.getProduto();
         Pessoa pessoa = (Pessoa)  getGroup(indicePessoa);
 
         double price = pessoa.getPrecoTotal();
@@ -136,6 +140,7 @@ public class PessoaExpandableListAdapter extends BaseExpandableListAdapter {
     }
 
     public void inserePessoaNaLista(Pessoa pessoa) {
+        Log.d(TAG, "inserePessoaNaLista: NOME " );
         pessoaList.add(pessoa);
         this.notifyDataSetChanged();
     }

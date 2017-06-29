@@ -3,6 +3,7 @@ package com.devmob.contacomigo.dao;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.util.Log;
 
 import com.devmob.contacomigo.model.Pessoa;
 import com.devmob.contacomigo.model.Produto;
@@ -30,6 +31,7 @@ public class PessoaProdutoDAO extends DBAdapter {
         dados.put("idPessoa", idPessoa);
         dados.put("idProduto", idProduto);
         dados.put("quantidadeConsumida", quantidadeConsumida);
+        dados.put("precoPago", precoPago);
         db.insert("PessoaProduto", null, dados);
         close();
     }

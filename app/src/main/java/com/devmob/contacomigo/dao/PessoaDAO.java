@@ -5,6 +5,8 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.os.Debug;
+import android.util.Log;
 
 import com.devmob.contacomigo.model.Pessoa;
 import com.devmob.contacomigo.model.Produto;
@@ -18,6 +20,8 @@ import java.util.List;
  */
 
 public class PessoaDAO extends DBAdapter {
+    private static final String TAG = "PessoaDAO";
+
 
     public PessoaDAO(Context context){
         super(context);

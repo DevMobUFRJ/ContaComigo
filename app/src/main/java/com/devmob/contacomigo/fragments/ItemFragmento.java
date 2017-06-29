@@ -80,7 +80,6 @@ public class ItemFragmento extends Fragment {
         listAdapter = new ProdutoExpandableListAdapter(getActivity(), new ArrayList<>(produtos));
         itemsExpandableListView.setAdapter(listAdapter);
         addFAB = (FloatingActionButton) view.findViewById(R.id.addFAB);
-
         //LONG CLICK EM CADA CHILD (PESSOA E PREÇO)
         itemsExpandableListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
@@ -98,12 +97,10 @@ public class ItemFragmento extends Fragment {
                 //LONG CLICK NO PRODUTO
                 else if(ExpandableListView.getPackedPositionType(id) == ExpandableListView.PACKED_POSITION_TYPE_GROUP){
                     //Toast.makeText(getActivity(), produto.getNome() + " " + produto.getPreco(), Toast.LENGTH_SHORT).show();
-                    Log.d("Long", indiceProduto + "");
                     BottomSheetDialogFragment bottomSheetDialogFragment = new BottomSheetMenu();
                     bottomSheetDialogFragment.show(getActivity().getSupportFragmentManager(), bottomSheetDialogFragment.getTag());
                     Bundle b = new Bundle();
                     b.putInt("idProd", produto.getId());
-                    Log.d("IDPROD", ""+produto.getId());
                     bottomSheetDialogFragment.setArguments(b);
                     return true;
                 }
@@ -253,7 +250,6 @@ public class ItemFragmento extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-
         //busca produtos
         ProdutoDAO pdao = new ProdutoDAO(getActivity());
         List<Produto> produtos = pdao.buscaProdutos();
@@ -265,7 +261,6 @@ public class ItemFragmento extends Fragment {
             //pega consumidores relacionados a esse produto
             PessoaProdutoDAO ppdao = new PessoaProdutoDAO(getActivity());
             List<Pessoa> consumidores = ppdao.buscaPessoasDeUmProduto(produto);
-            //Toast.makeText(getActivity(), "Cons"+consumidores.size(), Toast.LENGTH_SHORT).show();
 
             produto.setConsumidores(consumidores);
 
