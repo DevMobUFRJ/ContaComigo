@@ -1,11 +1,8 @@
 package com.devmob.contacomigo.fragments;
 
-import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
-import android.os.Debug;
-import android.support.design.widget.BottomSheetDialogFragment;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
@@ -22,7 +19,6 @@ import android.widget.CompoundButton;
 import android.widget.ExpandableListView;
 import android.widget.NumberPicker;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.devmob.contacomigo.ExpandableList.ProdutoExpandableListAdapter;
 import com.devmob.contacomigo.R;
@@ -34,7 +30,6 @@ import com.devmob.contacomigo.model.Pessoa;
 import com.devmob.contacomigo.model.Produto;
 
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
 
 import static android.app.Activity.RESULT_OK;
@@ -97,7 +92,7 @@ public class ItemFragmento extends Fragment {
                 //LONG CLICK NO PRODUTO
                 else if(ExpandableListView.getPackedPositionType(id) == ExpandableListView.PACKED_POSITION_TYPE_GROUP){
                     //Toast.makeText(getActivity(), produto.getNome() + " " + produto.getPreco(), Toast.LENGTH_SHORT).show();
-                    BottomSheetMenu bottomSheetDialogFragment = new BottomSheetMenu();
+                    BottomSheetMenuProduto bottomSheetDialogFragment = new BottomSheetMenuProduto();
                     bottomSheetDialogFragment.setItemFragmento(ItemFragmento.this);
                     bottomSheetDialogFragment.show(getActivity().getSupportFragmentManager(), bottomSheetDialogFragment.getTag());
                     Bundle b = new Bundle();
@@ -253,9 +248,9 @@ public class ItemFragmento extends Fragment {
     public void onResume() {
         super.onResume();
         //busca produtos
+        Log.d(TAG, "onResume");
         ProdutoDAO pdao = new ProdutoDAO(getActivity());
         produtos = pdao.buscaProdutos();
-        Log.d(TAG, "onResume: " + itemAdicionado);
         if (itemAdicionado==true) {
             //pega ultimo produto adicionado
             Produto produto = produtos.get(produtos.size() - 1);
@@ -281,12 +276,10 @@ public class ItemFragmento extends Fragment {
     public void atualizaListas(){
         ProdutoDAO pdao = new ProdutoDAO(getActivity());
         produtos = pdao.buscaProdutos();
-
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        Log.d(TAG, "onActivityResult: ");
         if (requestCode == 1) {
             if(resultCode == RESULT_OK) {
                 itemAdicionado = data.getExtras().getBoolean("booleanItem");

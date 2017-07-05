@@ -59,5 +59,37 @@ public class PessoaDAO extends DBAdapter {
         close();
         return pessoas;
     }
+    public Pessoa getPessoaById(int id){
+        open();
+        Cursor cursor = db.rawQuery("SELECT * FROM Pessoa;", null);
 
+        while(cursor.moveToNext()){
+            Pessoa pessoa = new Pessoa(
+                    cursor.getInt(cursor.getColumnIndex("id")),
+                    cursor.getString(cursor.getColumnIndex("nome")));
+            if (pessoa.getId() == id){
+                PessoaProdutoDAO ppdao = new PessoaProdutoDAO(mCtx);
+                pessoa.setProdutosConsumidos(ppdao.buscaProdutosDeUmaPessoa(pessoa));
+                float soma = 0;
+                for(ProdutoConsumido pc : pessoa.getProdutosConsumidos()){
+                    soma += pc.getPrecoPago();
+                }
+                pessoa.setPrecoTotal(soma);
+                return pessoa;
+            }
+        }
+        close();
+        return null;
+    }
+    public void deletaPessoa(Pessoa pessoa) {
+        open();
+        db.execSQL("DELETE FROM Pessoa WHERE id = ?;", new String[]{"" + pessoa.getId()});
+        close();
+    }
+
+    public void deletaRelacao(Pessoa pessoa) {
+        open();
+        db.execSQL("DELETE FROM PessoaProduto WHERE idPessoa = ?;", new String[]{"" + pessoa.getId()});
+        close();
+    }
 }

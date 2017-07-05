@@ -8,27 +8,26 @@ import android.support.design.widget.BottomSheetDialogFragment;
 import android.support.design.widget.CoordinatorLayout;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.devmob.contacomigo.R;
-import com.devmob.contacomigo.activities.AddProdutoActivity;
+import com.devmob.contacomigo.dao.PessoaDAO;
 import com.devmob.contacomigo.dao.PessoaProdutoDAO;
 import com.devmob.contacomigo.dao.ProdutoDAO;
+import com.devmob.contacomigo.model.Pessoa;
 import com.devmob.contacomigo.model.Produto;
 
 /**
  * Created by DevMob on 15/05/2017.
  */
 
-public class BottomSheetMenu extends BottomSheetDialogFragment {
-    private static final String TAG = "BottomSheet";
+public class BottomSheetMenuPessoa extends BottomSheetDialogFragment {
+    private static final String TAG = "BottomSheetPessoa";
 
-    Produto produto;
-    ItemFragmento itemFragmento;
+    Pessoa pessoa;
+    PessoaFragmento pessoaFragmento;
     RelativeLayout btn_cancel;
     TextView mTitulo;
     RelativeLayout mRL1;
@@ -48,16 +47,17 @@ public class BottomSheetMenu extends BottomSheetDialogFragment {
         }
     };
 
-    public void setItemFragmento(ItemFragmento frag){
-        itemFragmento = frag;
+    public void setPessoaFragmento(PessoaFragmento frag){
+        pessoaFragmento = frag;
     }
 
     @Override
     public void setupDialog(Dialog dialog, int style) {
         super.setupDialog(dialog, style);
-        final ProdutoDAO dao = new ProdutoDAO(getActivity());
-        final PessoaProdutoDAO dao2 = new PessoaProdutoDAO(getActivity());
-        produto = dao.getProdutoById(getArguments().getInt("idProd"));
+
+        final PessoaDAO pessoaDAO = new PessoaDAO(getActivity());
+        final PessoaProdutoDAO ppDao = new PessoaProdutoDAO(getActivity());
+        pessoa = pessoaDAO.getPessoaById(getArguments().getInt("idPessoa"));
 
         View contentView = View.inflate(getContext(), R.layout.fragment_bottom_sheet, null);
         dialog.setContentView(contentView);
@@ -68,7 +68,7 @@ public class BottomSheetMenu extends BottomSheetDialogFragment {
         btn_delete = (RelativeLayout) contentView.findViewById(R.id.btn_delete);
         mRL1 = (RelativeLayout) contentView.findViewById(R.id.rl1);
         mTitulo = (TextView) contentView.findViewById(R.id.titulo);
-        mTitulo.setText(produto.getNome());
+        mTitulo.setText(pessoa.getNome());
         btn_cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -78,10 +78,11 @@ public class BottomSheetMenu extends BottomSheetDialogFragment {
         btn_delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                dao.deletaProduto(produto);
-                dao.deletaRelacao(produto);
-                ItemFragmento.listAdapter.deletaLista(produto);
-                Toast.makeText(getActivity(), "deletando " + produto.getNome(), Toast.LENGTH_SHORT).show();
+                pessoaDAO.deletaPessoa(pessoa);
+                pessoaDAO.deletaRelacao(pessoa);
+                PessoaFragmento.listAdapter.deletaLista(pessoa);
+
+                Toast.makeText(getActivity(), "deletando " + pessoa.getNome(), Toast.LENGTH_SHORT).show();
                 dismiss();
 
             }
@@ -105,6 +106,6 @@ public class BottomSheetMenu extends BottomSheetDialogFragment {
         super.onDismiss(dialog);
         // this works fine but fires one time too often for my use case, it fires on screen rotation as well, although this is a temporarily dismiss only
         Log.d(TAG, "onDismiss: FOI");
-        itemFragmento.atualizaListas();
+        pessoaFragmento.atualizaListas();
     }
 }
