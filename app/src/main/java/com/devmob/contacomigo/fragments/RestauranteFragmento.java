@@ -1,7 +1,5 @@
 package com.devmob.contacomigo.fragments;
 
-import android.support.design.widget.BottomSheetBehavior;
-import android.support.design.widget.BottomSheetDialog;
 import android.support.design.widget.BottomSheetDialogFragment;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
@@ -13,7 +11,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.devmob.contacomigo.R;
-import com.devmob.contacomigo.activities.MainActivity;
 
 /**
  * Created by devmob on 03/05/17.
@@ -29,7 +26,7 @@ public class RestauranteFragmento extends Fragment implements FragmentInterface{
         button1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                BottomSheetDialogFragment bottomSheetDialogFragment = new BottomSheetMenu();
+                BottomSheetDialogFragment bottomSheetDialogFragment = new BottomSheetMenuProduto();
                 bottomSheetDialogFragment.show(getActivity().getSupportFragmentManager(), bottomSheetDialogFragment.getTag());
             }
         });

@@ -20,17 +20,13 @@ import android.widget.CompoundButton;
 import android.widget.ExpandableListView;
 import android.widget.NumberPicker;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.devmob.contacomigo.ExpandableList.PessoaExpandableListAdapter;
 import com.devmob.contacomigo.R;
 import com.devmob.contacomigo.activities.AddPessoaActivity;
 import com.devmob.contacomigo.dao.PessoaDAO;
-import com.devmob.contacomigo.dao.PessoaProdutoDAO;
 import com.devmob.contacomigo.model.Gorjeta;
 import com.devmob.contacomigo.model.Pessoa;
-import com.devmob.contacomigo.model.Produto;
-import com.devmob.contacomigo.model.ProdutoConsumido;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -87,24 +83,25 @@ public class PessoaFragmento extends Fragment implements FragmentInterface{
         pessoasExpandableListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                int indiceProduto = ExpandableListView.getPackedPositionGroup(id);
-                int indicePessoa = ExpandableListView.getPackedPositionChild(id);
+                int indicePessoa = ExpandableListView.getPackedPositionGroup(id);
+                int indiceProduto = ExpandableListView.getPackedPositionChild(id);
                 //get the group header
                 PessoaDAO dao = new PessoaDAO(getActivity());
                 List<Pessoa> pessoas = dao.buscaPessoas();
                 dao.close();
                 List<Pessoa> listPessoas = new ArrayList<Pessoa>(pessoas);
                 Pessoa pessoa = listPessoas.get(indicePessoa);
-                //LONG CLICK NA PESSOA
+                //LONG CLICK NO PRODUTO
                 if (ExpandableListView.getPackedPositionType(id) == ExpandableListView.PACKED_POSITION_TYPE_CHILD) {
                     //Produto produto = pessoa.getProdutosConsumidos().get(indiceProduto);
                     //Toast.makeText(getActivity(), pessoa.getNome() + "/" + indicePessoa + " deve " + pessoa.getPrecoTotal(), Toast.LENGTH_SHORT).show();
                     return true;
                 }
-                //LONG CLICK NO PRODUTO
+                //LONG CLICK NA PESSOA
                 else if (ExpandableListView.getPackedPositionType(id) == ExpandableListView.PACKED_POSITION_TYPE_GROUP) {
                     //Toast.makeText(getActivity(), produto.getNome() + " " + produto.getPreco(), Toast.LENGTH_SHORT).show();
-                    BottomSheetDialogFragment bottomSheetDialogFragment = new BottomSheetMenu();
+                    BottomSheetMenuPessoa bottomSheetDialogFragment = new BottomSheetMenuPessoa();
+                    bottomSheetDialogFragment.setPessoaFragmento(PessoaFragmento.this);
                     bottomSheetDialogFragment.show(getActivity().getSupportFragmentManager(), bottomSheetDialogFragment.getTag());
                     Bundle b = new Bundle();
                     b.putInt("idPessoa", pessoa.getId());
@@ -239,26 +236,22 @@ public class PessoaFragmento extends Fragment implements FragmentInterface{
 
     }
 
+    public void atualizaListas(){
+        PessoaDAO pdao = new PessoaDAO(getActivity());
+        pessoas = pdao.buscaPessoas();
+    }
 
     public void onResume() {
         super.onResume();
-
         PessoaDAO pdao = new PessoaDAO(getContext());
         pessoas = pdao.buscaPessoas();
 
-        Log.d(TAG, "onResume 1");
         if (itemAdicionado == true) {
 
             //pega consumidores relacionados a esse produto
             PessoaDAO pedao = new PessoaDAO(getActivity());
             pessoas = pedao.buscaPessoas();
-            Log.d(TAG, "onResume: itemAdicionado TRUE");
-            for (Pessoa p:pessoas){
-                Log.d(TAG,"dentro " + p.getNome());
-                for (ProdutoConsumido pc : p.getProdutosConsumidos()){
-                    Log.d(TAG, "dentro2: " + pc.getProduto().getNome());
-                }
-            }
+
             listAdapter.resetaLista(pessoas);
             listAdapter.notifyDataSetChanged();
             itemAdicionado = false;
