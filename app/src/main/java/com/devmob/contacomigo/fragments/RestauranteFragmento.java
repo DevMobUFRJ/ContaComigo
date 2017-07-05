@@ -6,6 +6,7 @@ import android.support.design.widget.BottomSheetDialogFragment;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,7 +19,7 @@ import com.devmob.contacomigo.activities.MainActivity;
  * Created by devmob on 03/05/17.
  */
 
-public class RestauranteFragmento extends Fragment {
+public class RestauranteFragmento extends Fragment implements FragmentInterface{
     private static final String TAG = "RestauranteFragmento";
     @Nullable
     @Override
@@ -35,4 +36,8 @@ public class RestauranteFragmento extends Fragment {
         return view;
     }
 
+    @Override
+    public void fragmentBecameVisible() {
+        Log.d(TAG, "restaurante frag interface");
+    }
 }

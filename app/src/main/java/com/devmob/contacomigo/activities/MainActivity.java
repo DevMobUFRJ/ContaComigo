@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.devmob.contacomigo.R;
+import com.devmob.contacomigo.fragments.FragmentInterface;
 import com.devmob.contacomigo.fragments.ItemFragmento;
 import com.devmob.contacomigo.fragments.NonSwipeableViewPager;
 import com.devmob.contacomigo.fragments.PessoaFragmento;
@@ -70,6 +71,24 @@ public class MainActivity extends AppCompatActivity {
         setupViewPager(mViewPager);
 
 
+        mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(final int position, final float v, final int i2) {
+            }
+
+            @Override
+            public void onPageSelected(final int position) {
+                FragmentInterface fragment = (FragmentInterface) mSectionsStatePagerAdapter.instantiateItem(mViewPager, position);
+                if (fragment != null) {
+                    fragment.fragmentBecameVisible();
+                }
+            }
+
+            @Override
+            public void onPageScrollStateChanged(final int position) {
+            }
+        });
+
         mViewPager.setPageTransformer(false, new ViewPager.PageTransformer() {
             @Override
             public void transformPage(View page, float position) {
@@ -126,12 +145,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setupViewPager(ViewPager viewPager){
-        SectionsStatePagerAdapter adapter = new SectionsStatePagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(new RestauranteFragmento(), "Restaurante");
-        adapter.addFragment(new ItemFragmento(), "Item");
-        adapter.addFragment(new PessoaFragmento(), "Pessoa");
-        adapter.addFragment(new TotalFragmento(), "Total");
-        viewPager.setAdapter(adapter);
+        //SectionsStatePagerAdapter adapter = new SectionsStatePagerAdapter(getSupportFragmentManager());
+        mSectionsStatePagerAdapter.addFragment(new RestauranteFragmento(), "Restaurante");
+        mSectionsStatePagerAdapter.addFragment(new ItemFragmento(), "Item");
+        mSectionsStatePagerAdapter.addFragment(new PessoaFragmento(), "Pessoa");
+        mSectionsStatePagerAdapter.addFragment(new TotalFragmento(), "Total");
+        viewPager.setAdapter(mSectionsStatePagerAdapter);
     }
 
     public void setViewPager(int fragmentNumber){

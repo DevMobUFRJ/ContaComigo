@@ -66,6 +66,7 @@ public class AddPessoaActivity extends AppCompatActivity {
                     }
                 }
                 intent.putExtra("booleanItem", true);
+                setResult(RESULT_OK, intent);
                 finish();
             }
         });

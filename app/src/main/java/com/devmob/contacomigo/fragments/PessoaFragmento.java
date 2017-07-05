@@ -41,7 +41,7 @@ import static android.app.Activity.RESULT_OK;
  * Created by devmob on 03/05/17.
  */
 
-public class PessoaFragmento extends Fragment {
+public class PessoaFragmento extends Fragment implements FragmentInterface{
     private static final String TAG = "PessoaFragmento";
 
 
@@ -243,6 +243,9 @@ public class PessoaFragmento extends Fragment {
     public void onResume() {
         super.onResume();
 
+        PessoaDAO pdao = new PessoaDAO(getContext());
+        pessoas = pdao.buscaPessoas();
+
         Log.d(TAG, "onResume 1");
         if (itemAdicionado == true) {
 
@@ -283,6 +286,14 @@ public class PessoaFragmento extends Fragment {
         }
     }
 
+    @Override
+    public void fragmentBecameVisible() {
+        PessoaDAO pdao = new PessoaDAO(getContext());
+        pessoas = pdao.buscaPessoas();
+        listAdapter.resetaLista(pessoas);
+        listAdapter.notifyDataSetChanged();
+        Log.d(TAG, "pessoa frag na interface");
+    }
 }
 
 

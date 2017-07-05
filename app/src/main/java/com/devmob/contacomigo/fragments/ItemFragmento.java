@@ -43,7 +43,7 @@ import static android.app.Activity.RESULT_OK;
  * Created by devmob on 03/05/17.
  */
 
-public class ItemFragmento extends Fragment {
+public class ItemFragmento extends Fragment implements FragmentInterface{
     private static final String TAG = "ItemFragmento";
 
 
@@ -146,15 +146,6 @@ public class ItemFragmento extends Fragment {
             }
         });
 
-
-        apagaTudo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-            //TODO fazer apagaTudo
-            }
-        });
-
-
         switchGorjeta.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -255,7 +246,6 @@ public class ItemFragmento extends Fragment {
         //busca produtos
         ProdutoDAO pdao = new ProdutoDAO(getActivity());
         produtos = pdao.buscaProdutos();
-        Log.d(TAG, "onResume: " + itemAdicionado);
         if (itemAdicionado==true) {
             //pega ultimo produto adicionado
             Produto produto = produtos.get(produtos.size() - 1);
@@ -300,6 +290,10 @@ public class ItemFragmento extends Fragment {
     }
 
 
+    @Override
+    public void fragmentBecameVisible() {
+        Log.d(TAG, "itemfrag interface");
+    }
 }
 
 
