@@ -49,6 +49,12 @@ public class PessoaExpandableListAdapter extends BaseExpandableListAdapter {
         this.notifyDataSetChanged();
     }
 
+    //Metodo para atualizar lista, chamado no PessoaFragmento, para atualizar a lista.
+    public void resetaLista(List<Pessoa> pessoas){
+        pessoaList = new ArrayList<>(pessoas);
+
+    }
+
     public void deletaLista(Pessoa novo) {
         for (Pessoa p: pessoaList) {
             if (p.getId() == novo.getId()){

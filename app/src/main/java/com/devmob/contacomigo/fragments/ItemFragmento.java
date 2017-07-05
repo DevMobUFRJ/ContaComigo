@@ -56,7 +56,7 @@ public class ItemFragmento extends Fragment {
     public Button apagaTudo;
     public static Gorjeta gorjeta;
     public static TextView gorjetaValor;
-    boolean itemAdicionado;
+    public static boolean itemAdicionado;
     private String nomeFragmento = "Item";
 
     public String getNome(){
@@ -255,7 +255,7 @@ public class ItemFragmento extends Fragment {
         //busca produtos
         ProdutoDAO pdao = new ProdutoDAO(getActivity());
         produtos = pdao.buscaProdutos();
-
+        Log.d(TAG, "onResume: " + itemAdicionado);
         if (itemAdicionado==true) {
             //pega ultimo produto adicionado
             Produto produto = produtos.get(produtos.size() - 1);
@@ -286,9 +286,12 @@ public class ItemFragmento extends Fragment {
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        Log.d(TAG, "onActivityResult: ");
         if (requestCode == 1) {
             if(resultCode == RESULT_OK) {
                 itemAdicionado = data.getExtras().getBoolean("booleanItem");
+                PessoaFragmento.itemAdicionado = data.getExtras().getBoolean("booleanItem");
+
                 listAdapter.notifyDataSetChanged();
 
             }

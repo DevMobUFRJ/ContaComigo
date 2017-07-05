@@ -26,9 +26,11 @@ import com.devmob.contacomigo.ExpandableList.PessoaExpandableListAdapter;
 import com.devmob.contacomigo.R;
 import com.devmob.contacomigo.activities.AddPessoaActivity;
 import com.devmob.contacomigo.dao.PessoaDAO;
+import com.devmob.contacomigo.dao.PessoaProdutoDAO;
 import com.devmob.contacomigo.model.Gorjeta;
 import com.devmob.contacomigo.model.Pessoa;
 import com.devmob.contacomigo.model.Produto;
+import com.devmob.contacomigo.model.ProdutoConsumido;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,11 +49,12 @@ public class PessoaFragmento extends Fragment {
     private ExpandableListView pessoasExpandableListView;
     public FloatingActionButton addFAB;
     public Button apagaTudo;
-    boolean itemAdicionado;
+    public static boolean itemAdicionado;
     public static Gorjeta gorjeta;
     public static TextView gorjetaValor;
     public static SwitchCompat switchGorjeta;
     private String nomeFragmento = "Pessoa";
+    List<Pessoa> pessoas;
 
     public String getNome(){
         return nomeFragmento;
@@ -69,7 +72,7 @@ public class PessoaFragmento extends Fragment {
         gorjeta = ItemFragmento.gorjeta;
         pessoasExpandableListView = (ExpandableListView) view.findViewById(R.id.pessoasExpandableListView);
         PessoaDAO dao = new PessoaDAO(getActivity());
-        List<Pessoa> pessoas = dao.buscaPessoas();
+        pessoas = dao.buscaPessoas();
         dao.close();
 
         for (Pessoa p:pessoas){
@@ -239,8 +242,22 @@ public class PessoaFragmento extends Fragment {
 
     public void onResume() {
         super.onResume();
-        listAdapter.notifyDataSetChanged();
+
+        Log.d(TAG, "onResume 1");
         if (itemAdicionado == true) {
+
+            //pega consumidores relacionados a esse produto
+            PessoaDAO pedao = new PessoaDAO(getActivity());
+            pessoas = pedao.buscaPessoas();
+            Log.d(TAG, "onResume: itemAdicionado TRUE");
+            for (Pessoa p:pessoas){
+                Log.d(TAG,"dentro " + p.getNome());
+                for (ProdutoConsumido pc : p.getProdutosConsumidos()){
+                    Log.d(TAG, "dentro2: " + pc.getProduto().getNome());
+                }
+            }
+            listAdapter.resetaLista(pessoas);
+            listAdapter.notifyDataSetChanged();
             itemAdicionado = false;
         }
     }
@@ -252,12 +269,12 @@ public class PessoaFragmento extends Fragment {
     private void telaAdicionar() {
         Intent intent = new Intent(getActivity(), AddPessoaActivity.class);
         //intent.putExtra(getString(R.string.key_name), name);
-        startActivityForResult(intent, 1);
+        startActivityForResult(intent, 2);
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 1) {
+        if (requestCode == 2) {
             if (resultCode == RESULT_OK) {
                 itemAdicionado = data.getExtras().getBoolean("booleanItem");
                 listAdapter.notifyDataSetChanged();
