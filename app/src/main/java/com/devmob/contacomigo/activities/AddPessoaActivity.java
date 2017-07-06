@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
@@ -19,8 +20,11 @@ import android.widget.Toast;
 
 import com.devmob.contacomigo.R;
 import com.devmob.contacomigo.dao.PessoaDAO;
+import com.devmob.contacomigo.fragments.FragmentInterface;
 import com.devmob.contacomigo.fragments.ItemFragmento;
 import com.devmob.contacomigo.fragments.PessoaFragmento;
+import com.devmob.contacomigo.fragments.RestauranteFragmento;
+import com.devmob.contacomigo.fragments.TotalFragmento;
 import com.devmob.contacomigo.model.Pessoa;
 
 import java.util.ArrayList;
@@ -28,7 +32,7 @@ import java.util.List;
 
 import static com.devmob.contacomigo.fragments.ItemFragmento.listAdapter;
 
-public class AddPessoaActivity extends AppCompatActivity {
+public class AddPessoaActivity extends FragmentActivity {
 
     private FloatingActionButton addFAB;
     private EditText nome;
@@ -42,6 +46,7 @@ public class AddPessoaActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         intent = getIntent();
+
         setContentView(R.layout.activity_add_pessoa);
 
         botaoCancelar = (Button) findViewById(R.id.cancelar);
@@ -53,6 +58,8 @@ public class AddPessoaActivity extends AppCompatActivity {
 
         nome.addTextChangedListener(mTextWatcher);
         checkFieldsForEmptyValues();
+
+
 
         botaoSalvar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -67,6 +74,21 @@ public class AddPessoaActivity extends AppCompatActivity {
 
                     }
                 }
+                try {
+                    for (String nome: FragmentInterface.fragments) {
+                        Class c = Class.forName(nome);
+                        FragmentInterface frag = (FragmentInterface)c.newInstance();
+                        frag.setAtualizar(true);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+
+
+                FragmentInterface frag = (TotalFragmento) getSupportFragmentManager().findFragmentByTag("TotalFragmento");
+                frag.setAtualizar(true);
+
                 intent.putExtra("booleanItem", true);
                 setResult(RESULT_OK, intent);
                 finish();

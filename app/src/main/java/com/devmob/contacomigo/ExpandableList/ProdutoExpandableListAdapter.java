@@ -133,4 +133,8 @@ public class ProdutoExpandableListAdapter extends BaseExpandableListAdapter {
     public boolean isChildSelectable(int indiceProduto, int indicePessoa) {
         return true;
     }
+
+    public void resetaLista(List<Produto> produtos) {
+        this.prodList = new ArrayList<>(produtos);
+    }
 }

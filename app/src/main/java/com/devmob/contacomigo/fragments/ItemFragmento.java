@@ -23,6 +23,7 @@ import android.widget.TextView;
 import com.devmob.contacomigo.ExpandableList.ProdutoExpandableListAdapter;
 import com.devmob.contacomigo.R;
 import com.devmob.contacomigo.activities.AddProdutoActivity;
+import com.devmob.contacomigo.dao.PessoaDAO;
 import com.devmob.contacomigo.dao.PessoaProdutoDAO;
 import com.devmob.contacomigo.dao.ProdutoDAO;
 import com.devmob.contacomigo.model.Gorjeta;
@@ -53,6 +54,7 @@ public class ItemFragmento extends Fragment implements FragmentInterface{
     public static TextView gorjetaValor;
     public static boolean itemAdicionado;
     private String nomeFragmento = "Item";
+    private boolean atualizar = true;
 
     public String getNome(){
         return nomeFragmento;
@@ -285,8 +287,20 @@ public class ItemFragmento extends Fragment implements FragmentInterface{
 
 
     @Override
+    public void setAtualizar(boolean b) {
+        this.atualizar = b;
+    }
+
+    @Override
     public void fragmentBecameVisible() {
-        Log.d(TAG, "itemfrag interface");
+        if(atualizar){
+            ProdutoDAO pdao = new ProdutoDAO(getContext());
+            produtos = pdao.buscaProdutos();
+            listAdapter.resetaLista(produtos);
+            listAdapter.notifyDataSetChanged();
+            atualizar = false;
+            Log.i(TAG, "ItemFrag Atualizada");
+        }
     }
 }
 

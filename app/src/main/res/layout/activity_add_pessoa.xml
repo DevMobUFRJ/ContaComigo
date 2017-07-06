@@ -1,51 +1,55 @@
-<LinearLayout
-    android:id="@+id/layoutAddPessoa"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
-
-    <EditText
-        android:id="@+id/nome"
+    android:fillViewport="true">
+    <LinearLayout
+        android:id="@+id/layoutAddPessoa"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Nome"/>
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-    <ScrollView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" >
-
-        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            android:id="@+id/checkbox_container"
-            android:orientation="vertical"
+        <EditText
+            android:id="@+id/nome"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content"
+            android:hint="Nome"/>
 
-        </LinearLayout>
-    </ScrollView>
+        <ScrollView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" >
+
+            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/checkbox_container"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+            </LinearLayout>
+        </ScrollView>
 
 
-    <Button
-        android:id="@+id/salvar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/text_save"/>
-    <Button
-        android:id="@+id/cancelar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/text_cancel"/>
+        <Button
+            android:id="@+id/salvar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/text_save"/>
+        <Button
+            android:id="@+id/cancelar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/text_cancel"/>
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/addFAB"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="end|bottom"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentBottom="true"
-        android:layout_margin="16sp"
-        app:backgroundTint="@color/red"
-        android:src="@drawable/ic_add_button_circle" />
-
-</LinearLayout>
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/addFAB"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end|bottom"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:layout_margin="16sp"
+            app:backgroundTint="@color/red"
+            android:src="@drawable/ic_add_button_circle" />
+    </LinearLayout>
+</ScrollView>

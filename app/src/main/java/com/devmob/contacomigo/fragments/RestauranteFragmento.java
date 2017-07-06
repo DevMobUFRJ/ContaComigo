@@ -18,6 +18,8 @@ import com.devmob.contacomigo.R;
 
 public class RestauranteFragmento extends Fragment implements FragmentInterface{
     private static final String TAG = "RestauranteFragmento";
+    private boolean atualizar = true;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
@@ -34,7 +36,14 @@ public class RestauranteFragmento extends Fragment implements FragmentInterface{
     }
 
     @Override
+    public void setAtualizar(boolean b) {
+        this.atualizar = b;
+    }
+
+    @Override
     public void fragmentBecameVisible() {
-        Log.d(TAG, "restaurante frag interface");
+        if(atualizar){
+            Log.d(TAG, "restaurante frag interface");
+        }
     }
 }

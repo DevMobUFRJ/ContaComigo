@@ -24,8 +24,7 @@ public class TotalFragmento extends Fragment implements FragmentInterface{
 
     private static final String TAG = "TotalFragmento";
     private String nomeFragmento = "Total";
-
-    SectionedRecyclerViewAdapter sectionAdapter;
+    private boolean atualizar = true;
 
 
     @Nullable
@@ -54,7 +53,15 @@ public class TotalFragmento extends Fragment implements FragmentInterface{
     }
 
     @Override
+    public void setAtualizar(boolean b) {
+        this.atualizar = b;
+    }
+
+    @Override
     public void fragmentBecameVisible() {
-        Log.d(TAG, "total frag interface");
+        if(atualizar){
+            this.atualizar = false;
+            Log.i(TAG, "TotalFrag atualizada");
+        }
     }
 }

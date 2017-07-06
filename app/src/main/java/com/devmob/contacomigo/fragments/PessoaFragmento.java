@@ -51,6 +51,7 @@ public class PessoaFragmento extends Fragment implements FragmentInterface{
     public static SwitchCompat switchGorjeta;
     private String nomeFragmento = "Pessoa";
     List<Pessoa> pessoas;
+    private boolean atualizar = true;
 
     public String getNome(){
         return nomeFragmento;
@@ -280,12 +281,20 @@ public class PessoaFragmento extends Fragment implements FragmentInterface{
     }
 
     @Override
+    public void setAtualizar(boolean b) {
+        this.atualizar = b;
+    }
+
+    @Override
     public void fragmentBecameVisible() {
-        PessoaDAO pdao = new PessoaDAO(getContext());
-        pessoas = pdao.buscaPessoas();
-        listAdapter.resetaLista(pessoas);
-        listAdapter.notifyDataSetChanged();
-        Log.d(TAG, "pessoa frag na interface");
+        if(atualizar){
+            PessoaDAO pdao = new PessoaDAO(getContext());
+            pessoas = pdao.buscaPessoas();
+            listAdapter.resetaLista(pessoas);
+            listAdapter.notifyDataSetChanged();
+            atualizar = false;
+            Log.i(TAG, "PessoaFrag Atualizada");
+        }
     }
 }
 

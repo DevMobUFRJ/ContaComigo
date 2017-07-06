@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.BottomSheetBehavior;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -27,7 +28,7 @@ import com.devmob.contacomigo.fragments.TotalFragmento;
 
 
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends FragmentActivity {
 
     private static final String TAG = "MainActivity";
     private static final int RESTAURANTEFRAG = 0;
@@ -146,10 +147,10 @@ public class MainActivity extends AppCompatActivity {
 
     private void setupViewPager(ViewPager viewPager){
         //SectionsStatePagerAdapter adapter = new SectionsStatePagerAdapter(getSupportFragmentManager());
-        mSectionsStatePagerAdapter.addFragment(new RestauranteFragmento(), "Restaurante");
-        mSectionsStatePagerAdapter.addFragment(new ItemFragmento(), "Item");
-        mSectionsStatePagerAdapter.addFragment(new PessoaFragmento(), "Pessoa");
-        mSectionsStatePagerAdapter.addFragment(new TotalFragmento(), "Total");
+        mSectionsStatePagerAdapter.addFragment(new RestauranteFragmento(), "RestauranteFragmento");
+        mSectionsStatePagerAdapter.addFragment(new ItemFragmento(), "ItemFragmento");
+        mSectionsStatePagerAdapter.addFragment(new PessoaFragmento(), "PessoaFragmento");
+        mSectionsStatePagerAdapter.addFragment(new TotalFragmento(), "TotalFragmento");
         viewPager.setAdapter(mSectionsStatePagerAdapter);
     }
 
