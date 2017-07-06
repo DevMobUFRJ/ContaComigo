@@ -111,15 +111,15 @@ public class ProdutoExpandableListAdapter extends BaseExpandableListAdapter {
             LayoutInflater inf = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             view = inf.inflate(R.layout.list_de_produto_item_produto, null);
         }
-
+        //TODO adicionar contador de quantidade do lado do nome do produto
         TextView heading = (TextView) view.findViewById(R.id.heading);
         heading.setText(produto.getNome().trim());
         TextView productPrice = (TextView) view.findViewById(R.id.productPrice);
-        productPrice.setText(String.format("%.2f",produto.getPreco()));
+        productPrice.setText(String.format("%.2f",produto.getPreco() * produto.getQuantidade()));
         if (ItemFragmento.gorjeta.getAtivo() == false)
-            productPrice.setText(String.format("%.2f",produto.getPreco()));
+            productPrice.setText(String.format("%.2f",produto.getPreco()* produto.getQuantidade()));
         else
-            productPrice.setText(String.format("%.2f",produto.getPreco()*ItemFragmento.gorjeta.getValor()));
+            productPrice.setText(String.format("%.2f",produto.getPreco()* produto.getQuantidade()*ItemFragmento.gorjeta.getValor()));
 
         return view;
     }

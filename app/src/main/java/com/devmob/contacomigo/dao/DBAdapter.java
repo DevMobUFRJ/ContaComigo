@@ -28,7 +28,8 @@ public abstract class DBAdapter {
             "CREATE TABLE Produto(" +
                     "id INTEGER PRIMARY KEY," +
                     "nome VARCHAR(255) NOT NULL, " +
-                    "preco REAL NOT NULL" +
+                    "preco REAL NOT NULL," +
+                    "quantidade INTEGER NOT NULL" +
                     ");";
     protected static final String CREATE_PESSOAPRODUTO =
             "CREATE TABLE PessoaProduto(" +

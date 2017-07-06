@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -23,7 +24,9 @@ import com.devmob.contacomigo.model.Produto;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AddProdutoActivity extends AppCompatActivity {
+import me.himanshusoni.quantityview.QuantityView;
+
+public class AddProdutoActivity extends AppCompatActivity implements QuantityView.OnQuantityChangeListener{
 
     private static final String TAG = "AddProdutoActivity";
 
@@ -32,6 +35,7 @@ public class AddProdutoActivity extends AppCompatActivity {
     public Button botaoSalvar;
     public Button botaoCancelar;
     ViewGroup checkboxContainer;
+    QuantityView quantityView;
 
     Intent intent;
 
@@ -44,18 +48,22 @@ public class AddProdutoActivity extends AppCompatActivity {
         precoT = (EditText) findViewById(R.id.preco);
         botaoSalvar = (Button) findViewById(R.id.salvar);
         botaoCancelar = (Button) findViewById(R.id.cancelar);
+        quantityView = (QuantityView) findViewById(R.id.quantityView);
         nomeT.addTextChangedListener(mTextWatcher);
         precoT.addTextChangedListener(mTextWatcher);
         checkFieldsForEmptyValues();
         checkboxContainer = (ViewGroup) findViewById(R.id.checkbox_container);
+        quantityView.setOnQuantityChangeListener(this);
         botaoSalvar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String nome = nomeT.getText().toString();
-                float preco = Float.parseFloat(precoT.getText().toString());
-                Produto produto = new Produto(nome, preco);
                 ProdutoDAO produtodao = new ProdutoDAO(AddProdutoActivity.this);
                 PessoaProdutoDAO ppd = new PessoaProdutoDAO(AddProdutoActivity.this);
+                String nome = nomeT.getText().toString();
+                float preco = Float.parseFloat(precoT.getText().toString());
+                int quantidadeProdutos = quantityView.getQuantity();
+                Log.d(TAG, "onClick: aqui" + quantidadeProdutos);
+                Produto produto = new Produto(nome, preco, quantidadeProdutos);
                 produtodao.insere(produto);
                 produtodao.close();
                 Toast.makeText(AddProdutoActivity.this, "Produto salvo com sucesso!", Toast.LENGTH_SHORT).show();
@@ -135,5 +143,13 @@ public class AddProdutoActivity extends AppCompatActivity {
         intent.putExtra("booleanItem", false);
         setResult(RESULT_OK, intent);
         finish();
+    }
+    @Override
+    public void onQuantityChanged(int oldQuantity, int newQuantity, boolean programmatically) {
+        Toast.makeText(this, "Quantity: " + newQuantity, Toast.LENGTH_LONG).show();
+    }
+    @Override
+    public void onLimitReached() {
+        Log.d(getClass().getSimpleName(), "Limit reached");
     }
 }

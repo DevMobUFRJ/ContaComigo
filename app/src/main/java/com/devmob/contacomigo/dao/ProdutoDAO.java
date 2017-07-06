@@ -28,6 +28,7 @@ public class ProdutoDAO extends DBAdapter{
         ContentValues dados = new ContentValues();
         dados.put("nome", produto.getNome());
         dados.put("preco", produto.getPreco());
+        dados.put("quantidade", produto.getQuantidade());
 
         produto.setId((int)db.insert("Produto", null, dados));
 
@@ -42,7 +43,8 @@ public class ProdutoDAO extends DBAdapter{
             Produto produto = new Produto(
                     cursor.getInt(cursor.getColumnIndex("id")),
                     cursor.getString(cursor.getColumnIndex("nome")),
-                    cursor.getFloat(cursor.getColumnIndex("preco"))
+                    cursor.getFloat(cursor.getColumnIndex("preco")),
+                    cursor.getInt(cursor.getColumnIndex("quantidade"))
             );
             produtos.add(produto);
         }
@@ -62,7 +64,8 @@ public class ProdutoDAO extends DBAdapter{
             Produto produto = new Produto(
                     cursor.getInt(cursor.getColumnIndex("id")),
                     cursor.getString(cursor.getColumnIndex("nome")),
-                    cursor.getFloat(cursor.getColumnIndex("preco"))
+                    cursor.getFloat(cursor.getColumnIndex("preco")),
+                    cursor.getInt(cursor.getColumnIndex("quantidade"))
             );
             if (produto.getId() == id){
                 return produto;
