@@ -2,6 +2,8 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+
     android:orientation="vertical">
 
     <EditText
@@ -16,6 +18,17 @@
         android:layout_height="wrap_content"
         android:hint="Preço"
         android:inputType="numberDecimal" />
+
+    <me.himanshusoni.quantityview.QuantityView
+        android:id="@+id/quantityView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        app:qv_addButtonBackground="@drawable/add_selector"
+        app:qv_addButtonTextColor="@color/md_white_1000"
+        app:qv_quantity="1"
+        app:qv_removeButtonBackground="@drawable/remove_selector"
+        app:qv_removeButtonTextColor="@color/md_white_1000" />
 
     <ScrollView
         android:layout_width="wrap_content"

@@ -65,7 +65,8 @@ public class PessoaProdutoDAO extends DBAdapter {
             Produto produto = new Produto(
                     cursor2.getInt(cursor2.getColumnIndex("id")),
                     cursor2.getString(cursor2.getColumnIndex("nome")),
-                    cursor2.getFloat(cursor2.getColumnIndex("preco")));
+                    cursor2.getFloat(cursor2.getColumnIndex("preco")),
+                    cursor2.getInt(cursor2.getColumnIndex("quantidade")));
             ProdutoConsumido produtoConsumido = new ProdutoConsumido(produto, quantidades.get(cont), precos.get(cont));
             cont++;
 

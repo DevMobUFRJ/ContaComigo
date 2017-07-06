@@ -32,6 +32,8 @@ import com.devmob.contacomigo.model.Produto;
 import java.util.ArrayList;
 import java.util.List;
 
+import me.himanshusoni.quantityview.QuantityView;
+
 import static android.app.Activity.RESULT_OK;
 
 /**

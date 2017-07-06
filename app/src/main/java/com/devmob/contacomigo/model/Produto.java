@@ -15,6 +15,10 @@ public class Produto {
 
     private float preco;
 
+    private int quantidade;
+
+
+
     private List<Pessoa> consumidores = new ArrayList<>();
 
     public List<Pessoa> getConsumidores(){
@@ -25,15 +29,17 @@ public class Produto {
         this.consumidores = consumidores;
     }
 
-    public Produto(String nome, float preco){
+    public Produto(String nome, float preco, int quantidade){
         this.nome = nome;
         this.preco = preco;
+        this.quantidade = quantidade;
     }
 
-    public Produto(int id, String nome, float preco) {
+    public Produto(int id, String nome, float preco, int quantidade) {
         this.id = id;
         this.nome = nome;
         this.preco = preco;
+        this.quantidade = quantidade;
     }
 
     public void setId(int id){
@@ -54,5 +60,13 @@ public class Produto {
 
     public int getId() {
         return id;
+    }
+
+    public int getQuantidade() {
+        return quantidade;
+    }
+
+    public void setQuantidade(int quantidade) {
+        this.quantidade = quantidade;
     }
 }
