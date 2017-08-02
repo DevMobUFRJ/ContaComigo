@@ -11,13 +11,13 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.devmob.contacomigo.R;
 import com.devmob.contacomigo.dao.PessoaDAO;
 import com.devmob.contacomigo.dao.PessoaProdutoDAO;
 import com.devmob.contacomigo.dao.ProdutoDAO;
-import com.devmob.contacomigo.fragments.ItemFragmento;
 import com.devmob.contacomigo.model.Pessoa;
 import com.devmob.contacomigo.model.Produto;
 
@@ -34,7 +34,7 @@ public class AddProdutoActivity extends AppCompatActivity implements QuantityVie
     public EditText precoT;
     public Button botaoSalvar;
     public Button botaoCancelar;
-    ViewGroup checkboxContainer;
+    ViewGroup checkboxOuterContainer;
     QuantityView quantityView;
 
     Intent intent;
@@ -52,7 +52,7 @@ public class AddProdutoActivity extends AppCompatActivity implements QuantityVie
         nomeT.addTextChangedListener(mTextWatcher);
         precoT.addTextChangedListener(mTextWatcher);
         checkFieldsForEmptyValues();
-        checkboxContainer = (ViewGroup) findViewById(R.id.checkbox_container);
+        checkboxOuterContainer = (ViewGroup) findViewById(R.id.checkbox_outer_container);
         quantityView.setOnQuantityChangeListener(this);
         botaoSalvar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -68,8 +68,13 @@ public class AddProdutoActivity extends AppCompatActivity implements QuantityVie
                 produtodao.close();
                 Toast.makeText(AddProdutoActivity.this, "Produto salvo com sucesso!", Toast.LENGTH_SHORT).show();
                 List<Integer> idsConsumidores = new ArrayList<Integer>();
-                for (int i = 0; i < checkboxContainer.getChildCount(); i++) {
-                    View v = checkboxContainer.getChildAt(i);
+                //TODO getQuantityPerPerson
+                //QuantitiView está em View v = ((LinearLayout)checkboxOuterContainer.getChildAt(i)).getChildAt(1);
+                //O que muda: precoPorPessoa tera calculo mais complexo
+                //"quantidadeConsumida" vai passar o que pega acima
+                
+                for (int i = 0; i < checkboxOuterContainer.getChildCount(); i++) {
+                    View v = ((LinearLayout)checkboxOuterContainer.getChildAt(i)).getChildAt(0);
                     if (v instanceof CheckBox) {
                         if (((CheckBox) v).isChecked()) {
                             idsConsumidores.add(v.getId());
@@ -102,10 +107,17 @@ public class AddProdutoActivity extends AppCompatActivity implements QuantityVie
 
         List<Pessoa> pessoas = pessoaDAO.buscaPessoas();
         for (Pessoa pessoa : pessoas) {
+            LinearLayout checkboxInnerContainer = new LinearLayout(this);
+            checkboxInnerContainer.setOrientation(LinearLayout.HORIZONTAL);
             CheckBox checkBox = new CheckBox(this);
             checkBox.setText(pessoa.getNome());
             checkBox.setId(pessoa.getId());
-            checkboxContainer.addView(checkBox);
+            QuantityView quantityView = new QuantityView(this);
+            quantityView.setId(pessoa.getId());
+            checkboxInnerContainer.addView(checkBox);
+            checkboxInnerContainer.addView(quantityView);
+            checkboxOuterContainer.addView(checkboxInnerContainer);
+
         }
 
     }

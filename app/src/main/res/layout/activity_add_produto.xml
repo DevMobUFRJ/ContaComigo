@@ -35,7 +35,7 @@
         android:layout_height="wrap_content" >
 
         <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            android:id="@+id/checkbox_container"
+            android:id="@+id/checkbox_outer_container"
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
