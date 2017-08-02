@@ -9,5 +9,5 @@
         android:id="@+id/deletaTudo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Deletar Banco(CUIDADO SÓ FAÇA ISSO SE TIVER CERTEZA ..... AHHHHHHHHHHHHHH)"/>
+        android:text="Deletar Conta!!"/>
 </LinearLayout>

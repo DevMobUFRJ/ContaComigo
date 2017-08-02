@@ -38,7 +38,7 @@ public class TotalFragmento extends Fragment implements FragmentInterface{
             public void onClick(View v) {
                 ServicoDAO dao = new ServicoDAO(getContext());
                 dao.deletaBanco();
-                Toast.makeText(getActivity(),  " AHHHHH ", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(),  "Já pode começar outra conta ;)", Toast.LENGTH_SHORT).show();
                 MainActivity.pessoaFragmento.setAtualizar(true);
                 MainActivity.itemFragmento.setAtualizar(true);
 

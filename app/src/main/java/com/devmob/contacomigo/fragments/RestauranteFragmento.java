@@ -24,14 +24,6 @@ public class RestauranteFragmento extends Fragment implements FragmentInterface{
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         View view  = inflater.inflate(R.layout.restaurante_layout, container, false);
-        Button button1 = (Button) view.findViewById( R.id.button_1 );
-        button1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                BottomSheetDialogFragment bottomSheetDialogFragment = new BottomSheetMenuProduto();
-                bottomSheetDialogFragment.show(getActivity().getSupportFragmentManager(), bottomSheetDialogFragment.getTag());
-            }
-        });
         return view;
     }
 
