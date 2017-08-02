@@ -71,7 +71,6 @@ public class AddPessoaActivity extends FragmentActivity {
                         Pessoa p = new Pessoa(nome);
                         dao.insere(p);
                         PessoaFragmento.listAdapter.insereLista(p);
-
                     }
                 }
                 try {
@@ -83,11 +82,6 @@ public class AddPessoaActivity extends FragmentActivity {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-
-
-
-                FragmentInterface frag = (TotalFragmento) getSupportFragmentManager().findFragmentByTag("TotalFragmento");
-                frag.setAtualizar(true);
 
                 intent.putExtra("booleanItem", true);
                 setResult(RESULT_OK, intent);
