@@ -73,15 +73,9 @@ public class AddPessoaActivity extends FragmentActivity {
                         PessoaFragmento.listAdapter.insereLista(p);
                     }
                 }
-                try {
-                    for (String nome: FragmentInterface.fragments) {
-                        Class c = Class.forName(nome);
-                        FragmentInterface frag = (FragmentInterface)c.newInstance();
-                        frag.setAtualizar(true);
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+
+                MainActivity.itemFragmento.setAtualizar(true);
+                MainActivity.pessoaFragmento.setAtualizar(true);
 
                 intent.putExtra("booleanItem", true);
                 setResult(RESULT_OK, intent);

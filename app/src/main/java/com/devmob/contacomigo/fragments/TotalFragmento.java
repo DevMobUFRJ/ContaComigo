@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.devmob.contacomigo.R;
+import com.devmob.contacomigo.activities.MainActivity;
 import com.devmob.contacomigo.dao.ServicoDAO;
 
 import io.github.luizgrp.sectionedrecyclerviewadapter.SectionedRecyclerViewAdapter;
@@ -38,6 +39,8 @@ public class TotalFragmento extends Fragment implements FragmentInterface{
                 ServicoDAO dao = new ServicoDAO(getContext());
                 dao.deletaBanco();
                 Toast.makeText(getActivity(),  " AHHHHH ", Toast.LENGTH_SHORT).show();
+                MainActivity.pessoaFragmento.setAtualizar(true);
+                MainActivity.itemFragmento.setAtualizar(true);
 
             }
         });

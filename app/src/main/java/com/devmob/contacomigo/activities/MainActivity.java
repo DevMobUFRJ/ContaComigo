@@ -32,10 +32,13 @@ public class MainActivity extends FragmentActivity {
 
     private static final String TAG = "MainActivity";
     private static final int RESTAURANTEFRAG = 0;
+    public static final RestauranteFragmento restauranteFragmento = new RestauranteFragmento();
     private static final int ITEMFRAG = 1;
+    public static final ItemFragmento itemFragmento = new ItemFragmento();
     private static final int PESSOAFRAG = 2;
+    public static final PessoaFragmento pessoaFragmento = new PessoaFragmento();
     private static final int TOTALFRAG = 3;
-
+    public static final TotalFragmento totalFragmento = new TotalFragmento();
 
     private SectionsStatePagerAdapter mSectionsStatePagerAdapter;
     private NonSwipeableViewPager mViewPager;
@@ -147,14 +150,16 @@ public class MainActivity extends FragmentActivity {
 
     private void setupViewPager(ViewPager viewPager){
         //SectionsStatePagerAdapter adapter = new SectionsStatePagerAdapter(getSupportFragmentManager());
-        mSectionsStatePagerAdapter.addFragment(new RestauranteFragmento(), "RestauranteFragmento");
-        mSectionsStatePagerAdapter.addFragment(new ItemFragmento(), "ItemFragmento");
-        mSectionsStatePagerAdapter.addFragment(new PessoaFragmento(), "PessoaFragmento");
-        mSectionsStatePagerAdapter.addFragment(new TotalFragmento(), "TotalFragmento");
+        mSectionsStatePagerAdapter.addFragment(restauranteFragmento, "RestauranteFragmento");
+        mSectionsStatePagerAdapter.addFragment(itemFragmento, "ItemFragmento");
+        mSectionsStatePagerAdapter.addFragment(pessoaFragmento, "PessoaFragmento");
+        mSectionsStatePagerAdapter.addFragment(totalFragmento, "TotalFragmento");
         viewPager.setAdapter(mSectionsStatePagerAdapter);
     }
 
     public void setViewPager(int fragmentNumber){
         mViewPager.setCurrentItem(fragmentNumber);
     }
+
+
 }
