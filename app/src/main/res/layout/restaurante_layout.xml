@@ -8,12 +8,9 @@
         android:layout_height="match_parent"
         android:gravity="center"
         android:text="Olá, seja Bem-Vindo ao ContaComigo!
-versão Alpha 0.1
-
-O design do aplicativo ainda não está feito.
-
+versão Alpha 0.1\n\n O design do aplicativo ainda não está feito.\n\n
 Para remover todos os produtos e pessoas, há temporariamente um botão na última aba.
-
+\n\n
 Qualquer sugestão e feedback, envie mensagem no nosso grupo do Telegram."
         />
 </LinearLayout>
