@@ -66,7 +66,9 @@ public class ProdutoExpandableListAdapter extends BaseExpandableListAdapter {
         Pessoa detailInfo = (Pessoa) getChild(indiceProduto, indicePessoa);
         Produto produto = (Produto) getGroup(indiceProduto);
 
+        //TODO aqui tem que pegar o preço do ProdutoConsumido, e não do Produto
         double price = produto.getPreco()/produto.getConsumidores().size();
+        //double price = produtoConsumido.getPrice();
         if (view == null) {
             LayoutInflater infalInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             view = infalInflater.inflate(R.layout.list_de_produto_item_pessoa, null);

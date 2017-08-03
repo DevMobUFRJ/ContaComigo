@@ -5,11 +5,13 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.ArrayMap;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Toast;
@@ -23,6 +25,7 @@ import com.devmob.contacomigo.model.Produto;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import me.himanshusoni.quantityview.QuantityView;
 
@@ -35,6 +38,7 @@ public class AddProdutoActivity extends AppCompatActivity implements QuantityVie
     public Button botaoSalvar;
     public Button botaoCancelar;
     ViewGroup checkboxOuterContainer;
+    CheckBox quantidadeDiferenteCheck;
     QuantityView quantityView;
 
     Intent intent;
@@ -49,10 +53,11 @@ public class AddProdutoActivity extends AppCompatActivity implements QuantityVie
         botaoSalvar = (Button) findViewById(R.id.salvar);
         botaoCancelar = (Button) findViewById(R.id.cancelar);
         quantityView = (QuantityView) findViewById(R.id.quantityView);
+        quantidadeDiferenteCheck = (CheckBox) findViewById(R.id.quantidadeDiferenteCheckbox);
+        checkboxOuterContainer = (ViewGroup) findViewById(R.id.checkbox_outer_container);
         nomeT.addTextChangedListener(mTextWatcher);
         precoT.addTextChangedListener(mTextWatcher);
         checkFieldsForEmptyValues();
-        checkboxOuterContainer = (ViewGroup) findViewById(R.id.checkbox_outer_container);
         quantityView.setOnQuantityChangeListener(this);
         botaoSalvar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -67,7 +72,7 @@ public class AddProdutoActivity extends AppCompatActivity implements QuantityVie
                 produtodao.insere(produto);
                 produtodao.close();
                 Toast.makeText(AddProdutoActivity.this, "Produto salvo com sucesso!", Toast.LENGTH_SHORT).show();
-                List<Integer> idsConsumidores = new ArrayList<Integer>();
+                Map<Integer, Integer> idsConsumidores = new ArrayMap<Integer, Integer>();
                 //TODO getQuantityPerPerson
                 //QuantitiView está em View v = ((LinearLayout)checkboxOuterContainer.getChildAt(i)).getChildAt(1);
                 //O que muda: precoPorPessoa tera calculo mais complexo
@@ -75,24 +80,39 @@ public class AddProdutoActivity extends AppCompatActivity implements QuantityVie
                 
                 for (int i = 0; i < checkboxOuterContainer.getChildCount(); i++) {
                     View v = ((LinearLayout)checkboxOuterContainer.getChildAt(i)).getChildAt(0);
+                    View v2 = ((LinearLayout)checkboxOuterContainer.getChildAt(i)).getChildAt(1);
+
                     if (v instanceof CheckBox) {
                         if (((CheckBox) v).isChecked()) {
-                            idsConsumidores.add(v.getId());
+                            idsConsumidores.put(v.getId(), ((QuantityView) v2).getQuantity());
                         }
                     }
                 }
-                float precoPorPessoa = (float)(produto.getPreco()/idsConsumidores.size());
-                //temporário
-                //TODO PEGAR DA TELA DE ADICIONAR
-                int quantidadeConsumida = 1;
-                for (Integer id : idsConsumidores) {
-                    ppd.insere(id, produto.getId(), quantidadeConsumida, precoPorPessoa);
+
+                if (!quantidadeDiferenteCheck.isChecked()){
+                    float precoPorPessoa = (float)(produto.getPreco()*produto.getQuantidade()/idsConsumidores.size());
+
+                    for (Integer id : idsConsumidores.keySet()) {
+                        int quantidadeConsumida = 1;
+                        Log.d(TAG, "onClick : " + id + " " + quantidadeConsumida);
+                        ppd.insere(id, produto.getId(), quantidadeConsumida, precoPorPessoa);
+                    }
                 }
+                else{
+                    for (Integer id : idsConsumidores.keySet()) {
+                        int quantidadeConsumida = idsConsumidores.get(id);
+                        Log.d(TAG, "onClick : " + id + " " + quantidadeConsumida);
+                        ppd.insere(id, produto.getId(), quantidadeConsumida, (float) produto.getPreco() * quantidadeConsumida);
+
+                    }
+                }
+
                 intent.putExtra("booleanItem", true);
                 setResult(RESULT_OK, intent);
                 finish();
             }
         });
+
         botaoCancelar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -105,7 +125,7 @@ public class AddProdutoActivity extends AppCompatActivity implements QuantityVie
 
         PessoaDAO pessoaDAO = new PessoaDAO(AddProdutoActivity.this);
 
-        List<Pessoa> pessoas = pessoaDAO.buscaPessoas();
+        final List<Pessoa> pessoas = pessoaDAO.buscaPessoas();
         for (Pessoa pessoa : pessoas) {
             LinearLayout checkboxInnerContainer = new LinearLayout(this);
             checkboxInnerContainer.setOrientation(LinearLayout.HORIZONTAL);
@@ -114,11 +134,35 @@ public class AddProdutoActivity extends AppCompatActivity implements QuantityVie
             checkBox.setId(pessoa.getId());
             QuantityView quantityView = new QuantityView(this);
             quantityView.setId(pessoa.getId());
+            quantityView.setQuantity(1);
+            quantityView.setMaxQuantity(100);
+            quantityView.setMinQuantity(1);
             checkboxInnerContainer.addView(checkBox);
             checkboxInnerContainer.addView(quantityView);
             checkboxOuterContainer.addView(checkboxInnerContainer);
 
         }
+        quantidadeDiferenteCheck.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (!isChecked){
+                    for (int i = 0; i < checkboxOuterContainer.getChildCount(); i++) {
+                        QuantityView qv = (QuantityView) ((LinearLayout)checkboxOuterContainer.getChildAt(i)).getChildAt(1);
+                        qv.setQuantity(1);
+                        qv.setMaxQuantity(1);
+                        qv.setMinQuantity(1);
+                    }
+                }
+                else{
+                    for (int i = 0; i < checkboxOuterContainer.getChildCount(); i++) {
+                        QuantityView qv = (QuantityView) ((LinearLayout)checkboxOuterContainer.getChildAt(i)).getChildAt(1);
+                        qv.setQuantity(1);
+                        qv.setMaxQuantity(100);
+                        qv.setMinQuantity(1);
+                    }
+                }
+            }
+        });
 
     }
 
