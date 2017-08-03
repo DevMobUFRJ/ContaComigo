@@ -8,6 +8,8 @@ import android.widget.BaseExpandableListAdapter;
 import android.widget.TextView;
 
 import com.devmob.contacomigo.R;
+import com.devmob.contacomigo.dao.PessoaProdutoDAO;
+import com.devmob.contacomigo.dao.ProdutoDAO;
 import com.devmob.contacomigo.fragments.ItemFragmento;
 import com.devmob.contacomigo.model.Pessoa;
 import com.devmob.contacomigo.model.Produto;
@@ -24,27 +26,27 @@ import java.util.List;
 
 public class ProdutoExpandableListAdapter extends BaseExpandableListAdapter {
     private Context context;
-    private ArrayList<ProdutoConsumido> prodList;
+    private ArrayList<Produto> prodList;
 
-    public ProdutoExpandableListAdapter(Context context, ArrayList<ProdutoConsumido> prodList) {
+    public ProdutoExpandableListAdapter(Context context, ArrayList<Produto> prodList) {
         this.context = context;
         this.prodList = prodList;
     }
 
     @Override
     public Object getChild(int indiceProduto, int indicePessoa) {
-        List<Pessoa> consumidores = prodList.get(indiceProduto).getProduto().getConsumidores();
+        List<Pessoa> consumidores = prodList.get(indiceProduto).getConsumidores();
         return consumidores.get(indicePessoa);
     }
 
-    public void insereProdutoNaLista(ProdutoConsumido novo) {
+    public void insereProdutoNaLista(Produto novo) {
         prodList.add(novo);
         this.notifyDataSetChanged();
     }
 
-    public void deletaLista(ProdutoConsumido novo) {
-        for (ProdutoConsumido p: prodList) {
-            if (p.getProduto().getId() == novo.getProduto().getId()){
+    public void deletaLista(Produto novo) {
+        for (Produto p: prodList) {
+            if (p.getId() == novo.getId()){
                 prodList.remove(p);
                 break;
             }
@@ -66,9 +68,23 @@ public class ProdutoExpandableListAdapter extends BaseExpandableListAdapter {
         Pessoa detailInfo = (Pessoa) getChild(indiceProduto, indicePessoa);
         Produto produto = (Produto) getGroup(indiceProduto);
 
-        //TODO aqui tem que pegar o preço do ProdutoConsumido, e não do Produto
-        double price = produto.getPreco()/produto.getConsumidores().size();
-        //double price = produtoConsumido.getPrice();
+        PessoaProdutoDAO ppDAO = new PessoaProdutoDAO(context);
+        List<ProdutoConsumido> produtosConsumidos = ppDAO.buscaProdutosDeUmaPessoa(detailInfo);
+        double price = 0;
+        System.out.println("Pessoa:"+detailInfo.getNome());
+        System.out.println("Consumiu:");
+        for (ProdutoConsumido p : produtosConsumidos) {
+            System.out.println(p.getProduto().getNome());
+            if(p.getProduto().getId() == detailInfo.getId()){
+                System.out.println(p.getProduto().getNome());
+                price = p.getPrecoPago();
+            }
+        }
+
+        System.out.println("------------");
+        System.out.println("Produto original Clicado"+produto.getNome());
+        System.out.println("------------");
+
         if (view == null) {
             LayoutInflater infalInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             view = infalInflater.inflate(R.layout.list_de_produto_item_pessoa, null);
@@ -87,7 +103,7 @@ public class ProdutoExpandableListAdapter extends BaseExpandableListAdapter {
 
     @Override
     public int getChildrenCount(int indiceProduto) {
-        return prodList.get(indiceProduto).getProduto().getConsumidores().size();
+        return prodList.get(indiceProduto).getConsumidores().size();
     }
 
     @Override
