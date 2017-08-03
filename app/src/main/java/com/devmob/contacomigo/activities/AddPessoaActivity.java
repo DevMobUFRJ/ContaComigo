@@ -39,6 +39,7 @@ public class AddPessoaActivity extends FragmentActivity {
     private Button botaoSalvar;
     private Button botaoCancelar;
     private List<EditText> pessoas;
+    private int contViewPosition;
     Intent intent;
 
 
@@ -90,6 +91,9 @@ public class AddPessoaActivity extends FragmentActivity {
                 finish();
             }
         });
+
+        //seta posição do EditText no Layout quando adicionado no addFAB.
+        contViewPosition = 1;
         addFAB = (FloatingActionButton) findViewById(R.id.addFAB);
         addFAB.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -107,7 +111,8 @@ public class AddPessoaActivity extends FragmentActivity {
                 imm.showSoftInput(novaPessoa, InputMethodManager.SHOW_IMPLICIT);
                 novaPessoa.setHint("Nova Pessoa");
                 pessoas.add(novaPessoa);
-                myLayout.addView(novaPessoa);
+                myLayout.addView(novaPessoa, contViewPosition);
+                contViewPosition++;
             }
         });
     }
