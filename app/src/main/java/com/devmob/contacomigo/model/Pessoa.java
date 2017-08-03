@@ -33,6 +33,7 @@ public class Pessoa {
     }
 
     public List<ProdutoConsumido> getProdutosConsumidos() {
+
         return produtosConsumidos;
     }
 
