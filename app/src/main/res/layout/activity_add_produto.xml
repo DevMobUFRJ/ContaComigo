@@ -19,16 +19,32 @@
         android:hint="Preço"
         android:inputType="numberDecimal" />
 
-    <me.himanshusoni.quantityview.QuantityView
-        android:id="@+id/quantityView"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        app:qv_addButtonBackground="@drawable/add_selector"
-        app:qv_addButtonTextColor="@color/md_white_1000"
-        app:qv_quantity="1"
-        app:qv_removeButtonBackground="@drawable/remove_selector"
-        app:qv_removeButtonTextColor="@color/md_white_1000" />
+        android:orientation="horizontal">
+        <me.himanshusoni.quantityview.QuantityView
+            android:id="@+id/quantityView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_gravity="top"
+
+            app:qv_addButtonBackground="@drawable/add_selector"
+            app:qv_addButtonTextColor="@color/md_white_1000"
+            app:qv_quantity="1"
+            app:qv_removeButtonBackground="@drawable/remove_selector"
+            app:qv_removeButtonTextColor="@color/md_white_1000" />
+        <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="Quantidade diferente por pessoa?"
+            android:id="@+id/quantidadeDiferenteCheckbox"
+            />
+
+    </LinearLayout>
+
 
     <ScrollView
         android:layout_width="wrap_content"
