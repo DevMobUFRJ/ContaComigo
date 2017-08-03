@@ -101,9 +101,6 @@ public class PessoaProdutoDAO extends DBAdapter {
         open();
         for (Pessoa p : pessoas) {
             p.setProdutosConsumidos(buscaProdutosDeUmaPessoa(p));
-            for (ProdutoConsumido pc : p.getProdutosConsumidos()) {
-                Log.d(TAG, "->>>>>>Produto Consumido: "+pc.getProduto().getNome()+" por: "+p.getNome()+" por: "+pc.getPrecoPago());
-            }
         }
         close();
         return pessoas;
