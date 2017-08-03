@@ -1,6 +1,7 @@
 package com.devmob.contacomigo.ExpandableList;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +19,8 @@ import com.devmob.contacomigo.model.ProdutoConsumido;
 import java.util.ArrayList;
 import java.util.List;
 
+import static android.content.ContentValues.TAG;
+
 /**
  * Created by DevMachine on 29/03/2017.
  */
@@ -25,6 +28,10 @@ import java.util.List;
 // GROUP EH O PRODUTO, CHILD EH PESSOA
 
 public class ProdutoExpandableListAdapter extends BaseExpandableListAdapter {
+
+    private static final String TAG = "ProdutoExpandListAdap";
+
+
     private Context context;
     private ArrayList<Produto> prodList;
 
@@ -68,22 +75,13 @@ public class ProdutoExpandableListAdapter extends BaseExpandableListAdapter {
         Pessoa detailInfo = (Pessoa) getChild(indiceProduto, indicePessoa);
         Produto produto = (Produto) getGroup(indiceProduto);
 
-        PessoaProdutoDAO ppDAO = new PessoaProdutoDAO(context);
-        List<ProdutoConsumido> produtosConsumidos = ppDAO.buscaProdutosDeUmaPessoa(detailInfo);
         double price = 0;
-        System.out.println("Pessoa:"+detailInfo.getNome());
-        System.out.println("Consumiu:");
-        for (ProdutoConsumido p : produtosConsumidos) {
-            System.out.println(p.getProduto().getNome());
-            if(p.getProduto().getId() == detailInfo.getId()){
-                System.out.println(p.getProduto().getNome());
-                price = p.getPrecoPago();
+        for (ProdutoConsumido pc : detailInfo.getProdutosConsumidos()) {
+            if(pc.getProduto().getId() == produto.getId()) {
+                price = pc.getPrecoPago();
             }
         }
 
-        System.out.println("------------");
-        System.out.println("Produto original Clicado"+produto.getNome());
-        System.out.println("------------");
 
         if (view == null) {
             LayoutInflater infalInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -94,7 +92,7 @@ public class ProdutoExpandableListAdapter extends BaseExpandableListAdapter {
         pessoa.setText(detailInfo.getNome().trim());
         TextView pessoaPreco = (TextView) view.findViewById(R.id.pessoaPreco);
         if (ItemFragmento.gorjeta.getAtivo() == false)
-            pessoaPreco.setText(String.format("%.2f",price));
+            pessoaPreco.setText(String.format("%.2f", price));
         else
             pessoaPreco.setText(String.format("%.2f", price*ItemFragmento.gorjeta.getValor()));
 

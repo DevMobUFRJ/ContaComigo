@@ -45,7 +45,6 @@ public class PessoaProdutoDAO extends DBAdapter {
         List<Integer> ids = new ArrayList<>();
         List<Integer> quantidades = new ArrayList<>();
         List<Float> precos= new ArrayList<>();
-        int cont = 0;
         while (cursor.moveToNext()) {
             Integer id = new Integer(cursor.getInt(cursor.getColumnIndex("idProduto")));
             int quantidadeTemporaria = cursor.getInt(cursor.getColumnIndex("quantidadeConsumida"));
@@ -57,7 +56,8 @@ public class PessoaProdutoDAO extends DBAdapter {
         }
         close();
         open();
-        List<ProdutoConsumido> produtos= new ArrayList<>();
+        int cont = 0;
+        List<ProdutoConsumido> produtosConsumidos= new ArrayList<>();
         for (Integer i : ids) {
             Cursor cursor2 = db.rawQuery("SELECT * FROM Produto WHERE id = ?", new String[]{"" + i});
             if (cursor2 != null)
@@ -70,10 +70,10 @@ public class PessoaProdutoDAO extends DBAdapter {
             ProdutoConsumido produtoConsumido = new ProdutoConsumido(produto, quantidades.get(cont), precos.get(cont));
             cont++;
 
-            produtos.add(produtoConsumido);
+            produtosConsumidos.add(produtoConsumido);
         }
         close();
-        return produtos;
+        return produtosConsumidos;
     }
 
     public List<Pessoa> buscaPessoasDeUmProduto(Produto produto) {
@@ -96,6 +96,11 @@ public class PessoaProdutoDAO extends DBAdapter {
                     cursor2.getInt(cursor2.getColumnIndex("id")),
                     cursor2.getString(cursor2.getColumnIndex("nome")));
             pessoas.add(pessoa);
+        }
+        close();
+        open();
+        for (Pessoa p : pessoas) {
+            p.setProdutosConsumidos(buscaProdutosDeUmaPessoa(p));
         }
         close();
         return pessoas;

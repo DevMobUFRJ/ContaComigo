@@ -22,6 +22,7 @@ import com.devmob.contacomigo.dao.PessoaProdutoDAO;
 import com.devmob.contacomigo.dao.ProdutoDAO;
 import com.devmob.contacomigo.model.Pessoa;
 import com.devmob.contacomigo.model.Produto;
+import com.devmob.contacomigo.model.ProdutoConsumido;
 
 import java.util.List;
 import java.util.Map;
@@ -130,10 +131,10 @@ public class AddProdutoActivity extends AppCompatActivity implements QuantityVie
                 }
                 else{
                     for (Integer id : idsConsumidores.keySet()) {
-                        int quantidadeConsumida = idsConsumidores.get(id);
-                        Log.d(TAG, "onClick : " + id + " " + quantidadeConsumida);
-                        ppd.insere(id, produto.getId(), quantidadeConsumida, (float) produto.getPreco() * quantidadeConsumida);
-
+                        int quantidadeConsumidaPorPessoa = idsConsumidores.get(id);
+                        Log.d(TAG, "Pessoa: " + id + " Consumiu: " + quantidadeConsumidaPorPessoa);
+                        ppd.insere(id, produto.getId(), quantidadeConsumidaPorPessoa, (float) produto.getPreco() * quantidadeConsumidaPorPessoa);
+                        Log.d(TAG, "Preço: "+ (float) produto.getPreco() * quantidadeConsumidaPorPessoa);
                     }
                 }
 
