@@ -11,6 +11,7 @@ import com.devmob.contacomigo.R;
 import com.devmob.contacomigo.fragments.ItemFragmento;
 import com.devmob.contacomigo.model.Pessoa;
 import com.devmob.contacomigo.model.Produto;
+import com.devmob.contacomigo.model.ProdutoConsumido;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,27 +24,27 @@ import java.util.List;
 
 public class ProdutoExpandableListAdapter extends BaseExpandableListAdapter {
     private Context context;
-    private ArrayList<Produto> prodList;
+    private ArrayList<ProdutoConsumido> prodList;
 
-    public ProdutoExpandableListAdapter(Context context, ArrayList<Produto> prodList) {
+    public ProdutoExpandableListAdapter(Context context, ArrayList<ProdutoConsumido> prodList) {
         this.context = context;
         this.prodList = prodList;
     }
 
     @Override
     public Object getChild(int indiceProduto, int indicePessoa) {
-        List<Pessoa> consumidores = prodList.get(indiceProduto).getConsumidores();
+        List<Pessoa> consumidores = prodList.get(indiceProduto).getProduto().getConsumidores();
         return consumidores.get(indicePessoa);
     }
 
-    public void insereProdutoNaLista(Produto novo) {
+    public void insereProdutoNaLista(ProdutoConsumido novo) {
         prodList.add(novo);
         this.notifyDataSetChanged();
     }
 
-    public void deletaLista(Produto novo) {
-        for (Produto p: prodList) {
-            if (p.getId() == novo.getId()){
+    public void deletaLista(ProdutoConsumido novo) {
+        for (ProdutoConsumido p: prodList) {
+            if (p.getProduto().getId() == novo.getProduto().getId()){
                 prodList.remove(p);
                 break;
             }
@@ -84,7 +85,7 @@ public class ProdutoExpandableListAdapter extends BaseExpandableListAdapter {
 
     @Override
     public int getChildrenCount(int indiceProduto) {
-        return prodList.get(indiceProduto).getConsumidores().size();
+        return prodList.get(indiceProduto).getProduto().getConsumidores().size();
     }
 
     @Override
