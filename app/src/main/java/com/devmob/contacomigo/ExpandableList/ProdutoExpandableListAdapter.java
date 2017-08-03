@@ -8,9 +8,12 @@ import android.widget.BaseExpandableListAdapter;
 import android.widget.TextView;
 
 import com.devmob.contacomigo.R;
+import com.devmob.contacomigo.dao.PessoaProdutoDAO;
+import com.devmob.contacomigo.dao.ProdutoDAO;
 import com.devmob.contacomigo.fragments.ItemFragmento;
 import com.devmob.contacomigo.model.Pessoa;
 import com.devmob.contacomigo.model.Produto;
+import com.devmob.contacomigo.model.ProdutoConsumido;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -65,7 +68,23 @@ public class ProdutoExpandableListAdapter extends BaseExpandableListAdapter {
         Pessoa detailInfo = (Pessoa) getChild(indiceProduto, indicePessoa);
         Produto produto = (Produto) getGroup(indiceProduto);
 
-        double price = produto.getPreco()/produto.getConsumidores().size();
+        PessoaProdutoDAO ppDAO = new PessoaProdutoDAO(context);
+        List<ProdutoConsumido> produtosConsumidos = ppDAO.buscaProdutosDeUmaPessoa(detailInfo);
+        double price = 0;
+        System.out.println("Pessoa:"+detailInfo.getNome());
+        System.out.println("Consumiu:");
+        for (ProdutoConsumido p : produtosConsumidos) {
+            System.out.println(p.getProduto().getNome());
+            if(p.getProduto().getId() == detailInfo.getId()){
+                System.out.println(p.getProduto().getNome());
+                price = p.getPrecoPago();
+            }
+        }
+
+        System.out.println("------------");
+        System.out.println("Produto original Clicado"+produto.getNome());
+        System.out.println("------------");
+
         if (view == null) {
             LayoutInflater infalInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             view = infalInflater.inflate(R.layout.list_de_produto_item_pessoa, null);
