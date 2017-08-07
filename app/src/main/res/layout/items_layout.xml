@@ -14,15 +14,7 @@
         android:layout_margin="16sp"
         app:backgroundTint="@color/red"
         android:src="@drawable/ic_add_button_circle" />
-    <Button
-        android:id="@+id/deletaTudo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_gravity="bottom"
-        android:layout_alignParentLeft="true"
-        android:layout_margin="16sp"
-        android:text="DELETA"/>
+    
 
 
 

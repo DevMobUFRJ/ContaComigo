@@ -51,7 +51,6 @@ public class ItemFragmento extends Fragment implements FragmentInterface{
     public static SwitchCompat switchGorjeta;
     private ExpandableListView itemsExpandableListView;
     public FloatingActionButton addFAB;
-    public Button apagaTudo;
     public static Gorjeta gorjeta;
     public static TextView gorjetaValor;
     public static boolean itemAdicionado;
@@ -68,7 +67,6 @@ public class ItemFragmento extends Fragment implements FragmentInterface{
         View view  = inflater.inflate(R.layout.items_layout, container, false);
 
         //Inicialização
-        apagaTudo = (Button) view.findViewById(R.id.deletaTudo);
         switchGorjeta = (SwitchCompat) view.findViewById(R.id.switchGorjeta);
         gorjetaValor = (TextView) view.findViewById(R.id.gorjetaValor);
         gorjeta = new Gorjeta();
