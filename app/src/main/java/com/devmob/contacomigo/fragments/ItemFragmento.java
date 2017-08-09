@@ -1,7 +1,9 @@
 package com.devmob.contacomigo.fragments;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
@@ -19,6 +21,7 @@ import android.widget.CompoundButton;
 import android.widget.ExpandableListView;
 import android.widget.NumberPicker;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.devmob.contacomigo.ExpandableList.ProdutoExpandableListAdapter;
 import com.devmob.contacomigo.R;
@@ -69,13 +72,20 @@ public class ItemFragmento extends Fragment implements FragmentInterface{
         //Inicialização
         switchGorjeta = (SwitchCompat) view.findViewById(R.id.switchGorjeta);
         gorjetaValor = (TextView) view.findViewById(R.id.gorjetaValor);
-        gorjeta = new Gorjeta();
+
         itemsExpandableListView = (ExpandableListView) view.findViewById(R.id.produtosExpandableListView);
         ProdutoDAO dao = new ProdutoDAO(getActivity());
         produtos = dao.buscaProdutos();
         listAdapter = new ProdutoExpandableListAdapter(getActivity(), new ArrayList<>(produtos));
         itemsExpandableListView.setAdapter(listAdapter);
         addFAB = (FloatingActionButton) view.findViewById(R.id.addFAB);
+
+        SharedPreferences prefs = getContext().getSharedPreferences("Preferences", Context.MODE_PRIVATE);
+
+            gorjetaValor.setText(prefs.getString("gorjetaValor", "10%"));
+            gorjeta = new Gorjeta(prefs.getInt("gorjetaPorcentagem", 10), prefs.getBoolean("gorjetaAtivo", false));
+
+
 
         //LONG CLICK EM CADA CHILD (PESSOA E PREÇO)
         itemsExpandableListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
@@ -260,6 +270,18 @@ public class ItemFragmento extends Fragment implements FragmentInterface{
 
     }
 
+    @Override
+    public void onStop() {
+        super.onStop();
+        SharedPreferences.Editor prefEditor = getContext().getSharedPreferences("Preferences", Context.MODE_PRIVATE).edit();
+        prefEditor.putString("gorjetaValor", gorjetaValor .getText().toString());
+        prefEditor.putInt("gorjetaPorcentagem", gorjeta.getPorcentagem());
+        prefEditor.putBoolean("gorjetaAtivo", gorjeta.getAtivo());
+        prefEditor.commit();
+        Toast.makeText(getActivity(), "Item Fragmento Stopped", Toast.LENGTH_SHORT).show();
+    }
+
+
     private void telaAdicionar() {
         Intent intent = new Intent(getActivity(), AddProdutoActivity.class);
         //intent.putExtra(getString(R.string.key_name), name);
@@ -302,6 +324,7 @@ public class ItemFragmento extends Fragment implements FragmentInterface{
             Log.i(TAG, "ItemFrag Atualizada");
         }
     }
+
 }
 
 

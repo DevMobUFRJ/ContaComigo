@@ -1,7 +1,9 @@
 package com.devmob.contacomigo.fragments;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.support.design.widget.BottomSheetDialogFragment;
 import android.support.design.widget.FloatingActionButton;
@@ -20,6 +22,7 @@ import android.widget.CompoundButton;
 import android.widget.ExpandableListView;
 import android.widget.NumberPicker;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.devmob.contacomigo.ExpandableList.PessoaExpandableListAdapter;
 import com.devmob.contacomigo.R;
@@ -71,6 +74,8 @@ public class PessoaFragmento extends Fragment implements FragmentInterface{
         PessoaDAO dao = new PessoaDAO(getActivity());
         pessoas = dao.buscaPessoas();
         dao.close();
+        gorjetaValor.setText(gorjeta.getPorcentagem()+ "%");
+        SharedPreferences prefs = getContext().getSharedPreferences("Preferences", Context.MODE_PRIVATE);
 
         for (Pessoa p:pessoas){
             Log.d(TAG, p.getNome());
@@ -242,6 +247,7 @@ public class PessoaFragmento extends Fragment implements FragmentInterface{
         pessoas = pdao.buscaPessoas();
     }
 
+
     public void onResume() {
         super.onResume();
         PessoaDAO pdao = new PessoaDAO(getContext());
@@ -260,8 +266,20 @@ public class PessoaFragmento extends Fragment implements FragmentInterface{
     }
 
 
+    @Override
+    public void onStop() {
+        super.onStop();
+        //SharedPreferences.Editor prefEditor = getContext().getSharedPreferences("Preferences", Context.MODE_PRIVATE).edit();
+        //prefEditor.putString("gorjetaValor", gorjetaValor .getText().toString());
+        //prefEditor.commit();
+        Toast.makeText(getActivity(), "Pessoa Fragmento Stopped", Toast.LENGTH_SHORT).show();
+    }
 
-
+    @Override
+    public void onPause() {
+        super.onPause();
+        Toast.makeText(getActivity(), "Pessoa Fragmento PAUSED", Toast.LENGTH_SHORT).show();
+    }
 
     private void telaAdicionar() {
         Intent intent = new Intent(getActivity(), AddPessoaActivity.class);

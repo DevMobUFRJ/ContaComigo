@@ -9,6 +9,9 @@ public class Gorjeta {
 
     private double valor;
 
+    private int porcentagem;
+    private Boolean ativo;
+
     public int getPorcentagem() {
         return porcentagem;
     }
@@ -20,14 +23,11 @@ public class Gorjeta {
 
     }
 
-    private int porcentagem;
-    private Boolean ativo;
-
-    public Gorjeta() {
-        this.porcentagem = 10;
+    public Gorjeta(int porcentagem, boolean ativo) {
+        this.porcentagem = porcentagem;
         this.valor =(double) porcentagem/100;
         this.valor = this.valor +1.0;
-        this.ativo = false;
+        this.ativo = ativo;
     }
 
     public double getValor() {
