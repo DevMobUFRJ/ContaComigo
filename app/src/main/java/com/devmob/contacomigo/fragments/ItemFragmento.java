@@ -82,8 +82,8 @@ public class ItemFragmento extends Fragment implements FragmentInterface{
 
         SharedPreferences prefs = getContext().getSharedPreferences("Preferences", Context.MODE_PRIVATE);
 
-            gorjetaValor.setText(prefs.getString("gorjetaValor", "10%"));
-            gorjeta = new Gorjeta(prefs.getInt("gorjetaPorcentagem", 10), prefs.getBoolean("gorjetaAtivo", false));
+        gorjetaValor.setText(prefs.getString("gorjetaValor", "10%"));
+        gorjeta = new Gorjeta(prefs.getInt("gorjetaPorcentagem", 10), prefs.getBoolean("gorjetaAtivo", false));
 
 
 

@@ -1,6 +1,7 @@
 package com.devmob.contacomigo.fragments;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
@@ -46,6 +47,10 @@ public class TotalFragmento extends Fragment implements FragmentInterface{
                 prefEditor.commit();
                 MainActivity.pessoaFragmento.setAtualizar(true);
                 MainActivity.itemFragmento.setAtualizar(true);
+                Intent i = getContext().getPackageManager()
+                        .getLaunchIntentForPackage( getContext().getPackageName() );
+                i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(i);
 
             }
         });
