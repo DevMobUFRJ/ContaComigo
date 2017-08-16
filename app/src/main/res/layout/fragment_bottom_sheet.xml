@@ -45,7 +45,7 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/bs_item_height"
         android:gravity="center_vertical"
-        android:id="@+id/rl1"
+        android:id="@+id/btn_edit"
         android:layout_marginLeft="@dimen/activity_horizontal_margin"
         android:layout_marginRight="@dimen/activity_horizontal_margin"
         android:background="?attr/selectableItemBackground">
@@ -62,11 +62,12 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:layout_marginLeft="@dimen/activity_vertical_margin"
-            android:text="Document"
+            android:text="Edit"
             android:textSize = "22sp"
             android:textColor="@color/gray"
             android:textAllCaps = "false" />
     </RelativeLayout>
+    <View style="@style/divider" />
 
     <RelativeLayout
         android:layout_width="match_parent"

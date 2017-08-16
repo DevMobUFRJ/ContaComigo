@@ -36,6 +36,12 @@ public class PessoaProdutoDAO extends DBAdapter {
         close();
     }
 
+    public void deletaRelacoesDoProduto(Produto produto){
+        open();
+        db.execSQL("DELETE FROM PessoaProduto WHERE idProduto = ?;", new String[]{"" + produto.getId()});
+        close();
+    }
+
     //TODO RESOLVER QUERY
     public List<ProdutoConsumido> buscaProdutosDeUmaPessoa(Pessoa pessoa) {
 

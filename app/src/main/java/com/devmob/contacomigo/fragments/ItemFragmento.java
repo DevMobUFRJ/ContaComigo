@@ -88,6 +88,7 @@ public class ItemFragmento extends Fragment implements FragmentInterface{
                 //LONG CLICK NA PESSOA
                 if (ExpandableListView.getPackedPositionType(id) == ExpandableListView.PACKED_POSITION_TYPE_CHILD) {
                     Pessoa pessoa = produto.getConsumidores().get(indicePessoa);
+
                     //Toast.makeText(getActivity(), pessoa.getNome() + "/" + indicePessoa + " deve " + pessoa.getPrecoTotal(), Toast.LENGTH_SHORT).show();
                     return true;
                 }
@@ -231,44 +232,19 @@ public class ItemFragmento extends Fragment implements FragmentInterface{
 
     }
 
-    public void adicionaProduto(Produto produto){
-        produtos.add(produto);
-        listAdapter.insereProdutoNaLista(produto);
-
-    }
-
     @Override
     public void onResume() {
         super.onResume();
-        //busca produtos
-        Log.d(TAG, "onResume");
-        ProdutoDAO pdao = new ProdutoDAO(getActivity());
-        produtos = pdao.buscaProdutos();
-        if (itemAdicionado==true) {
-            //pega ultimo produto adicionado
-            Produto produto = produtos.get(produtos.size() - 1);
-
-            //pega consumidores relacionados a esse produto
-            PessoaProdutoDAO ppdao = new PessoaProdutoDAO(getActivity());
-            List<Pessoa> consumidores = ppdao.buscaPessoasDeUmProduto(produto);
-
-            produto.setConsumidores(consumidores);
-
-            adicionaProduto(produto);
-            itemAdicionado = false;
+        if(itemAdicionado){
+            Log.d(TAG, "onResume: entrei e chamei fragmentbecamevisible");
+            fragmentBecameVisible();
         }
-
     }
 
     private void telaAdicionar() {
         Intent intent = new Intent(getActivity(), AddProdutoActivity.class);
         //intent.putExtra(getString(R.string.key_name), name);
         startActivityForResult(intent, 1);
-    }
-    
-    public void atualizaListas(){
-        ProdutoDAO pdao = new ProdutoDAO(getActivity());
-        produtos = pdao.buscaProdutos();
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -277,9 +253,6 @@ public class ItemFragmento extends Fragment implements FragmentInterface{
             if(resultCode == RESULT_OK) {
                 itemAdicionado = data.getExtras().getBoolean("booleanItem");
                 PessoaFragmento.itemAdicionado = data.getExtras().getBoolean("booleanItem");
-
-                listAdapter.notifyDataSetChanged();
-
             }
         }
 
@@ -293,6 +266,7 @@ public class ItemFragmento extends Fragment implements FragmentInterface{
 
     @Override
     public void fragmentBecameVisible() {
+        Log.d(TAG, "atualizar is: "+atualizar);
         if(atualizar){
             ProdutoDAO pdao = new ProdutoDAO(getContext());
             produtos = pdao.buscaProdutos();

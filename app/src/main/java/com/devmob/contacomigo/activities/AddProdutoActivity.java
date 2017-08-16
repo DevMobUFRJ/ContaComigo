@@ -22,7 +22,6 @@ import com.devmob.contacomigo.dao.PessoaProdutoDAO;
 import com.devmob.contacomigo.dao.ProdutoDAO;
 import com.devmob.contacomigo.model.Pessoa;
 import com.devmob.contacomigo.model.Produto;
-import com.devmob.contacomigo.model.ProdutoConsumido;
 
 import java.util.List;
 import java.util.Map;
@@ -33,30 +32,47 @@ public class AddProdutoActivity extends AppCompatActivity implements QuantityVie
 
     private static final String TAG = "AddProdutoActivity";
 
-    public EditText nomeT;
-    public EditText precoT;
-    public Button botaoSalvar;
-    public Button botaoCancelar;
-    ViewGroup checkboxOuterContainer;
-    CheckBox quantidadeDiferenteCheck;
-    QuantityView quantityViewTotal;
+    private EditText nomeProduto;
+    private EditText precoProduto;
+    private Button botaoSalvar;
+    private Button botaoCancelar;
+    private ViewGroup checkboxOuterContainer;
+    private CheckBox quantidadeDiferenteCheck;
+    private QuantityView quantityViewTotal;
+    private Intent intent;
+    private boolean isEdit = false;
 
-    Intent intent;
+    private void atualizaFragmentos() {
+        MainActivity.itemFragmento.setAtualizar(true);
+        MainActivity.pessoaFragmento.setAtualizar(true);
+        intent.putExtra("booleanItem", true);
+        setResult(RESULT_OK, intent);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_produto);
         intent = getIntent();
-        nomeT = (EditText) findViewById(R.id.nome);
-        precoT = (EditText) findViewById(R.id.preco);
+        nomeProduto = (EditText) findViewById(R.id.nome);
+        precoProduto = (EditText) findViewById(R.id.preco);
         botaoSalvar = (Button) findViewById(R.id.salvar);
         botaoCancelar = (Button) findViewById(R.id.cancelar);
         quantityViewTotal = (QuantityView) findViewById(R.id.quantityView);
         quantidadeDiferenteCheck = (CheckBox) findViewById(R.id.quantidadeDiferenteCheckbox);
         checkboxOuterContainer = (ViewGroup) findViewById(R.id.checkbox_outer_container);
-        nomeT.addTextChangedListener(mTextWatcher);
-        precoT.addTextChangedListener(mTextWatcher);
+        nomeProduto.addTextChangedListener(mTextWatcher);
+        precoProduto.addTextChangedListener(mTextWatcher);
+
+        boolean hasEdit =  getIntent().hasExtra("isEdit");
+        if(hasEdit){
+            boolean isEdit = (boolean) intent.getExtras().get("isEdit");
+            if(isEdit) {
+                this.isEdit = isEdit;
+                iniciaValoresParaEdit(nomeProduto, precoProduto);
+            }
+        }
+
         checkFieldsForEmptyValues();
         quantityViewTotal.setOnQuantityChangeListener(new QuantityView.OnQuantityChangeListener() {
             @Override
@@ -93,53 +109,34 @@ public class AddProdutoActivity extends AppCompatActivity implements QuantityVie
         botaoSalvar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ProdutoDAO produtodao = new ProdutoDAO(AddProdutoActivity.this);
                 PessoaProdutoDAO ppd = new PessoaProdutoDAO(AddProdutoActivity.this);
-                String nome = nomeT.getText().toString();
-                float preco = Float.parseFloat(precoT.getText().toString());
-                int quantidadeProdutos = quantityViewTotal.getQuantity();
-                Log.d(TAG, "onClick: aqui" + quantidadeProdutos);
-                Produto produto = new Produto(nome, preco, quantidadeProdutos);
-                produtodao.insere(produto);
-                produtodao.close();
-                Toast.makeText(AddProdutoActivity.this, "Produto salvo com sucesso!", Toast.LENGTH_SHORT).show();
-                Map<Integer, Integer> idsConsumidores = new ArrayMap<Integer, Integer>();
-                //TODO getQuantityPerPerson
-                //QuantitiView está em View v = ((LinearLayout)checkboxOuterContainer.getChildAt(i)).getChildAt(1);
-                //O que muda: precoPorPessoa tera calculo mais complexo
-                //"quantidadeConsumida" vai passar o que pega acima
-                
-                for (int i = 0; i < checkboxOuterContainer.getChildCount(); i++) {
-                    View v = ((LinearLayout)checkboxOuterContainer.getChildAt(i)).getChildAt(0);
-                    View v2 = ((LinearLayout)checkboxOuterContainer.getChildAt(i)).getChildAt(1);
+                if(isEdit){
+                    ProdutoDAO dao = new ProdutoDAO(AddProdutoActivity.this);
+                    int id = getIntent().getIntExtra("produtoId", -1);
+                    Produto produto = dao.getProdutoById(id);
 
-                    if (v instanceof CheckBox) {
-                        if (((CheckBox) v).isChecked()) {
-                            idsConsumidores.put(v.getId(), ((QuantityView) v2).getQuantity());
-                        }
-                    }
+                    String nome = nomeProduto.getText().toString();
+                    float preco = Float.parseFloat(precoProduto.getText().toString());
+                    produto.setNome(nome);
+                    produto.setPreco(preco);
+
+                    dao.editaProduto(produto);
+                    ppd.deletaRelacoesDoProduto(produto);
+                    salvaConsumidoresDoProduto(ppd, produto);
                 }
-
-                if (!quantidadeDiferenteCheck.isChecked()){
-                    float precoPorPessoa = (float)(produto.getPreco()*produto.getQuantidade()/idsConsumidores.size());
-
-                    for (Integer id : idsConsumidores.keySet()) {
-                        int quantidadeConsumida = 1;
-                        Log.d(TAG, "onClick : " + id + " " + quantidadeConsumida);
-                        ppd.insere(id, produto.getId(), quantidadeConsumida, precoPorPessoa);
-                    }
+                else {
+                    ProdutoDAO produtodao = new ProdutoDAO(AddProdutoActivity.this);
+                    String nome = nomeProduto.getText().toString();
+                    float preco = Float.parseFloat(precoProduto.getText().toString());
+                    int quantidadeProdutos = quantityViewTotal.getQuantity();
+                    Log.d(TAG, "onClick: aqui" + quantidadeProdutos);
+                    Produto produto = new Produto(nome, preco, quantidadeProdutos);
+                    produtodao.insere(produto);
+                    produtodao.close();
+                    Toast.makeText(AddProdutoActivity.this, "Produto salvo com sucesso!", Toast.LENGTH_SHORT).show();
+                    salvaConsumidoresDoProduto(ppd, produto);
                 }
-                else{
-                    for (Integer id : idsConsumidores.keySet()) {
-                        int quantidadeConsumidaPorPessoa = idsConsumidores.get(id);
-                        Log.d(TAG, "Pessoa: " + id + " Consumiu: " + quantidadeConsumidaPorPessoa);
-                        ppd.insere(id, produto.getId(), quantidadeConsumidaPorPessoa, (float) produto.getPreco() * quantidadeConsumidaPorPessoa);
-                        Log.d(TAG, "Preço: "+ (float) produto.getPreco() * quantidadeConsumidaPorPessoa);
-                    }
-                }
-
-                intent.putExtra("booleanItem", true);
-                setResult(RESULT_OK, intent);
+                atualizaFragmentos();
                 finish();
             }
         });
@@ -318,6 +315,51 @@ public class AddProdutoActivity extends AppCompatActivity implements QuantityVie
 
     }
 
+    private void salvaConsumidoresDoProduto(PessoaProdutoDAO ppd, Produto produto) {
+        Map<Integer, Integer> idsConsumidores = new ArrayMap<Integer, Integer>();
+        //TODO getQuantityPerPerson
+        //QuantitiView está em View v = ((LinearLayout)checkboxOuterContainer.getChildAt(i)).getChildAt(1);
+        //O que muda: precoPorPessoa tera calculo mais complexo
+        //"quantidadeConsumida" vai passar o que pega acima
+
+        for (int i = 0; i < checkboxOuterContainer.getChildCount(); i++) {
+            View v = ((LinearLayout) checkboxOuterContainer.getChildAt(i)).getChildAt(0);
+            View v2 = ((LinearLayout) checkboxOuterContainer.getChildAt(i)).getChildAt(1);
+
+            if (v instanceof CheckBox) {
+                if (((CheckBox) v).isChecked()) {
+                    idsConsumidores.put(v.getId(), ((QuantityView) v2).getQuantity());
+                }
+            }
+        }
+
+        if (!quantidadeDiferenteCheck.isChecked()) {
+            float precoPorPessoa = (float) (produto.getPreco() * produto.getQuantidade() / idsConsumidores.size());
+
+            for (Integer id : idsConsumidores.keySet()) {
+                int quantidadeConsumida = 1;
+                Log.d(TAG, "onClick : " + id + " " + quantidadeConsumida);
+                ppd.insere(id, produto.getId(), quantidadeConsumida, precoPorPessoa);
+            }
+        } else {
+            for (Integer id : idsConsumidores.keySet()) {
+                int quantidadeConsumidaPorPessoa = idsConsumidores.get(id);
+                Log.d(TAG, "Pessoa: " + id + " Consumiu: " + quantidadeConsumidaPorPessoa);
+                ppd.insere(id, produto.getId(), quantidadeConsumidaPorPessoa, (float) produto.getPreco() * quantidadeConsumidaPorPessoa);
+                Log.d(TAG, "Preço: " + (float) produto.getPreco() * quantidadeConsumidaPorPessoa);
+            }
+        }
+    }
+
+
+    public void iniciaValoresParaEdit(EditText nomeProduto, EditText precoProduto){
+        ProdutoDAO dao = new ProdutoDAO(AddProdutoActivity.this);
+        int id = getIntent().getIntExtra("produtoId", -1);
+        Produto produto = dao.getProdutoById(id);
+        nomeProduto.setText(produto.getNome());
+        precoProduto.setText(new Double(produto.getPreco()).toString());
+    }
+
     //  create a textWatcher member
     private TextWatcher mTextWatcher = new TextWatcher() {
         @Override
@@ -336,8 +378,8 @@ public class AddProdutoActivity extends AppCompatActivity implements QuantityVie
     };
 
     void checkFieldsForEmptyValues() {
-        String s1 = nomeT.getText().toString();
-        String s2 = precoT.getText().toString();
+        String s1 = nomeProduto.getText().toString();
+        String s2 = precoProduto.getText().toString();
 
         if (s1.equals("") || s2.equals("")) {
             botaoSalvar.setEnabled(false);

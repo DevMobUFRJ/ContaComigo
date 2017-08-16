@@ -83,6 +83,8 @@ public class MainActivity extends FragmentActivity {
             @Override
             public void onPageSelected(final int position) {
                 FragmentInterface fragment = (FragmentInterface) mSectionsStatePagerAdapter.instantiateItem(mViewPager, position);
+                Log.d(TAG, "Fragment Selected: "+position);
+                Log.d(TAG, "Fragment is: "+fragment);
                 if (fragment != null) {
                     fragment.fragmentBecameVisible();
                 }

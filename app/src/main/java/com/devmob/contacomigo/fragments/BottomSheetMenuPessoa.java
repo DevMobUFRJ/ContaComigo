@@ -66,7 +66,6 @@ public class BottomSheetMenuPessoa extends BottomSheetDialogFragment {
         CoordinatorLayout.Behavior behavior = params.getBehavior();
         btn_cancel = (RelativeLayout) contentView.findViewById(R.id.btn_cancel);
         btn_delete = (RelativeLayout) contentView.findViewById(R.id.btn_delete);
-        mRL1 = (RelativeLayout) contentView.findViewById(R.id.rl1);
         mTitulo = (TextView) contentView.findViewById(R.id.titulo);
         mTitulo.setText(pessoa.getNome());
         btn_cancel.setOnClickListener(new View.OnClickListener() {

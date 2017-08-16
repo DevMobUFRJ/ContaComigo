@@ -1,5 +1,6 @@
 package com.devmob.contacomigo.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,7 +8,7 @@ import java.util.List;
  * Created by silviomm on 05/04/17.
  */
 
-public class Produto {
+public class Produto implements Serializable{
 
     private int id;
 
@@ -57,6 +58,8 @@ public class Produto {
     public double getPreco() {
         return preco;
     }
+
+    public void setPreco(float preco){this.preco = preco;}
 
     public int getId() {
         return id;

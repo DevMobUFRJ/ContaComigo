@@ -43,6 +43,13 @@ public class AddPessoaActivity extends FragmentActivity {
     Intent intent;
 
 
+    private void atualizaFragmentos() {
+        MainActivity.itemFragmento.setAtualizar(true);
+        MainActivity.pessoaFragmento.setAtualizar(true);
+        intent.putExtra("booleanItem", true);
+        setResult(RESULT_OK, intent);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -75,11 +82,7 @@ public class AddPessoaActivity extends FragmentActivity {
                     }
                 }
 
-                MainActivity.itemFragmento.setAtualizar(true);
-                MainActivity.pessoaFragmento.setAtualizar(true);
-
-                intent.putExtra("booleanItem", true);
-                setResult(RESULT_OK, intent);
+                atualizaFragmentos();
                 finish();
             }
         });

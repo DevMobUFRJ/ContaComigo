@@ -2,6 +2,7 @@ package com.devmob.contacomigo.fragments;
 
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.BottomSheetDialogFragment;
@@ -27,12 +28,12 @@ import com.devmob.contacomigo.model.Produto;
 public class BottomSheetMenuProduto extends BottomSheetDialogFragment {
     private static final String TAG = "BottomSheetProduto";
 
-    Produto produto;
-    ItemFragmento itemFragmento;
-    RelativeLayout btn_cancel;
-    TextView mTitulo;
-    RelativeLayout mRL1;
-    public RelativeLayout btn_delete;
+    private Produto produto;
+    private ItemFragmento itemFragmento;
+    private RelativeLayout btn_cancel;
+    private TextView mTitulo;
+    private RelativeLayout btn_delete;
+    private RelativeLayout btn_edit;
     private BottomSheetBehavior.BottomSheetCallback mBottomSheetBehaviorCallback = new BottomSheetBehavior.BottomSheetCallback() {
 
         @Override
@@ -55,9 +56,8 @@ public class BottomSheetMenuProduto extends BottomSheetDialogFragment {
     @Override
     public void setupDialog(Dialog dialog, int style) {
         super.setupDialog(dialog, style);
-        final ProdutoDAO dao = new ProdutoDAO(getActivity());
-        final PessoaProdutoDAO dao2 = new PessoaProdutoDAO(getActivity());
-        produto = dao.getProdutoById(getArguments().getInt("idProd"));
+        final ProdutoDAO pdao = new ProdutoDAO(getActivity());
+        produto = pdao.getProdutoById(getArguments().getInt("idProd"));
 
         View contentView = View.inflate(getContext(), R.layout.fragment_bottom_sheet, null);
         dialog.setContentView(contentView);
@@ -66,7 +66,7 @@ public class BottomSheetMenuProduto extends BottomSheetDialogFragment {
         CoordinatorLayout.Behavior behavior = params.getBehavior();
         btn_cancel = (RelativeLayout) contentView.findViewById(R.id.btn_cancel);
         btn_delete = (RelativeLayout) contentView.findViewById(R.id.btn_delete);
-        mRL1 = (RelativeLayout) contentView.findViewById(R.id.rl1);
+        btn_edit = (RelativeLayout) contentView.findViewById(R.id.btn_edit);
         mTitulo = (TextView) contentView.findViewById(R.id.titulo);
         mTitulo.setText(produto.getNome());
         btn_cancel.setOnClickListener(new View.OnClickListener() {
@@ -75,21 +75,25 @@ public class BottomSheetMenuProduto extends BottomSheetDialogFragment {
                 dismiss();
             }
         });
+        btn_edit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), AddProdutoActivity.class);
+                intent.putExtra("isEdit", true);
+                intent.putExtra("produtoId", produto.getId());
+                startActivity(intent);
+                dismiss();
+            }
+        });
         btn_delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                dao.deletaProduto(produto);
-                dao.deletaRelacao(produto);
+                pdao.deletaProduto(produto);
+                pdao.deletaRelacao(produto);
                 ItemFragmento.listAdapter.deletaLista(produto);
                 Toast.makeText(getActivity(), "deletando " + produto.getNome(), Toast.LENGTH_SHORT).show();
                 dismiss();
 
-            }
-        });
-        mRL1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(getActivity(), "Relative tocado", Toast.LENGTH_SHORT).show();
             }
         });
         mTitulo = (TextView) contentView.findViewById(R.id.titulo);
@@ -105,6 +109,5 @@ public class BottomSheetMenuProduto extends BottomSheetDialogFragment {
         super.onDismiss(dialog);
         // this works fine but fires one time too often for my use case, it fires on screen rotation as well, although this is a temporarily dismiss only
         Log.d(TAG, "onDismiss: FOI");
-        itemFragmento.atualizaListas();
     }
 }

@@ -56,20 +56,34 @@ public class ProdutoDAO extends DBAdapter{
         return produtos;
     }
 
+    public void editaProduto(Produto produto){
+        open();
+        ContentValues cv = new ContentValues();
+        cv.put("nome", produto.getNome());
+        cv.put("preco", produto.getPreco());
+        db.update("Produto",cv, "id="+produto.getId(), null);
+        close();
+    }
+
     public Produto getProdutoById(int id){
         open();
-        Cursor cursor = db.rawQuery("SELECT * FROM Produto;", null);
-
-        while(cursor.moveToNext()){
-            Produto produto = new Produto(
-                    cursor.getInt(cursor.getColumnIndex("id")),
-                    cursor.getString(cursor.getColumnIndex("nome")),
-                    cursor.getFloat(cursor.getColumnIndex("preco")),
-                    cursor.getInt(cursor.getColumnIndex("quantidade"))
-            );
-            if (produto.getId() == id){
-                return produto;
+        Produto produto = null;
+        Cursor cursor = db.rawQuery("SELECT * FROM Produto WHERE id = "+id+";", null);
+        if(cursor!=null) {
+            if (cursor.moveToFirst()) {
+                produto = new Produto(
+                        cursor.getInt(cursor.getColumnIndex("id")),
+                        cursor.getString(cursor.getColumnIndex("nome")),
+                        cursor.getFloat(cursor.getColumnIndex("preco")),
+                        cursor.getInt(cursor.getColumnIndex("quantidade"))
+                );
             }
+        }
+        if(produto!=null){
+            PessoaProdutoDAO ppdao = new PessoaProdutoDAO(mCtx);
+            produto.setConsumidores(ppdao.buscaPessoasDeUmProduto(produto));
+            close();
+            return produto;
         }
         close();
         return null;
