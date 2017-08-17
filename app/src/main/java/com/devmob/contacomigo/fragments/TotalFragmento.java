@@ -45,6 +45,10 @@ public class TotalFragmento extends Fragment implements FragmentInterface{
                 SharedPreferences.Editor prefEditor = getContext().getSharedPreferences("Preferences", Context.MODE_PRIVATE).edit();
                 prefEditor.clear();
                 prefEditor.commit();
+                Intent i = getContext().getPackageManager()
+                        .getLaunchIntentForPackage( getContext().getPackageName() );
+                i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(i);
                 MainActivity.pessoaFragmento.setAtualizar(true);
                 MainActivity.itemFragmento.setAtualizar(true);
                 Intent i = getContext().getPackageManager()

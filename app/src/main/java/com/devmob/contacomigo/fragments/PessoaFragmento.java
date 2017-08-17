@@ -158,17 +158,18 @@ public class PessoaFragmento extends Fragment implements FragmentInterface{
         switchGorjeta.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                switch (buttonView.getId()) {
-                    case R.id.switchGorjeta:
-                        if (!isChecked) {
-                            gorjetaValor.setTextColor(Color.BLACK);
-                            gorjeta.setAtivo(false);
-                            ItemFragmento.gorjetaValor.setTextColor(Color.BLACK);
-                            ItemFragmento.gorjeta.setAtivo(false);
-                            ItemFragmento.switchGorjeta.setChecked(false);
-                            listAdapter.notifyDataSetChanged();
-                            //Toast.makeText(ItemsActivity.this, String.valueOf(gorjeta.getValor()), Toast.LENGTH_SHORT).show();
-                        } else {
+
+                if (!buttonView.isChecked()) {
+                    Log.d(TAG, "onCheckedChanged: FALSEI PESSOA");
+                    gorjetaValor.setTextColor(Color.BLACK);
+                    gorjeta.setAtivo(false);
+                    ItemFragmento.gorjetaValor.setTextColor(Color.BLACK);
+                    ItemFragmento.gorjeta.setAtivo(false);
+                    ItemFragmento.switchGorjeta.setChecked(false);
+                    listAdapter.notifyDataSetChanged();
+                }
+                else {
+                            Log.d(TAG, "onCheckedChanged: AGORA É TRUE PESSOA");
                             gorjetaValor.setTextColor(Color.RED);
                             gorjeta.setAtivo(true);
                             ItemFragmento.gorjetaValor.setTextColor(Color.RED);
@@ -176,10 +177,6 @@ public class PessoaFragmento extends Fragment implements FragmentInterface{
                             ItemFragmento.switchGorjeta.setChecked(true);
                             listAdapter.notifyDataSetChanged();
                             //Toast.makeText(ItemsActivity.this, String.valueOf(gorjeta.getValor()), Toast.LENGTH_SHORT).show();
-                        }
-                        break;
-                    default:
-                        break;
                 }
             }
         });

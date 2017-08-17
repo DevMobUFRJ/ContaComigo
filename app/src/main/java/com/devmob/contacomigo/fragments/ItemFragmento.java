@@ -153,33 +153,32 @@ public class ItemFragmento extends Fragment implements FragmentInterface{
             }
         });
 
+
+
         switchGorjeta.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                switch (buttonView.getId()) {
-                    case R.id.switchGorjeta:
-                        if (!isChecked) {
-                            gorjetaValor.setTextColor(Color.BLACK);
-                            gorjeta.setAtivo(false);
-                            PessoaFragmento.gorjetaValor.setTextColor(Color.BLACK);
-                            PessoaFragmento.gorjeta.setAtivo(false);
-                            PessoaFragmento.switchGorjeta.setChecked(false);
-                            listAdapter.notifyDataSetChanged();
-                            //Toast.makeText(ItemsActivity.this, String.valueOf(gorjeta.getValor()), Toast.LENGTH_SHORT).show();
-                        } else {
-                            gorjetaValor.setTextColor(Color.RED);
-                            gorjeta.setAtivo(true);
-                            PessoaFragmento.gorjetaValor.setTextColor(Color.RED);
-                            PessoaFragmento.gorjeta.setAtivo(true);
-                            PessoaFragmento.switchGorjeta.setChecked(true);
-                            listAdapter.notifyDataSetChanged();
-                            //Toast.makeText(ItemsActivity.this, String.valueOf(gorjeta.getValor()), Toast.LENGTH_SHORT).show();
-                        }
-                        break;
-                    default:
-                        break;
+
+                if (!buttonView.isChecked()) {
+                    Log.d(TAG, "onCheckedChanged: FALSEI ITEM");
+                        gorjetaValor.setTextColor(Color.BLACK);
+                        gorjeta.setAtivo(false);
+                        PessoaFragmento.gorjetaValor.setTextColor(Color.BLACK);
+                        PessoaFragmento.gorjeta.setAtivo(false);
+                        PessoaFragmento.switchGorjeta.setChecked(false);
+                        listAdapter.notifyDataSetChanged();
+                }
+                else{
+                        Log.d(TAG, "onCheckedChanged: AGORA É TRUE ITEM");
+                        gorjetaValor.setTextColor(Color.RED);
+                        gorjeta.setAtivo(true);
+                        PessoaFragmento.gorjetaValor.setTextColor(Color.RED);
+                        PessoaFragmento.gorjeta.setAtivo(true);
+                        PessoaFragmento.switchGorjeta.setChecked(true);
+                        listAdapter.notifyDataSetChanged();
                 }
             }
+
         });
         gorjetaValor.setOnClickListener(new View.OnClickListener() {
             @Override
