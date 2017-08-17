@@ -51,10 +51,6 @@ public class TotalFragmento extends Fragment implements FragmentInterface{
                 startActivity(i);
                 MainActivity.pessoaFragmento.setAtualizar(true);
                 MainActivity.itemFragmento.setAtualizar(true);
-                Intent i = getContext().getPackageManager()
-                        .getLaunchIntentForPackage( getContext().getPackageName() );
-                i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(i);
 
             }
         });

@@ -76,6 +76,7 @@ public class PessoaFragmento extends Fragment implements FragmentInterface{
         dao.close();
         gorjetaValor.setText(gorjeta.getPorcentagem()+ "%");
         SharedPreferences prefs = getContext().getSharedPreferences("Preferences", Context.MODE_PRIVATE);
+        switchGorjeta.setChecked(prefs.getBoolean("switchGorjeta", false));
 
         for (Pessoa p:pessoas){
             Log.d(TAG, p.getNome());
@@ -158,6 +159,9 @@ public class PessoaFragmento extends Fragment implements FragmentInterface{
         switchGorjeta.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                SharedPreferences.Editor prefEditor = getContext().getSharedPreferences("Preferences", Context.MODE_PRIVATE).edit();
+                prefEditor.putBoolean("switchGorjeta", gorjeta.getAtivo());
+                prefEditor.commit();
 
                 if (!buttonView.isChecked()) {
                     Log.d(TAG, "onCheckedChanged: FALSEI PESSOA");
@@ -176,7 +180,6 @@ public class PessoaFragmento extends Fragment implements FragmentInterface{
                             ItemFragmento.gorjeta.setAtivo(true);
                             ItemFragmento.switchGorjeta.setChecked(true);
                             listAdapter.notifyDataSetChanged();
-                            //Toast.makeText(ItemsActivity.this, String.valueOf(gorjeta.getValor()), Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -266,9 +269,11 @@ public class PessoaFragmento extends Fragment implements FragmentInterface{
     @Override
     public void onStop() {
         super.onStop();
-        //SharedPreferences.Editor prefEditor = getContext().getSharedPreferences("Preferences", Context.MODE_PRIVATE).edit();
-        //prefEditor.putString("gorjetaValor", gorjetaValor .getText().toString());
-        //prefEditor.commit();
+        SharedPreferences.Editor prefEditor = getContext().getSharedPreferences("Preferences", Context.MODE_PRIVATE).edit();
+        prefEditor.putString("gorjetaValor", gorjetaValor .getText().toString());
+        prefEditor.putInt("gorjetaPorcentagem", gorjeta.getPorcentagem());
+        prefEditor.putBoolean("gorjetaAtivo", gorjeta.getAtivo());
+        prefEditor.commit();
         Toast.makeText(getActivity(), "Pessoa Fragmento Stopped", Toast.LENGTH_SHORT).show();
     }
 

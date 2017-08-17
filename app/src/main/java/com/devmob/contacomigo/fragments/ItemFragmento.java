@@ -82,8 +82,9 @@ public class ItemFragmento extends Fragment implements FragmentInterface{
 
         SharedPreferences prefs = getContext().getSharedPreferences("Preferences", Context.MODE_PRIVATE);
 
-        gorjetaValor.setText(prefs.getString("gorjetaValor", "10%"));
-        gorjeta = new Gorjeta(prefs.getInt("gorjetaPorcentagem", 10), prefs.getBoolean("gorjetaAtivo", false));
+            gorjetaValor.setText(prefs.getString("gorjetaValor", "10%"));
+            gorjeta = new Gorjeta(prefs.getInt("gorjetaPorcentagem", 10), prefs.getBoolean("gorjetaAtivo", false));
+            switchGorjeta.setChecked(prefs.getBoolean("switchGorjeta", false));
 
 
 
@@ -158,6 +159,9 @@ public class ItemFragmento extends Fragment implements FragmentInterface{
         switchGorjeta.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                SharedPreferences.Editor prefEditor = getContext().getSharedPreferences("Preferences", Context.MODE_PRIVATE).edit();
+                prefEditor.putBoolean("switchGorjeta", gorjeta.getAtivo());
+                prefEditor.commit();
 
                 if (!buttonView.isChecked()) {
                     Log.d(TAG, "onCheckedChanged: FALSEI ITEM");
