@@ -83,7 +83,7 @@ public class AddProdutoActivity extends AppCompatActivity implements QuantityVie
             }
         }
 
-        checkFieldsForEmptyValues();
+        checkFieldsValues();
         quantityViewTotal.setOnQuantityChangeListener(onQuantityViewTotalChangedListener);
         botaoSalvar.setOnClickListener(botaoSalvarListener);
 
@@ -128,7 +128,7 @@ public class AddProdutoActivity extends AppCompatActivity implements QuantityVie
                 }
             });
             final TextView warning = new TextView(this);
-            warning.setText("Cuidado");
+            warning.setText("Erro!");
             warning.setVisibility(View.INVISIBLE);
             checkboxInnerContainer.addView(checkBox);
             checkboxInnerContainer.addView(quantityViewIndividual);
@@ -246,7 +246,6 @@ public class AddProdutoActivity extends AppCompatActivity implements QuantityVie
                     quantidadeContabilizada+= qv.getQuantity();
                 }
             }
-            Toast.makeText(AddProdutoActivity.this, "Contabilizada = " + quantidadeContabilizada, Toast.LENGTH_SHORT).show();
 
             //seta o maximo de todos
             for (int i = 0; i < checkboxOuterContainer.getChildCount(); i++) {
@@ -282,6 +281,7 @@ public class AddProdutoActivity extends AppCompatActivity implements QuantityVie
                     }
                 }
             }
+            checkFieldsValues();
             if (!isChecked)
                 qvDaPessoa.setQuantity(0);
         }
@@ -315,7 +315,6 @@ public class AddProdutoActivity extends AppCompatActivity implements QuantityVie
         else{
             avisoDaPessoa.setVisibility(View.INVISIBLE);
         }
-        Toast.makeText(AddProdutoActivity.this, "Contabilizada = " + quantidadeContabilizada, Toast.LENGTH_SHORT).show();
         //seta máximos
         for (int i = 0; i < checkboxOuterContainer.getChildCount(); i++) {
             QuantityView qv = (QuantityView) ((LinearLayout)checkboxOuterContainer.getChildAt(i)).getChildAt(1);
@@ -337,6 +336,8 @@ public class AddProdutoActivity extends AppCompatActivity implements QuantityVie
             }
             qv.setMinQuantity(0);
         }
+
+        checkFieldsValues();
     }
 
     CompoundButton.OnCheckedChangeListener quantidadeDiferenteListener = new CompoundButton.OnCheckedChangeListener() {
@@ -374,6 +375,7 @@ public class AddProdutoActivity extends AppCompatActivity implements QuantityVie
                     qv.setMinQuantity(0);
                 }
             }
+            checkFieldsValues();
         }
     };
 
@@ -402,6 +404,7 @@ public class AddProdutoActivity extends AppCompatActivity implements QuantityVie
                     qv.setMinQuantity(0);
                 }
             }
+            checkFieldsValues();
         }
 
         @Override
@@ -423,15 +426,31 @@ public class AddProdutoActivity extends AppCompatActivity implements QuantityVie
         @Override
         public void afterTextChanged(Editable editable) {
             // check Fields For Empty Values
-            checkFieldsForEmptyValues();
+            checkFieldsValues();
         }
     };
 
-    void checkFieldsForEmptyValues() {
+    void checkFieldsValues() {
         String s1 = nomeProduto.getText().toString();
         String s2 = precoProduto.getText().toString();
+        boolean temZero = false;
 
-        if (s1.equals("") || s2.equals("")) {
+        int quantidadeContabilizada = 0, quantidadeDePessoas = 0;
+        for (int i = 0; i < checkboxOuterContainer.getChildCount(); i++) {
+            QuantityView qv = (QuantityView) ((LinearLayout)checkboxOuterContainer.getChildAt(i)).getChildAt(1);
+            CheckBox checkBoxPessoa = (CheckBox) ((LinearLayout)checkboxOuterContainer.getChildAt(i)).getChildAt(0);
+            if (checkBoxPessoa.isChecked()){
+                quantidadeContabilizada+= qv.getQuantity();
+                quantidadeDePessoas++;
+                if (qv.getQuantity() == 0 && quantidadeDiferenteCheck.isChecked()) {
+                    temZero = true;
+                    break;
+                }
+            }
+        }
+
+        if (s1.equals("") || s2.equals("") || (quantidadeDiferenteCheck.isChecked() && quantidadeContabilizada != quantityViewTotal.getQuantity())
+                || temZero || quantidadeDePessoas == 0) {
             botaoSalvar.setEnabled(false);
         } else {
             botaoSalvar.setEnabled(true);

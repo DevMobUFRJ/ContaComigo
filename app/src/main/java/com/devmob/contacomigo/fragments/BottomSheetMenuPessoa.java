@@ -30,7 +30,7 @@ public class BottomSheetMenuPessoa extends BottomSheetDialogFragment {
     PessoaFragmento pessoaFragmento;
     RelativeLayout btn_cancel;
     TextView mTitulo;
-    RelativeLayout mRL1;
+    private RelativeLayout btn_edit;
     public RelativeLayout btn_delete;
     private BottomSheetBehavior.BottomSheetCallback mBottomSheetBehaviorCallback = new BottomSheetBehavior.BottomSheetCallback() {
 
@@ -65,6 +65,7 @@ public class BottomSheetMenuPessoa extends BottomSheetDialogFragment {
         CoordinatorLayout.LayoutParams params = (CoordinatorLayout.LayoutParams) ((View) contentView.getParent()).getLayoutParams();
         CoordinatorLayout.Behavior behavior = params.getBehavior();
         btn_cancel = (RelativeLayout) contentView.findViewById(R.id.btn_cancel);
+        btn_edit = (RelativeLayout) contentView.findViewById(R.id.btn_edit);
         btn_delete = (RelativeLayout) contentView.findViewById(R.id.btn_delete);
         mTitulo = (TextView) contentView.findViewById(R.id.titulo);
         mTitulo.setText(pessoa.getNome());
@@ -86,10 +87,10 @@ public class BottomSheetMenuPessoa extends BottomSheetDialogFragment {
 
             }
         });
-        mRL1.setOnClickListener(new View.OnClickListener() {
+        btn_edit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getActivity(), "Relative tocado", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), "Edit tocado", Toast.LENGTH_SHORT).show();
             }
         });
         mTitulo = (TextView) contentView.findViewById(R.id.titulo);
