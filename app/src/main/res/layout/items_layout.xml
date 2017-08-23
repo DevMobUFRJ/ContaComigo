@@ -58,7 +58,9 @@
             android:layout_height="wrap_content"
             android:background="@android:color/transparent"
             android:button="@null"
+            android:saveEnabled="false"
             android:padding="20dp"/>
+
 
     </LinearLayout>
 

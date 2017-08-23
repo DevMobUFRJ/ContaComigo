@@ -1,5 +1,8 @@
 package com.devmob.contacomigo.fragments;
 
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -39,6 +42,13 @@ public class TotalFragmento extends Fragment implements FragmentInterface{
                 ServicoDAO dao = new ServicoDAO(getContext());
                 dao.deletaBanco();
                 Toast.makeText(getActivity(),  "Já pode começar outra conta ;)", Toast.LENGTH_SHORT).show();
+                SharedPreferences.Editor prefEditor = getContext().getSharedPreferences("Preferences", Context.MODE_PRIVATE).edit();
+                prefEditor.clear();
+                prefEditor.commit();
+                Intent i = getContext().getPackageManager()
+                        .getLaunchIntentForPackage( getContext().getPackageName() );
+                i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(i);
                 MainActivity.pessoaFragmento.setAtualizar(true);
                 MainActivity.itemFragmento.setAtualizar(true);
 

@@ -1,7 +1,9 @@
 package com.devmob.contacomigo.fragments;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.support.design.widget.BottomSheetDialogFragment;
 import android.support.design.widget.FloatingActionButton;
@@ -20,6 +22,7 @@ import android.widget.CompoundButton;
 import android.widget.ExpandableListView;
 import android.widget.NumberPicker;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.devmob.contacomigo.ExpandableList.PessoaExpandableListAdapter;
 import com.devmob.contacomigo.R;
@@ -71,6 +74,9 @@ public class PessoaFragmento extends Fragment implements FragmentInterface{
         PessoaDAO dao = new PessoaDAO(getActivity());
         pessoas = dao.buscaPessoas();
         dao.close();
+        gorjetaValor.setText(gorjeta.getPorcentagem()+ "%");
+        SharedPreferences prefs = getContext().getSharedPreferences("Preferences", Context.MODE_PRIVATE);
+        switchGorjeta.setChecked(prefs.getBoolean("switchGorjeta", false));
 
         for (Pessoa p:pessoas){
             Log.d(TAG, p.getNome());
@@ -153,28 +159,27 @@ public class PessoaFragmento extends Fragment implements FragmentInterface{
         switchGorjeta.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                switch (buttonView.getId()) {
-                    case R.id.switchGorjeta:
-                        if (!isChecked) {
-                            gorjetaValor.setTextColor(Color.BLACK);
-                            gorjeta.setAtivo(false);
-                            ItemFragmento.gorjetaValor.setTextColor(Color.BLACK);
-                            ItemFragmento.gorjeta.setAtivo(false);
-                            ItemFragmento.switchGorjeta.setChecked(false);
-                            listAdapter.notifyDataSetChanged();
-                            //Toast.makeText(ItemsActivity.this, String.valueOf(gorjeta.getValor()), Toast.LENGTH_SHORT).show();
-                        } else {
+                SharedPreferences.Editor prefEditor = getContext().getSharedPreferences("Preferences", Context.MODE_PRIVATE).edit();
+                prefEditor.putBoolean("switchGorjeta", gorjeta.getAtivo());
+                prefEditor.commit();
+
+                if (!buttonView.isChecked()) {
+                    Log.d(TAG, "onCheckedChanged: FALSEI PESSOA");
+                    gorjetaValor.setTextColor(Color.BLACK);
+                    gorjeta.setAtivo(false);
+                    ItemFragmento.gorjetaValor.setTextColor(Color.BLACK);
+                    ItemFragmento.gorjeta.setAtivo(false);
+                    ItemFragmento.switchGorjeta.setChecked(false);
+                    listAdapter.notifyDataSetChanged();
+                }
+                else {
+                            Log.d(TAG, "onCheckedChanged: AGORA É TRUE PESSOA");
                             gorjetaValor.setTextColor(Color.RED);
                             gorjeta.setAtivo(true);
                             ItemFragmento.gorjetaValor.setTextColor(Color.RED);
                             ItemFragmento.gorjeta.setAtivo(true);
                             ItemFragmento.switchGorjeta.setChecked(true);
                             listAdapter.notifyDataSetChanged();
-                            //Toast.makeText(ItemsActivity.this, String.valueOf(gorjeta.getValor()), Toast.LENGTH_SHORT).show();
-                        }
-                        break;
-                    default:
-                        break;
                 }
             }
         });
@@ -242,6 +247,7 @@ public class PessoaFragmento extends Fragment implements FragmentInterface{
         pessoas = pdao.buscaPessoas();
     }
 
+
     public void onResume() {
         super.onResume();
         PessoaDAO pdao = new PessoaDAO(getContext());
@@ -260,8 +266,22 @@ public class PessoaFragmento extends Fragment implements FragmentInterface{
     }
 
 
+    @Override
+    public void onStop() {
+        super.onStop();
+        SharedPreferences.Editor prefEditor = getContext().getSharedPreferences("Preferences", Context.MODE_PRIVATE).edit();
+        prefEditor.putString("gorjetaValor", gorjetaValor .getText().toString());
+        prefEditor.putInt("gorjetaPorcentagem", gorjeta.getPorcentagem());
+        prefEditor.putBoolean("gorjetaAtivo", gorjeta.getAtivo());
+        prefEditor.commit();
+        Toast.makeText(getActivity(), "Pessoa Fragmento Stopped", Toast.LENGTH_SHORT).show();
+    }
 
-
+    @Override
+    public void onPause() {
+        super.onPause();
+        Toast.makeText(getActivity(), "Pessoa Fragmento PAUSED", Toast.LENGTH_SHORT).show();
+    }
 
     private void telaAdicionar() {
         Intent intent = new Intent(getActivity(), AddPessoaActivity.class);
