@@ -262,7 +262,6 @@ public class ItemFragmento extends Fragment implements FragmentInterface{
         prefEditor.putInt("gorjetaPorcentagem", gorjeta.getPorcentagem());
         prefEditor.putBoolean("gorjetaAtivo", gorjeta.getAtivo());
         prefEditor.commit();
-        Toast.makeText(getActivity(), "Item Fragmento Stopped", Toast.LENGTH_SHORT).show();
     }
 
 

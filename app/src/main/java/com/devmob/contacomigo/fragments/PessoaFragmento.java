@@ -274,13 +274,11 @@ public class PessoaFragmento extends Fragment implements FragmentInterface{
         prefEditor.putInt("gorjetaPorcentagem", gorjeta.getPorcentagem());
         prefEditor.putBoolean("gorjetaAtivo", gorjeta.getAtivo());
         prefEditor.commit();
-        Toast.makeText(getActivity(), "Pessoa Fragmento Stopped", Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        Toast.makeText(getActivity(), "Pessoa Fragmento PAUSED", Toast.LENGTH_SHORT).show();
     }
 
     private void telaAdicionar() {
