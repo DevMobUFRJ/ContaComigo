@@ -160,9 +160,9 @@ public class ItemFragmento extends Fragment implements FragmentInterface{
         switchGorjeta.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                SharedPreferences.Editor prefEditor = getContext().getSharedPreferences("Preferences", Context.MODE_PRIVATE).edit();
-                prefEditor.putBoolean("switchGorjeta", gorjeta.getAtivo());
-                prefEditor.commit();
+                //SharedPreferences.Editor prefEditor = getContext().getSharedPreferences("Preferences", Context.MODE_PRIVATE).edit();
+                //prefEditor.putBoolean("switchGorjeta", gorjeta.getAtivo());
+                //prefEditor.commit();
 
                 if (!buttonView.isChecked()) {
                     Log.d(TAG, "onCheckedChanged: FALSEI ITEM");

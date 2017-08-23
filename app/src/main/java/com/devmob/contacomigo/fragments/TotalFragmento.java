@@ -48,7 +48,8 @@ public class TotalFragmento extends Fragment implements FragmentInterface{
                 Intent i = getContext().getPackageManager()
                         .getLaunchIntentForPackage( getContext().getPackageName() );
                 i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(i);
+                //startActivity(i);
+                resetaGorjeta();
                 MainActivity.pessoaFragmento.setAtualizar(true);
                 MainActivity.itemFragmento.setAtualizar(true);
 
@@ -59,6 +60,17 @@ public class TotalFragmento extends Fragment implements FragmentInterface{
 
 
         return view;
+    }
+
+    private void resetaGorjeta() {
+        ItemFragmento.gorjeta.setAtivo(false);
+        PessoaFragmento.gorjeta.setAtivo(false);
+        ItemFragmento.gorjeta.setPorcentagem(10);
+        PessoaFragmento.gorjeta.setPorcentagem(10);
+        ItemFragmento.gorjetaValor.setText(ItemFragmento.gorjeta.getPorcentagem()+ "%");
+        PessoaFragmento.gorjetaValor.setText(PessoaFragmento.gorjeta.getPorcentagem()+ "%");
+        ItemFragmento.switchGorjeta.setChecked(false);
+        PessoaFragmento.switchGorjeta.setChecked(false);
     }
 
     public String getNome(){
