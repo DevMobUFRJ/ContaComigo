@@ -51,12 +51,13 @@ public class AddProdutoActivity extends AppCompatActivity implements QuantityVie
         setResult(RESULT_OK, intent);
     }
 
-    public void iniciaValoresParaEdit(EditText nomeProduto, EditText precoProduto){
+    public void iniciaValoresParaEdit(EditText nomeProduto, EditText precoProduto, ViewGroup checkboxOuterContainer, CheckBox quantidadeDiferenteCheck, QuantityView quantityViewTotal){
         ProdutoDAO dao = new ProdutoDAO(AddProdutoActivity.this);
         int id = getIntent().getIntExtra("produtoId", -1);
         Produto produto = dao.getProdutoById(id);
         nomeProduto.setText(produto.getNome());
         precoProduto.setText(new Double(produto.getPreco()).toString());
+        checkboxOuterContainer.
     }
 
     @Override
@@ -79,7 +80,7 @@ public class AddProdutoActivity extends AppCompatActivity implements QuantityVie
             boolean isEdit = (boolean) intent.getExtras().get("isEdit");
             if(isEdit) {
                 this.isEdit = isEdit;
-                iniciaValoresParaEdit(nomeProduto, precoProduto);
+                iniciaValoresParaEdit(nomeProduto, precoProduto, checkboxOuterContainer, quantidadeDiferenteCheck, quantityViewTotal);
             }
         }
 
