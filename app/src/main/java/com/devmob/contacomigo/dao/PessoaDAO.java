@@ -92,4 +92,16 @@ public class PessoaDAO extends DBAdapter {
         db.execSQL("DELETE FROM PessoaProduto WHERE idPessoa = ?;", new String[]{"" + pessoa.getId()});
         close();
     }
+
+    public boolean isEmpty(){
+        open();
+        Cursor cursor = db.rawQuery("SELECT count(*) FROM Pessoa;", null);
+        cursor.moveToFirst();
+        int icount = cursor.getInt(0);
+        close();
+        if(icount>0)
+            return false;
+        else
+            return true;
+    }
 }

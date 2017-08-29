@@ -15,7 +15,9 @@ import android.widget.Toast;
 
 import com.devmob.contacomigo.R;
 import com.devmob.contacomigo.activities.MainActivity;
+import com.devmob.contacomigo.dao.PessoaDAO;
 import com.devmob.contacomigo.dao.ServicoDAO;
+import com.devmob.contacomigo.model.Pessoa;
 
 import io.github.luizgrp.sectionedrecyclerviewadapter.SectionedRecyclerViewAdapter;
 
@@ -41,6 +43,9 @@ public class TotalFragmento extends Fragment implements FragmentInterface{
             public void onClick(View v) {
                 ServicoDAO dao = new ServicoDAO(getContext());
                 dao.deletaBanco();
+                PessoaDAO PessoaDao = new PessoaDAO(getContext());
+                Pessoa p = new Pessoa(getResources().getString(R.string.default_person));
+                PessoaDao.insere(p);
                 Toast.makeText(getActivity(),  "Já pode começar outra conta ;)", Toast.LENGTH_SHORT).show();
                 SharedPreferences.Editor prefEditor = getContext().getSharedPreferences("Preferences", Context.MODE_PRIVATE).edit();
                 prefEditor.clear();

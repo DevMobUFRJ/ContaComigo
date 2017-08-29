@@ -14,6 +14,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.devmob.contacomigo.R;
+import com.devmob.contacomigo.dao.PessoaDAO;
 import com.devmob.contacomigo.fragments.FragmentInterface;
 import com.devmob.contacomigo.fragments.ItemFragmento;
 import com.devmob.contacomigo.fragments.NonSwipeableViewPager;
@@ -21,6 +22,7 @@ import com.devmob.contacomigo.fragments.PessoaFragmento;
 import com.devmob.contacomigo.fragments.RestauranteFragmento;
 import com.devmob.contacomigo.fragments.SectionsStatePagerAdapter;
 import com.devmob.contacomigo.fragments.TotalFragmento;
+import com.devmob.contacomigo.model.Pessoa;
 
 /**
  * Created by devmob on 03/05/17.
@@ -50,6 +52,13 @@ public class MainActivity extends FragmentActivity {
         setContentView(R.layout.activity_main);
         Log.d(TAG, "onCreate: Started.");
 
+        PessoaDAO dao = new PessoaDAO(this);
+        if (dao.isEmpty()){
+            Pessoa p = new Pessoa(getResources().getString(R.string.default_person));
+            dao.insere(p);
+            Log.d(TAG, "onCreate: Tabela vazia");
+        }
+        
         //BottomMenu
         View bottomSheet = findViewById( R.id.bottom_sheet );
         mBottomSheetBehavior = BottomSheetBehavior.from(bottomSheet);

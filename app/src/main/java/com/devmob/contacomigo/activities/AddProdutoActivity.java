@@ -453,8 +453,8 @@ public class AddProdutoActivity extends AppCompatActivity implements QuantityVie
             }
         }
 
-        if (s1.equals("") || s2.equals("") || (quantidadeDiferenteCheck.isChecked() && quantidadeContabilizada != quantityViewTotal.getQuantity())
-                || temZero || quantidadeDePessoas == 0) {
+        if (s1.equals("") || s2.equals("") || s2.equals("R$")  || s2.equals("US$") || (quantidadeDiferenteCheck.isChecked()
+                && quantidadeContabilizada != quantityViewTotal.getQuantity()) || temZero || quantidadeDePessoas == 0) {
             botaoSalvar.setEnabled(false);
         } else {
             botaoSalvar.setEnabled(true);
