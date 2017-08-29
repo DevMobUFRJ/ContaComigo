@@ -14,6 +14,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.devmob.contacomigo.R;
+import com.devmob.contacomigo.dao.PessoaDAO;
 import com.devmob.contacomigo.fragments.FragmentInterface;
 import com.devmob.contacomigo.fragments.ItemFragmento;
 import com.devmob.contacomigo.fragments.NonSwipeableViewPager;
@@ -21,6 +22,7 @@ import com.devmob.contacomigo.fragments.PessoaFragmento;
 import com.devmob.contacomigo.fragments.RestauranteFragmento;
 import com.devmob.contacomigo.fragments.SectionsStatePagerAdapter;
 import com.devmob.contacomigo.fragments.TotalFragmento;
+import com.devmob.contacomigo.model.Pessoa;
 
 /**
  * Created by devmob on 03/05/17.
@@ -33,9 +35,9 @@ public class MainActivity extends FragmentActivity {
     private static final String TAG = "MainActivity";
     private static final int RESTAURANTEFRAG = 0;
     public static final RestauranteFragmento restauranteFragmento = new RestauranteFragmento();
-    private static final int ITEMFRAG = 1;
+    private static final int ITEMFRAG = 2;
     public static final ItemFragmento itemFragmento = new ItemFragmento();
-    private static final int PESSOAFRAG = 2;
+    private static final int PESSOAFRAG = 1;
     public static final PessoaFragmento pessoaFragmento = new PessoaFragmento();
     private static final int TOTALFRAG = 3;
     public static final TotalFragmento totalFragmento = new TotalFragmento();
@@ -50,6 +52,13 @@ public class MainActivity extends FragmentActivity {
         setContentView(R.layout.activity_main);
         Log.d(TAG, "onCreate: Started.");
 
+        PessoaDAO dao = new PessoaDAO(this);
+        if (dao.isEmpty()){
+            Pessoa p = new Pessoa(getResources().getString(R.string.default_person));
+            dao.insere(p);
+            Log.d(TAG, "onCreate: Tabela vazia");
+        }
+        
         //BottomMenu
         View bottomSheet = findViewById( R.id.bottom_sheet );
         mBottomSheetBehavior = BottomSheetBehavior.from(bottomSheet);
@@ -71,6 +80,7 @@ public class MainActivity extends FragmentActivity {
         mSectionsStatePagerAdapter = new SectionsStatePagerAdapter(getSupportFragmentManager());
 
         mViewPager = (NonSwipeableViewPager) findViewById(R.id.containter);
+        mViewPager.setOffscreenPageLimit(4);
         //setup the pager
         setupViewPager(mViewPager);
 
@@ -153,8 +163,8 @@ public class MainActivity extends FragmentActivity {
     private void setupViewPager(ViewPager viewPager){
         //SectionsStatePagerAdapter adapter = new SectionsStatePagerAdapter(getSupportFragmentManager());
         mSectionsStatePagerAdapter.addFragment(restauranteFragmento, "RestauranteFragmento");
-        mSectionsStatePagerAdapter.addFragment(itemFragmento, "ItemFragmento");
         mSectionsStatePagerAdapter.addFragment(pessoaFragmento, "PessoaFragmento");
+        mSectionsStatePagerAdapter.addFragment(itemFragmento, "ItemFragmento");
         mSectionsStatePagerAdapter.addFragment(totalFragmento, "TotalFragmento");
         viewPager.setAdapter(mSectionsStatePagerAdapter);
     }

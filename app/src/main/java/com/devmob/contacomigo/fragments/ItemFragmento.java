@@ -79,13 +79,9 @@ public class ItemFragmento extends Fragment implements FragmentInterface{
         listAdapter = new ProdutoExpandableListAdapter(getActivity(), new ArrayList<>(produtos));
         itemsExpandableListView.setAdapter(listAdapter);
         addFAB = (FloatingActionButton) view.findViewById(R.id.addFAB);
-
+        gorjeta = PessoaFragmento.gorjeta;
         SharedPreferences prefs = getContext().getSharedPreferences("Preferences", Context.MODE_PRIVATE);
-
-            gorjetaValor.setText(prefs.getString("gorjetaValor", "10%"));
-            gorjeta = new Gorjeta(prefs.getInt("gorjetaPorcentagem", 10), prefs.getBoolean("gorjetaAtivo", false));
-            switchGorjeta.setChecked(prefs.getBoolean("switchGorjeta", false));
-
+        switchGorjeta.setChecked(prefs.getBoolean("switchGorjeta", false));
 
 
         //LONG CLICK EM CADA CHILD (PESSOA E PREÇO)

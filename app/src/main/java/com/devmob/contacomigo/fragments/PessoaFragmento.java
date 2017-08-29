@@ -69,13 +69,16 @@ public class PessoaFragmento extends Fragment implements FragmentInterface{
         apagaTudo = (Button) view.findViewById(R.id.deletaTudo);
         switchGorjeta = (SwitchCompat) view.findViewById(R.id.switchGorjeta);
         gorjetaValor = (TextView) view.findViewById(R.id.gorjetaValor);
-        gorjeta = ItemFragmento.gorjeta;
+
         pessoasExpandableListView = (ExpandableListView) view.findViewById(R.id.pessoasExpandableListView);
         PessoaDAO dao = new PessoaDAO(getActivity());
         pessoas = dao.buscaPessoas();
         dao.close();
-        gorjetaValor.setText(gorjeta.getPorcentagem()+ "%");
+
         SharedPreferences prefs = getContext().getSharedPreferences("Preferences", Context.MODE_PRIVATE);
+
+        gorjetaValor.setText(prefs.getString("gorjetaValor", "10%"));
+        gorjeta = new Gorjeta(prefs.getInt("gorjetaPorcentagem", 10), prefs.getBoolean("gorjetaAtivo", false));
         switchGorjeta.setChecked(prefs.getBoolean("switchGorjeta", false));
 
         for (Pessoa p:pessoas){
