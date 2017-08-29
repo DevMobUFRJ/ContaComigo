@@ -21,9 +21,11 @@ import com.devmob.contacomigo.R;
 import com.devmob.contacomigo.dao.PessoaDAO;
 import com.devmob.contacomigo.dao.PessoaProdutoDAO;
 import com.devmob.contacomigo.dao.ProdutoDAO;
+import com.devmob.contacomigo.model.MascaraDinheiro;
 import com.devmob.contacomigo.model.Pessoa;
 import com.devmob.contacomigo.model.Produto;
 
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -52,11 +54,12 @@ public class AddProdutoActivity extends AppCompatActivity implements QuantityVie
     }
 
     public void iniciaValoresParaEdit(EditText nomeProduto, EditText precoProduto){
+        NumberFormat nf = NumberFormat.getCurrencyInstance();
         ProdutoDAO dao = new ProdutoDAO(AddProdutoActivity.this);
         int id = getIntent().getIntExtra("produtoId", -1);
         Produto produto = dao.getProdutoById(id);
         nomeProduto.setText(produto.getNome());
-        precoProduto.setText(new Double(produto.getPreco()).toString());
+        precoProduto.setText(nf.format(Float.parseFloat(new Float(produto.getPreco()).toString())));
     }
 
     @Override
@@ -73,6 +76,7 @@ public class AddProdutoActivity extends AppCompatActivity implements QuantityVie
         checkboxOuterContainer = (ViewGroup) findViewById(R.id.checkbox_outer_container);
         nomeProduto.addTextChangedListener(mTextWatcher);
         precoProduto.addTextChangedListener(mTextWatcher);
+        precoProduto.addTextChangedListener(new MascaraDinheiro(precoProduto));
 
         boolean hasEdit =  getIntent().hasExtra("isEdit");
         if(hasEdit){
@@ -192,7 +196,7 @@ public class AddProdutoActivity extends AppCompatActivity implements QuantityVie
                 Produto produto = dao.getProdutoById(id);
 
                 String nome = nomeProduto.getText().toString();
-                float preco = Float.parseFloat(precoProduto.getText().toString());
+                float preco = stringMonetarioToDouble(precoProduto.getText().toString());
                 produto.setNome(nome);
                 produto.setPreco(preco);
 
@@ -203,7 +207,7 @@ public class AddProdutoActivity extends AppCompatActivity implements QuantityVie
             else {
                 ProdutoDAO produtodao = new ProdutoDAO(AddProdutoActivity.this);
                 String nome = nomeProduto.getText().toString();
-                float preco = Float.parseFloat(precoProduto.getText().toString());
+                float preco = stringMonetarioToDouble(precoProduto.getText().toString());
                 int quantidadeProdutos = quantityViewTotal.getQuantity();
                 Log.d(TAG, "onClick: aqui" + quantidadeProdutos);
                 Produto produto = new Produto(nome, preco, quantidadeProdutos);
@@ -474,4 +478,29 @@ public class AddProdutoActivity extends AppCompatActivity implements QuantityVie
     public void onLimitReached() {
         Log.d(getClass().getSimpleName(), "Limit reached");
     }
+
+    public static float stringMonetarioToDouble(String str) {
+        float retorno = 0;
+        try {
+            boolean hasMask = ((str.indexOf("US$") > -1 ||str.indexOf("R$") > -1 || str.indexOf("$") > -1) && (str
+                    .indexOf(".") > -1 || str.indexOf(",") > -1));
+            // Verificamos se existe máscara
+            if (hasMask) {
+                Log.d(TAG, "stringMonetarioToDouble: " + str);
+                // Retiramos a máscara.
+                //str = str.replaceAll("[R$]", "").replaceAll("\\,\\w+", "").replaceAll("\\.\\w+", "");
+                str = str.replaceAll("[R$]", "").replaceAll("[US$]", "").replaceAll("[,]", "").replaceAll("[.]", "");
+            }
+
+            // Transformamos o número que está escrito no EditText em
+            // double.
+            Log.d(TAG, "stringMonetarioToDouble: " + str);
+            retorno = Float.parseFloat(str);
+            retorno/=100;
+        } catch (NumberFormatException e) {
+            //TRATAR EXCEÇÃO
+        }
+        return retorno;
+    }
+
 }
