@@ -7,13 +7,13 @@
         android:icon="@drawable/ic_home"
         android:title="Home" />
     <item
-        android:id="@+id/moneyIcon"
-        android:icon="@drawable/ic_money"
-        android:title="@string/text_money" />
-    <item
         android:id="@+id/personIcon"
         android:icon="@drawable/ic_pessoa"
         android:title="@string/text_person" />
+    <item
+        android:id="@+id/moneyIcon"
+        android:icon="@drawable/ic_money"
+        android:title="@string/text_money" />
     <item
         android:id="@+id/tempIcon"
         android:enabled="true"

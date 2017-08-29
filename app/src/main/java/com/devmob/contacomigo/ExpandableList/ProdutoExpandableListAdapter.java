@@ -76,9 +76,11 @@ public class ProdutoExpandableListAdapter extends BaseExpandableListAdapter {
         Produto produto = (Produto) getGroup(indiceProduto);
 
         double price = 0;
+        int quantidade = 1;
         for (ProdutoConsumido pc : detailInfo.getProdutosConsumidos()) {
             if(pc.getProduto().getId() == produto.getId()) {
                 price = pc.getPrecoPago();
+                quantidade = pc.getQuantidade();
             }
         }
 
@@ -89,7 +91,7 @@ public class ProdutoExpandableListAdapter extends BaseExpandableListAdapter {
         }
 
         TextView pessoa = (TextView) view.findViewById(R.id.pessoa);
-        pessoa.setText(detailInfo.getNome().trim());
+        pessoa.setText((detailInfo.getNome() + " x " + quantidade).trim());
         TextView pessoaPreco = (TextView) view.findViewById(R.id.pessoaPreco);
         if (ItemFragmento.gorjeta.getAtivo() == false)
             pessoaPreco.setText(String.format("%.2f", price));
@@ -130,7 +132,7 @@ public class ProdutoExpandableListAdapter extends BaseExpandableListAdapter {
         }
         //TODO adicionar contador de quantidade do lado do nome do produto
         TextView heading = (TextView) view.findViewById(R.id.heading);
-        heading.setText(produto.getNome().trim());
+        heading.setText((produto.getNome() + " x " + produto.getQuantidade()).trim());
         TextView productPrice = (TextView) view.findViewById(R.id.productPrice);
         productPrice.setText(String.format("%.2f",produto.getPreco() * produto.getQuantidade()));
         if (ItemFragmento.gorjeta.getAtivo() == false)

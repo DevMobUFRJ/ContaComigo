@@ -76,6 +76,7 @@ public class PessoaExpandableListAdapter extends BaseExpandableListAdapter {
         Pessoa pessoa = (Pessoa)  getGroup(indicePessoa);
 
         double price = pc.getPrecoPago();
+        int quantidade = pc.getQuantidade();
 
         if (view == null) {
             LayoutInflater infalInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -83,7 +84,7 @@ public class PessoaExpandableListAdapter extends BaseExpandableListAdapter {
         }
 
         TextView produto = (TextView) view.findViewById(R.id.produto);
-        produto.setText(detailInfo.getNome().trim());
+        produto.setText((detailInfo.getNome() + " x " + quantidade).trim());
         TextView produtoPreco = (TextView) view.findViewById(R.id.produtoPreco);
         if (ItemFragmento.gorjeta.getAtivo() == false)
             produtoPreco.setText(String.format("%.2f",price));
