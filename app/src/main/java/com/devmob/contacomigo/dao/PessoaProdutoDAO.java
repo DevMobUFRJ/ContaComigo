@@ -82,6 +82,22 @@ public class PessoaProdutoDAO extends DBAdapter {
         return produtosConsumidos;
     }
 
+    public ProdutoConsumido buscaProdutoDeUmaPessoa(Pessoa pessoa, Produto produto) {
+
+        open();
+        Cursor cursor = db.rawQuery("SELECT * FROM PessoaProduto WHERE idPessoa = ? AND idProduto = ?",
+                new String[]{"" + pessoa.getId(), ""+produto.getId()});
+        ProdutoConsumido pc = null;
+        while (cursor.moveToNext()) {
+            Integer id = new Integer(cursor.getInt(cursor.getColumnIndex("idProduto")));
+            int quantidadeTemporaria = cursor.getInt(cursor.getColumnIndex("quantidadeConsumida"));
+            float precoTemporario = cursor.getFloat(cursor.getColumnIndex("precoPago"));
+            pc = new ProdutoConsumido(produto, quantidadeTemporaria, precoTemporario);
+        }
+        close();
+        return pc;
+    }
+
     public List<Pessoa> buscaPessoasDeUmProduto(Produto produto) {
         open();
         Cursor cursor = db.rawQuery("SELECT * FROM PessoaProduto WHERE idProduto = ?",

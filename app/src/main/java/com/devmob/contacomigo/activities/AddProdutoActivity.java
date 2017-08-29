@@ -24,6 +24,7 @@ import com.devmob.contacomigo.dao.ProdutoDAO;
 import com.devmob.contacomigo.model.MascaraDinheiro;
 import com.devmob.contacomigo.model.Pessoa;
 import com.devmob.contacomigo.model.Produto;
+import com.devmob.contacomigo.model.ProdutoConsumido;
 
 import java.text.NumberFormat;
 import java.util.ArrayList;
@@ -54,14 +55,51 @@ public class AddProdutoActivity extends AppCompatActivity implements QuantityVie
     }
 
     public void iniciaValoresParaEdit(EditText nomeProduto, EditText precoProduto, ViewGroup checkboxOuterContainer, CheckBox quantidadeDiferenteCheck, QuantityView quantityViewTotal){
+        PessoaProdutoDAO ppd = new PessoaProdutoDAO(AddProdutoActivity.this);
         NumberFormat nf = NumberFormat.getCurrencyInstance();
         ProdutoDAO dao = new ProdutoDAO(AddProdutoActivity.this);
         int id = getIntent().getIntExtra("produtoId", -1);
         Produto produto = dao.getProdutoById(id);
+        quantityViewTotal.setQuantity(produto.getQuantidade());
         nomeProduto.setText(produto.getNome());
         precoProduto.setText(new Double(produto.getPreco()).toString());
-        checkboxOuterContainer.
         precoProduto.setText(nf.format(Float.parseFloat(new Float(produto.getPreco()).toString())));
+        PessoaDAO pedao = new PessoaDAO(AddProdutoActivity.this);
+
+
+        List<Integer> qntds = new ArrayList<>();
+        for(int i=0; i < checkboxOuterContainer.getChildCount(); i++){
+            View checkbox = ((LinearLayout) checkboxOuterContainer.getChildAt(i)).getChildAt(0);
+
+            Pessoa pessoa = pedao.getPessoaById(checkbox.getId());
+            Log.d(TAG, "nome pessoa: "+pessoa.getNome());
+            ProdutoConsumido pc = ppd.buscaProdutoDeUmaPessoa(pessoa, produto);
+
+            if(pc != null) {
+                if (checkbox instanceof CheckBox) {
+                    ((CheckBox) checkbox).setChecked(true);
+                }
+                qntds.add(pc.getQuantidade());
+            }
+        }
+        boolean qntdDiferente = false;
+        for(Integer i : qntds){
+            if(i!=1) qntdDiferente = true;
+        }
+        Log.d(TAG, "qntdDiferente: "+qntdDiferente);
+        if(qntdDiferente) {
+            for (int i = 0; i < checkboxOuterContainer.getChildCount(); i++) {
+                quantidadeDiferenteCheck.setChecked(true);
+                View quantityviewIndividual = ((LinearLayout) checkboxOuterContainer.getChildAt(i)).getChildAt(1);
+                quantityviewIndividual.setVisibility(View.VISIBLE);
+                Pessoa pessoa = pedao.getPessoaById(quantityviewIndividual.getId());
+                Log.d(TAG, "nome pessoa: "+pessoa.getNome());
+                ProdutoConsumido pc = ppd.buscaProdutoDeUmaPessoa(pessoa, produto);
+                if(pc!=null)
+                ((QuantityView)quantityviewIndividual).setQuantity(pc.getQuantidade());
+                Log.d(TAG, "iniciaValoresParaEdit: ");
+            }
+        }
     }
 
     @Override
@@ -79,15 +117,6 @@ public class AddProdutoActivity extends AppCompatActivity implements QuantityVie
         nomeProduto.addTextChangedListener(mTextWatcher);
         precoProduto.addTextChangedListener(mTextWatcher);
         precoProduto.addTextChangedListener(new MascaraDinheiro(precoProduto));
-
-        boolean hasEdit =  getIntent().hasExtra("isEdit");
-        if(hasEdit){
-            boolean isEdit = (boolean) intent.getExtras().get("isEdit");
-            if(isEdit) {
-                this.isEdit = isEdit;
-                iniciaValoresParaEdit(nomeProduto, precoProduto, checkboxOuterContainer, quantidadeDiferenteCheck, quantityViewTotal);
-            }
-        }
 
         checkFieldsValues();
         quantityViewTotal.setOnQuantityChangeListener(onQuantityViewTotalChangedListener);
@@ -142,6 +171,15 @@ public class AddProdutoActivity extends AppCompatActivity implements QuantityVie
             checkboxOuterContainer.addView(checkboxInnerContainer);
         }
         quantidadeDiferenteCheck.setOnCheckedChangeListener(quantidadeDiferenteListener);
+
+        boolean hasEdit =  getIntent().hasExtra("isEdit");
+        if(hasEdit){
+            boolean isEdit = (boolean) intent.getExtras().get("isEdit");
+            if(isEdit) {
+                this.isEdit = isEdit;
+                iniciaValoresParaEdit(nomeProduto, precoProduto, checkboxOuterContainer, quantidadeDiferenteCheck, quantityViewTotal);
+            }
+        }
 
 
     }
