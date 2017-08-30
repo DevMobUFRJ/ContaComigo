@@ -15,13 +15,18 @@ import com.devmob.contacomigo.model.Produto;
 import com.devmob.contacomigo.model.ProdutoConsumido;
 
 import java.util.ArrayList;
+import java.util.Currency;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Created by DevMob on 05/05/2017.
  */
 
 public class PessoaExpandableListAdapter extends BaseExpandableListAdapter {
+
+    Locale defaultLocale = Locale.getDefault();
+    Currency currency = Currency.getInstance(defaultLocale);
     private static final String TAG = "PessoaExListAdapter";
 
     private Context context;
@@ -87,9 +92,9 @@ public class PessoaExpandableListAdapter extends BaseExpandableListAdapter {
         produto.setText((detailInfo.getNome() + " x " + quantidade).trim());
         TextView produtoPreco = (TextView) view.findViewById(R.id.produtoPreco);
         if (ItemFragmento.gorjeta.getAtivo() == false)
-            produtoPreco.setText(String.format("%.2f",price));
+            produtoPreco.setText(String.format(currency.getSymbol()+" %.2f",price));
         else
-            produtoPreco.setText(String.format("%.2f", price*ItemFragmento.gorjeta.getValor()));
+            produtoPreco.setText(String.format(currency.getSymbol()+" %.2f", price*ItemFragmento.gorjeta.getValor()));
 
 
         return view;
@@ -127,11 +132,11 @@ public class PessoaExpandableListAdapter extends BaseExpandableListAdapter {
         TextView heading = (TextView) view.findViewById(R.id.heading);
         heading.setText(pessoa.getNome().trim());
         TextView pessoaPrice = (TextView) view.findViewById(R.id.pessoaPrice);
-        pessoaPrice.setText(String.format("%.2f",pessoa.getPrecoTotal()));
+        pessoaPrice.setText(String.format(currency.getSymbol()+" %.2f",pessoa.getPrecoTotal()));
         if (ItemFragmento.gorjeta.getAtivo() == false)
-            pessoaPrice.setText(String.format("%.2f",pessoa.getPrecoTotal()));
+            pessoaPrice.setText(String.format(currency.getSymbol()+" %.2f",pessoa.getPrecoTotal()));
         else
-            pessoaPrice.setText(String.format("%.2f",pessoa.getPrecoTotal()*ItemFragmento.gorjeta.getValor()));
+            pessoaPrice.setText(String.format(currency.getSymbol()+" %.2f",pessoa.getPrecoTotal()*ItemFragmento.gorjeta.getValor()));
 
 
         return view;
