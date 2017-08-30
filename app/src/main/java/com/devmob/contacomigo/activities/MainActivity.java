@@ -46,6 +46,14 @@ public class MainActivity extends FragmentActivity {
     private NonSwipeableViewPager mViewPager;
     //TESTE
     public static BottomSheetBehavior mBottomSheetBehavior;
+
+    public static void forceReloadAllFragments(){
+        itemFragmento.forceReload();
+        pessoaFragmento.forceReload();
+        totalFragmento.forceReload();
+        restauranteFragmento.forceReload();
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

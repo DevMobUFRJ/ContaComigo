@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.TextView;
 
+
 import com.devmob.contacomigo.R;
 import com.devmob.contacomigo.dao.PessoaProdutoDAO;
 import com.devmob.contacomigo.dao.ProdutoDAO;
@@ -18,6 +19,8 @@ import com.devmob.contacomigo.model.ProdutoConsumido;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Currency;
+import java.util.Locale;
 
 import static android.content.ContentValues.TAG;
 
@@ -28,6 +31,9 @@ import static android.content.ContentValues.TAG;
 // GROUP EH O PRODUTO, CHILD EH PESSOA
 
 public class ProdutoExpandableListAdapter extends BaseExpandableListAdapter {
+
+    Locale defaultLocale = Locale.getDefault();
+    Currency currency = Currency.getInstance(defaultLocale);
 
     private static final String TAG = "ProdutoExpandListAdap";
 
@@ -94,9 +100,9 @@ public class ProdutoExpandableListAdapter extends BaseExpandableListAdapter {
         pessoa.setText((detailInfo.getNome() + " x " + quantidade).trim());
         TextView pessoaPreco = (TextView) view.findViewById(R.id.pessoaPreco);
         if (ItemFragmento.gorjeta.getAtivo() == false)
-            pessoaPreco.setText(String.format("%.2f", price));
+            pessoaPreco.setText(String.format(currency.getSymbol()+" %.2f", price));
         else
-            pessoaPreco.setText(String.format("%.2f", price*ItemFragmento.gorjeta.getValor()));
+            pessoaPreco.setText(String.format(currency.getSymbol()+" %.2f", price*ItemFragmento.gorjeta.getValor()));
 
         return view;
     }
@@ -134,11 +140,11 @@ public class ProdutoExpandableListAdapter extends BaseExpandableListAdapter {
         TextView heading = (TextView) view.findViewById(R.id.heading);
         heading.setText((produto.getNome() + " x " + produto.getQuantidade()).trim());
         TextView productPrice = (TextView) view.findViewById(R.id.productPrice);
-        productPrice.setText(String.format("%.2f",produto.getPreco() * produto.getQuantidade()));
+        productPrice.setText(String.format(currency.getSymbol()+" %.2f",produto.getPreco() * produto.getQuantidade()));
         if (ItemFragmento.gorjeta.getAtivo() == false)
-            productPrice.setText(String.format("%.2f",produto.getPreco()* produto.getQuantidade()));
+            productPrice.setText(String.format(currency.getSymbol()+" %.2f",produto.getPreco()* produto.getQuantidade()));
         else
-            productPrice.setText(String.format("%.2f",produto.getPreco()* produto.getQuantidade()*ItemFragmento.gorjeta.getValor()));
+            productPrice.setText(String.format(currency.getSymbol()+" %.2f",produto.getPreco()* produto.getQuantidade()*ItemFragmento.gorjeta.getValor()));
 
         return view;
     }

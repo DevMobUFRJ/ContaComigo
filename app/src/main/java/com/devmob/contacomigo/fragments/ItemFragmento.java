@@ -200,10 +200,7 @@ public class ItemFragmento extends Fragment implements FragmentInterface{
     @Override
     public void onResume() {
         super.onResume();
-        if(itemAdicionado){
-            Log.d(TAG, "onResume: entrei e chamei fragmentbecamevisible");
-            fragmentBecameVisible();
-        }
+        fragmentBecameVisible();
     }
 
     @Override
@@ -219,9 +216,10 @@ public class ItemFragmento extends Fragment implements FragmentInterface{
 
     private void telaAdicionar() {
         Intent intent = new Intent(getActivity(), AddProdutoActivity.class);
-        //intent.putExtra(getString(R.string.key_name), name);
         startActivityForResult(intent, 1);
     }
+
+
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -238,6 +236,11 @@ public class ItemFragmento extends Fragment implements FragmentInterface{
     @Override
     public void setAtualizar(boolean b) {
         this.atualizar = b;
+    }
+
+    public void forceReload(){
+        this.atualizar = true;
+        fragmentBecameVisible();
     }
 
     @Override
