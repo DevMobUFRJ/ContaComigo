@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 import com.devmob.contacomigo.R;
 import com.devmob.contacomigo.activities.AddProdutoActivity;
+import com.devmob.contacomigo.activities.MainActivity;
 import com.devmob.contacomigo.dao.PessoaProdutoDAO;
 import com.devmob.contacomigo.dao.ProdutoDAO;
 import com.devmob.contacomigo.model.Produto;
@@ -90,7 +91,7 @@ public class BottomSheetMenuProduto extends BottomSheetDialogFragment {
             public void onClick(View view) {
                 pdao.deletaProduto(produto);
                 pdao.deletaRelacao(produto);
-                ItemFragmento.listAdapter.deletaLista(produto);
+                MainActivity.forceReloadAllFragments();
                 Toast.makeText(getActivity(), "deletando " + produto.getNome(), Toast.LENGTH_SHORT).show();
                 dismiss();
 

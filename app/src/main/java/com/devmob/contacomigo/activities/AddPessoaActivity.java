@@ -44,8 +44,7 @@ public class AddPessoaActivity extends FragmentActivity {
 
 
     private void atualizaFragmentos() {
-        MainActivity.itemFragmento.setAtualizar(true);
-        MainActivity.pessoaFragmento.setAtualizar(true);
+        MainActivity.forceReloadAllFragments();
         intent.putExtra("booleanItem", true);
         setResult(RESULT_OK, intent);
     }

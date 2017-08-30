@@ -32,6 +32,11 @@ public class RestauranteFragmento extends Fragment implements FragmentInterface{
         this.atualizar = b;
     }
 
+    public void forceReload(){
+        this.atualizar = true;
+        fragmentBecameVisible();
+    }
+
     @Override
     public void fragmentBecameVisible() {
         if(atualizar){
