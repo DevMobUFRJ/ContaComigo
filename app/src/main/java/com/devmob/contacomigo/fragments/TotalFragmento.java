@@ -72,8 +72,8 @@ public class TotalFragmento extends Fragment implements FragmentInterface{
         PessoaFragmento.gorjeta.setAtivo(false);
         ItemFragmento.gorjeta.setPorcentagem(10);
         PessoaFragmento.gorjeta.setPorcentagem(10);
-        ItemFragmento.gorjetaValor.setText(ItemFragmento.gorjeta.getPorcentagem()+ "%");
-        PessoaFragmento.gorjetaValor.setText(PessoaFragmento.gorjeta.getPorcentagem()+ "%");
+        ItemFragmento.gorjetaSpinner.setSelection(ItemFragmento.gorjeta.getPorcentagem()-1);
+        PessoaFragmento.gorjetaSpinner.setSelection(PessoaFragmento.gorjeta.getPorcentagem()-1);
         ItemFragmento.switchGorjeta.setChecked(false);
         PessoaFragmento.switchGorjeta.setChecked(false);
     }

@@ -42,15 +42,15 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_weight="1" />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/gorjetaValor"
-            android:text="10%"
-            android:textStyle="bold"
-            android:textSize="18sp"
-            android:textColor="@color/black"
+        <Spinner
+            android:id="@+id/gorjetaSpinner"
+            android:layout_width="95dp"
+            android:layout_height="match_parent"
+            android:entries="@array/gorjetas"
+            android:dropDownWidth="50dp"
+
             />
+
         <android.support.v7.widget.SwitchCompat
             android:id="@+id/switchGorjeta"
             android:layout_alignParentRight="true"

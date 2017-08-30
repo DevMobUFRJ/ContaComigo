@@ -399,13 +399,21 @@ public class AddProdutoActivity extends AppCompatActivity implements QuantityVie
                 }
             }
             else{
+                TextView avisoDaPessoa = new TextView(AddProdutoActivity.this);
                 int quantidadeContabilizada = 0;
                 for (int i = 0; i < checkboxOuterContainer.getChildCount(); i++) {
-                    QuantityView qv = (QuantityView) ((LinearLayout)checkboxOuterContainer.getChildAt(i)).getChildAt(1);
-                    qv.setVisibility(View.VISIBLE);
                     CheckBox checkBoxPessoa = (CheckBox) ((LinearLayout)checkboxOuterContainer.getChildAt(i)).getChildAt(0);
+                    QuantityView qv = (QuantityView) ((LinearLayout)checkboxOuterContainer.getChildAt(i)).getChildAt(1);
+                    avisoDaPessoa = (TextView) ((LinearLayout)checkboxOuterContainer.getChildAt(i)).getChildAt(2);
+                    qv.setVisibility(View.VISIBLE);
                     if (checkBoxPessoa.isChecked()){
                         quantidadeContabilizada+= qv.getQuantity();
+                        if (qv.getQuantity() == 0 && isChecked){
+                            avisoDaPessoa.setVisibility(View.VISIBLE);
+                        }
+                        else{
+                            avisoDaPessoa.setVisibility(View.INVISIBLE);
+                        }
                     }
                 }
                 for (int i = 0; i < checkboxOuterContainer.getChildCount(); i++) {

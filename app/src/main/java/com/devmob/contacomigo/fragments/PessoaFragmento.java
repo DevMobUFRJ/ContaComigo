@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.support.design.widget.BottomSheetDialogFragment;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
@@ -17,10 +18,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.ExpandableListView;
 import android.widget.NumberPicker;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,6 +34,7 @@ import com.devmob.contacomigo.dao.PessoaDAO;
 import com.devmob.contacomigo.model.Gorjeta;
 import com.devmob.contacomigo.model.Pessoa;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -50,8 +54,8 @@ public class PessoaFragmento extends Fragment implements FragmentInterface{
     public Button apagaTudo;
     public static boolean itemAdicionado;
     public static Gorjeta gorjeta;
-    public static TextView gorjetaValor;
     public static SwitchCompat switchGorjeta;
+    public static Spinner gorjetaSpinner;
     private String nomeFragmento = "Pessoa";
     List<Pessoa> pessoas;
     private boolean atualizar = true;
@@ -66,9 +70,9 @@ public class PessoaFragmento extends Fragment implements FragmentInterface{
         View view = inflater.inflate(R.layout.pessoas_layout, container, false);
 
         //Inicialização
+        gorjetaSpinner = (Spinner) view.findViewById(R.id.gorjetaSpinner);
         apagaTudo = (Button) view.findViewById(R.id.deletaTudo);
         switchGorjeta = (SwitchCompat) view.findViewById(R.id.switchGorjeta);
-        gorjetaValor = (TextView) view.findViewById(R.id.gorjetaValor);
 
         pessoasExpandableListView = (ExpandableListView) view.findViewById(R.id.pessoasExpandableListView);
         PessoaDAO dao = new PessoaDAO(getActivity());
@@ -77,18 +81,36 @@ public class PessoaFragmento extends Fragment implements FragmentInterface{
 
         SharedPreferences prefs = getContext().getSharedPreferences("Preferences", Context.MODE_PRIVATE);
 
-        gorjetaValor.setText(prefs.getString("gorjetaValor", "10%"));
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(),
+                R.array.gorjetas, android.R.layout.simple_spinner_item);
+        // Specify the layout to use when the list of choices appears
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        // Apply the adapter to the spinner
+        gorjetaSpinner.setAdapter(adapter);
+        gorjetaSpinner.setOnItemSelectedListener(gorjetaSpinnerListener);
+        gorjetaSpinner.setSelection(prefs.getInt("gorjetaValor", 9));
+
         gorjeta = new Gorjeta(prefs.getInt("gorjetaPorcentagem", 10), prefs.getBoolean("gorjetaAtivo", false));
         switchGorjeta.setChecked(prefs.getBoolean("switchGorjeta", false));
-
-        for (Pessoa p:pessoas){
-            Log.d(TAG, p.getNome());
-        }
 
         listAdapter = new PessoaExpandableListAdapter(getActivity(), new ArrayList<>(pessoas));
         pessoasExpandableListView.setAdapter(listAdapter);
         addFAB = (FloatingActionButton) view.findViewById(R.id.addFAB);
 
+        //Seta tamanho máximo do Dropdown do Spinner
+        try {
+            Field popup = Spinner.class.getDeclaredField("mPopup");
+            popup.setAccessible(true);
+
+            // Get private mPopup member variable and try cast to ListPopupWindow
+            android.widget.ListPopupWindow popupWindow = (android.widget.ListPopupWindow) popup.get(gorjetaSpinner);
+
+            // Set popupWindow height to 500px
+            popupWindow.setHeight(500);
+        }
+        catch (NoClassDefFoundError | ClassCastException | NoSuchFieldException | IllegalAccessException e) {
+            // silently fail...
+        }
         //LONG CLICK EM CADA CHILD (PESSOA E PREÇO)
         pessoasExpandableListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
@@ -168,82 +190,27 @@ public class PessoaFragmento extends Fragment implements FragmentInterface{
 
                 if (!buttonView.isChecked()) {
                     Log.d(TAG, "onCheckedChanged: FALSEI PESSOA");
-                    gorjetaValor.setTextColor(Color.BLACK);
+                    ((TextView)gorjetaSpinner.getChildAt(0)).setTextColor(Color.BLACK);
                     gorjeta.setAtivo(false);
-                    ItemFragmento.gorjetaValor.setTextColor(Color.BLACK);
+                    ((TextView)ItemFragmento.gorjetaSpinner.getChildAt(0)).setTextColor(Color.BLACK);
                     ItemFragmento.gorjeta.setAtivo(false);
                     ItemFragmento.switchGorjeta.setChecked(false);
                     listAdapter.notifyDataSetChanged();
                 }
                 else {
                             Log.d(TAG, "onCheckedChanged: AGORA É TRUE PESSOA");
-                            gorjetaValor.setTextColor(Color.RED);
+                            ((TextView)gorjetaSpinner.getChildAt(0)).setTextColor(Color.RED);
                             gorjeta.setAtivo(true);
-                            ItemFragmento.gorjetaValor.setTextColor(Color.RED);
+                             ((TextView)ItemFragmento.gorjetaSpinner.getChildAt(0)).setTextColor(Color.RED);
                             ItemFragmento.gorjeta.setAtivo(true);
                             ItemFragmento.switchGorjeta.setChecked(true);
                             listAdapter.notifyDataSetChanged();
                 }
             }
         });
-        gorjetaValor.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showGorjetaValor();
-
-            }
-        });
         return view;
     }
 
-
-
-    private void showGorjetaValor() {
-        LayoutInflater li = LayoutInflater.from(getActivity());
-        View promptsView = li.inflate(R.layout.dialogo, null);
-
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity());
-
-        // set prompts.xml to alertdialog builder
-        alertDialogBuilder.setView(promptsView);
-
-        final NumberPicker np = (NumberPicker) promptsView.findViewById(R.id.numberPicker1);
-        np.setMaxValue(100);
-        np.setMinValue(1);
-        np.setValue(gorjeta.getPorcentagem());
-        np.setWrapSelectorWheel(true);
-        np.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
-            @Override
-            public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
-                Log.i("value is", "" + newVal);
-            }
-        });
-        alertDialogBuilder
-                .setTitle(R.string.text_tip)
-                .setCancelable(false)
-                .setPositiveButton(R.string.text_ok,
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                gorjetaValor.setText(String.valueOf(np.getValue()) + "%");
-                                gorjeta.setPorcentagem(np.getValue());
-                                ItemFragmento.gorjetaValor.setText(String.valueOf(np.getValue()) + "%");
-                                ItemFragmento.gorjeta.setPorcentagem(np.getValue());
-                                listAdapter.notifyDataSetChanged();
-                            }
-                        })
-                .setNegativeButton(R.string.text_cancel,
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                dialog.cancel();
-                            }
-                        }
-
-                );
-        AlertDialog alertDialog = alertDialogBuilder.create();
-        alertDialog.show();
-
-
-    }
 
     public void atualizaListas(){
         PessoaDAO pdao = new PessoaDAO(getActivity());
@@ -273,7 +240,7 @@ public class PessoaFragmento extends Fragment implements FragmentInterface{
     public void onStop() {
         super.onStop();
         SharedPreferences.Editor prefEditor = getContext().getSharedPreferences("Preferences", Context.MODE_PRIVATE).edit();
-        prefEditor.putString("gorjetaValor", gorjetaValor .getText().toString());
+        prefEditor.putInt("gorjetaValor", gorjetaSpinner.getSelectedItemPosition());
         prefEditor.putInt("gorjetaPorcentagem", gorjeta.getPorcentagem());
         prefEditor.putBoolean("gorjetaAtivo", gorjeta.getAtivo());
         prefEditor.commit();
@@ -301,6 +268,24 @@ public class PessoaFragmento extends Fragment implements FragmentInterface{
         }
     }
 
+    Spinner.OnItemSelectedListener gorjetaSpinnerListener = new AdapterView.OnItemSelectedListener() {
+        @Override
+        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+            Log.d(TAG, "onItemSelected: " + parent.getItemAtPosition(position).toString());
+            ((TextView) parent.getChildAt(0)).setText(parent.getItemAtPosition(position).toString() + "%");
+            ((TextView) parent.getChildAt(0)).setTypeface(null, Typeface.BOLD);
+            ((TextView) parent.getChildAt(0)).setTextSize(18);
+            gorjeta.setPorcentagem(Integer.parseInt(parent.getItemAtPosition(position).toString()));
+            ItemFragmento.gorjeta.setPorcentagem(Integer.parseInt(parent.getItemAtPosition(position).toString()));
+            ItemFragmento.gorjetaSpinner.setSelection(position);
+            listAdapter.notifyDataSetChanged();
+        }
+
+        @Override
+        public void onNothingSelected(AdapterView<?> parent) {
+
+        }
+    };
     @Override
     public void setAtualizar(boolean b) {
         this.atualizar = b;
