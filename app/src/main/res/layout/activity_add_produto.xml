@@ -22,13 +22,19 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="Quantidade Consumida?"
+            />
         <me.himanshusoni.quantityview.QuantityView
             android:id="@+id/quantityView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:layout_gravity="top"
+            android:layout_gravity="center_horizontal"
 
             app:qv_addButtonBackground="@drawable/add_selector"
             app:qv_addButtonTextColor="@color/md_white_1000"
