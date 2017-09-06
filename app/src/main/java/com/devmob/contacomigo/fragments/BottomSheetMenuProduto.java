@@ -3,7 +3,10 @@ package com.devmob.contacomigo.fragments;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.icu.text.NumberFormat;
+import android.os.Build;
 import android.support.annotation.NonNull;
+import android.support.annotation.RequiresApi;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.BottomSheetDialogFragment;
 import android.support.design.widget.CoordinatorLayout;
@@ -54,6 +57,7 @@ public class BottomSheetMenuProduto extends BottomSheetDialogFragment {
         itemFragmento = frag;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void setupDialog(Dialog dialog, int style) {
         super.setupDialog(dialog, style);
@@ -69,7 +73,12 @@ public class BottomSheetMenuProduto extends BottomSheetDialogFragment {
         btn_delete = (RelativeLayout) contentView.findViewById(R.id.btn_delete);
         btn_edit = (RelativeLayout) contentView.findViewById(R.id.btn_edit);
         mTitulo = (TextView) contentView.findViewById(R.id.titulo);
-        mTitulo.setText(produto.getNome());
+        NumberFormat nf = NumberFormat.getCurrencyInstance();
+        String titulo = produto.getNome()+"\n"
+                +produto.getQuantidade()+" x "
+                +nf.format(Double.parseDouble(String.format("%.2f", produto.getPreco())))+" = "
+                +nf.format(Double.parseDouble(String.format("%.2f", produto.getPreco()*produto.getQuantidade())));
+        mTitulo.setText(titulo);
         btn_cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
