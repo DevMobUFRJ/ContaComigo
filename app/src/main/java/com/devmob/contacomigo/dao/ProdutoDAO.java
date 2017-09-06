@@ -61,6 +61,7 @@ public class ProdutoDAO extends DBAdapter{
         ContentValues cv = new ContentValues();
         cv.put("nome", produto.getNome());
         cv.put("preco", produto.getPreco());
+        cv.put("quantidade", produto.getQuantidade());
         db.update("Produto",cv, "id="+produto.getId(), null);
         close();
     }

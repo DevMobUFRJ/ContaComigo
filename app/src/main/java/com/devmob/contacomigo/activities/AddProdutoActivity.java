@@ -237,6 +237,9 @@ public class AddProdutoActivity extends AppCompatActivity implements QuantityVie
 
                 String nome = nomeProduto.getText().toString();
                 float preco = stringMonetarioToDouble(precoProduto.getText().toString());
+                int quantidadeProdutos = quantityViewTotal.getQuantity();
+                produto.setQuantidade(quantidadeProdutos);
+                Log.d(TAG, "qntd produtos"+quantidadeProdutos);
                 produto.setNome(nome);
                 produto.setPreco(preco);
 
