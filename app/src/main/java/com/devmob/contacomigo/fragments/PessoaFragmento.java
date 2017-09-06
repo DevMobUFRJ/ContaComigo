@@ -82,7 +82,7 @@ public class PessoaFragmento extends Fragment implements FragmentInterface{
         SharedPreferences prefs = getContext().getSharedPreferences("Preferences", Context.MODE_PRIVATE);
 
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(),
-                R.array.gorjetas, android.R.layout.simple_spinner_item);
+                R.array.gorjetas, R.layout.spinner_item);
         // Specify the layout to use when the list of choices appears
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         // Apply the adapter to the spinner

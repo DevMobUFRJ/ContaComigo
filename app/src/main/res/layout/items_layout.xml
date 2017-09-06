@@ -44,11 +44,10 @@
             android:layout_weight="1" />
         <Spinner
             android:id="@+id/gorjetaSpinner"
-            android:layout_width="95dp"
+            android:layout_width="100sp"
             android:layout_height="match_parent"
             android:entries="@array/gorjetas"
-            android:dropDownWidth="50dp"
-
+            android:dropDownWidth="50sp"
             />
 
         <android.support.v7.widget.SwitchCompat
