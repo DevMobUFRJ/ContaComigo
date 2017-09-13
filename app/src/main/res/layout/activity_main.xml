@@ -18,13 +18,13 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-        <com.devmob.contacomigo.fragments.NonSwipeableViewPager
+        <com.devmob.contacomigov2.fragments.NonSwipeableViewPager
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:id="@+id/containter"
             android:layout_above="@+id/bottom_navigation">
 
-        </com.devmob.contacomigo.fragments.NonSwipeableViewPager>
+        </com.devmob.contacomigov2.fragments.NonSwipeableViewPager>
 
 
         <android.support.design.widget.BottomNavigationView
