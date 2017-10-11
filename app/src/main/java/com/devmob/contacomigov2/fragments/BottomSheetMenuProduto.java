@@ -3,6 +3,8 @@ package com.devmob.contacomigov2.fragments;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.icu.text.DecimalFormat;
+import android.icu.text.DecimalFormatSymbols;
 import android.icu.text.NumberFormat;
 import android.os.Build;
 import android.support.annotation.NonNull;
@@ -71,10 +73,16 @@ public class BottomSheetMenuProduto extends BottomSheetDialogFragment {
         btn_edit = (RelativeLayout) contentView.findViewById(R.id.btn_edit);
         mTitulo = (TextView) contentView.findViewById(R.id.titulo);
         NumberFormat nf = NumberFormat.getCurrencyInstance();
+        DecimalFormatSymbols dfs = new DecimalFormatSymbols();
+        dfs.setDecimalSeparator('.');
+        DecimalFormat df = new DecimalFormat("0.00", dfs);
+        Log.d(TAG, "setupDialog: " + nf.format(Double.parseDouble(String.format(df.format(produto.getPreco())))));
         String titulo = produto.getNome()+"\n"
                 +produto.getQuantidade()+" x "
-                +nf.format(Double.parseDouble(String.format("%.2f", produto.getPreco())))+" = "
-                +nf.format(Double.parseDouble(String.format("%.2f", produto.getPreco()*produto.getQuantidade())));
+//                + nf.format(df.format(produto.getPreco()))+" = "
+//                +nf.format(df.format( produto.getPreco()*produto.getQuantidade()));
+                +nf.format(Double.parseDouble(df.format(produto.getPreco())))+" = "
+                +nf.format(Double.parseDouble(df.format(produto.getPreco()*produto.getQuantidade())));
         mTitulo.setText(titulo);
         btn_cancel.setOnClickListener(new View.OnClickListener() {
             @Override
