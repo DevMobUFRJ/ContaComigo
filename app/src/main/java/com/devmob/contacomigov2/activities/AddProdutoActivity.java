@@ -95,8 +95,10 @@ public class AddProdutoActivity extends AppCompatActivity implements QuantityVie
                 Pessoa pessoa = pedao.getPessoaById(quantityviewIndividual.getId());
                 Log.d(TAG, "nome pessoa: "+pessoa.getNome());
                 ProdutoConsumido pc = ppd.buscaProdutoDeUmaPessoa(pessoa, produto);
-                if(pc!=null)
-                ((QuantityView)quantityviewIndividual).setQuantity(pc.getQuantidade());
+                if(pc!=null) {
+                    ((QuantityView) quantityviewIndividual).setQuantity(pc.getQuantidade());
+                    (((LinearLayout)checkboxOuterContainer.getChildAt(i)).getChildAt(2)).setVisibility(View.INVISIBLE);
+                }
                 Log.d(TAG, "iniciaValoresParaEdit: ");
             }
         }
