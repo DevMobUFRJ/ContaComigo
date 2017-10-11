@@ -29,27 +29,41 @@
             </LinearLayout>
         </ScrollView>
 
-
+    <LinearLayout
+        android:id="@+id/bottom_panel"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true">
         <Button
             android:id="@+id/salvar"
-            android:layout_width="match_parent"
+            android:layout_width="0dip"
+            android:layout_weight="1"
+            android:shadowColor="@color/green"
             android:layout_height="wrap_content"
             android:text="@string/text_save"/>
         <Button
             android:id="@+id/cancelar"
-            android:layout_width="match_parent"
+            android:layout_width="0dip"
+            android:layout_weight="1"
+            android:shadowColor="@color/red"
             android:layout_height="wrap_content"
             android:text="@string/text_cancel"/>
-
-        <android.support.design.widget.FloatingActionButton
-            android:id="@+id/addFAB"
+    </LinearLayout>
+        <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="end|bottom"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentBottom="true"
-            android:layout_margin="16sp"
-            app:backgroundTint="@color/red"
-            android:src="@drawable/ic_add_button_circle" />
+            android:layout_height="wrap_content">
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/addFAB"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end|bottom"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentBottom="true"
+                android:layout_margin="16sp"
+                app:backgroundTint="@color/red"
+                android:src="@drawable/ic_add_button_circle" />
+        </LinearLayout>
+
     </LinearLayout>
 </ScrollView>
