@@ -29,6 +29,9 @@ import com.devmob.contacomigov2.model.Gorjeta;
 import com.devmob.contacomigov2.model.Pessoa;
 import com.devmob.contacomigov2.model.Produto;
 
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,12 +50,14 @@ public class ItemFragmento extends Fragment implements FragmentInterface{
     public static ProdutoExpandableListAdapter listAdapter;
     public static SwitchCompat switchGorjeta;
     private ExpandableListView itemsExpandableListView;
+    private TextView valorTotalTextView;
     public FloatingActionButton addFAB;
     public static Gorjeta gorjeta;
     public static boolean itemAdicionado;
     private String nomeFragmento = "Item";
     private boolean atualizar = true;
     public static Spinner gorjetaSpinner;
+    private double precoTotal = 0;
 
 
     public String getNome(){
@@ -68,6 +73,7 @@ public class ItemFragmento extends Fragment implements FragmentInterface{
         switchGorjeta = (SwitchCompat) view.findViewById(R.id.switchGorjeta);
 
         itemsExpandableListView = (ExpandableListView) view.findViewById(R.id.produtosExpandableListView);
+        valorTotalTextView = (TextView) view.findViewById(R.id.valorTotal);
         ProdutoDAO dao = new ProdutoDAO(getActivity());
         produtos = dao.buscaProdutos();
         listAdapter = new ProdutoExpandableListAdapter(getActivity(), new ArrayList<>(produtos));
@@ -77,6 +83,7 @@ public class ItemFragmento extends Fragment implements FragmentInterface{
         gorjetaSpinner = (Spinner) view.findViewById(R.id.gorjetaSpinner);
         SharedPreferences prefs = getContext().getSharedPreferences("Preferences", Context.MODE_PRIVATE);
         switchGorjeta.setChecked(prefs.getBoolean("switchGorjeta", false));
+
 
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(),
                 R.array.gorjetas, R.layout.spinner_item);
@@ -179,6 +186,7 @@ public class ItemFragmento extends Fragment implements FragmentInterface{
                         PessoaFragmento.switchGorjeta.setChecked(true);
                         listAdapter.notifyDataSetChanged();
                 }
+                alteraTotal();
             }
 
         });
@@ -218,9 +226,29 @@ public class ItemFragmento extends Fragment implements FragmentInterface{
             if(resultCode == RESULT_OK) {
                 itemAdicionado = data.getExtras().getBoolean("booleanItem");
                 PessoaFragmento.itemAdicionado = data.getExtras().getBoolean("booleanItem");
+                alteraTotal();
+
             }
         }
 
+    }
+
+    public void alteraTotal(){
+        ProdutoDAO pdao = new ProdutoDAO(getContext());
+        produtos = pdao.buscaProdutos();
+        double valorTotal = 0;
+        for(Produto p : produtos){
+            valorTotal+=p.getPreco()*p.getQuantidade();
+        }
+        if(gorjeta.getAtivo()){
+            valorTotal*=gorjeta.getValor();
+        }
+        NumberFormat nf = NumberFormat.getCurrencyInstance();
+        DecimalFormatSymbols dfs = new DecimalFormatSymbols();
+        dfs.setDecimalSeparator('.');
+        DecimalFormat df = new DecimalFormat("0.00", dfs);
+
+        valorTotalTextView.setText(nf.format(Double.parseDouble(df.format(valorTotal))));
     }
 
 
@@ -245,6 +273,7 @@ public class ItemFragmento extends Fragment implements FragmentInterface{
             atualizar = false;
             Log.i(TAG, "ItemFrag Atualizada");
         }
+        alteraTotal();
     }
     Spinner.OnItemSelectedListener gorjetaSpinnerListener = new AdapterView.OnItemSelectedListener() {
         @Override
