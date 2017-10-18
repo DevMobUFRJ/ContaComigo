@@ -286,6 +286,7 @@ public class ItemFragmento extends Fragment implements FragmentInterface{
             PessoaFragmento.gorjeta.setPorcentagem(Integer.parseInt(parent.getItemAtPosition(position).toString()));
             PessoaFragmento.gorjetaSpinner.setSelection(position);
             listAdapter.notifyDataSetChanged();
+            alteraTotal();
         }
 
         @Override
