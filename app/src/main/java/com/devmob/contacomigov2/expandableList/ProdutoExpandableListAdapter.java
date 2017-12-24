@@ -1,4 +1,4 @@
-package com.devmob.contacomigov2.ExpandableList;
+package com.devmob.contacomigov2.expandableList;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -45,21 +45,6 @@ public class ProdutoExpandableListAdapter extends BaseExpandableListAdapter {
     public Object getChild(int indiceProduto, int indicePessoa) {
         List<Pessoa> consumidores = prodList.get(indiceProduto).getConsumidores();
         return consumidores.get(indicePessoa);
-    }
-
-    public void insereProdutoNaLista(Produto novo) {
-        prodList.add(novo);
-        this.notifyDataSetChanged();
-    }
-
-    public void deletaLista(Produto novo) {
-        for (Produto p: prodList) {
-            if (p.getId() == novo.getId()){
-                prodList.remove(p);
-                break;
-            }
-        }
-        this.notifyDataSetChanged();
     }
 
 

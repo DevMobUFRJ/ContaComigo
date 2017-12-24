@@ -21,6 +21,7 @@ public class RestauranteFragmento extends Fragment implements FragmentInterface{
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         View view  = inflater.inflate(R.layout.restaurante_layout, container, false);
         return view;
     }
