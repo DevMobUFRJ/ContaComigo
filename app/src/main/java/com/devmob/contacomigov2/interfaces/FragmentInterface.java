@@ -1,4 +1,4 @@
-package com.devmob.contacomigov2.fragments;
+package com.devmob.contacomigov2.interfaces;
 
 import java.util.Arrays;
 import java.util.List;

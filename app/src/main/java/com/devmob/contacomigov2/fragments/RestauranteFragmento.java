@@ -9,12 +9,13 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.devmob.contacomigov2.R;
+import com.devmob.contacomigov2.interfaces.FragmentInterface;
 
 /**
  * Created by devmob on 03/05/17.
  */
 
-public class RestauranteFragmento extends Fragment implements FragmentInterface{
+public class RestauranteFragmento extends Fragment implements FragmentInterface {
     private static final String TAG = "RestauranteFragmento";
     private boolean atualizar = true;
 

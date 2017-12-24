@@ -1,5 +1,6 @@
-package com.devmob.contacomigov2.fragments;
+package com.devmob.contacomigov2.bottomSheets;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -22,6 +23,7 @@ import com.devmob.contacomigov2.R;
 import com.devmob.contacomigov2.activities.AddProdutoActivity;
 import com.devmob.contacomigov2.activities.MainActivity;
 import com.devmob.contacomigov2.dao.ProdutoDAO;
+import com.devmob.contacomigov2.fragments.ItemFragmento;
 import com.devmob.contacomigov2.model.Produto;
 
 /**
@@ -56,6 +58,7 @@ public class BottomSheetMenuProduto extends BottomSheetDialogFragment {
         itemFragmento = frag;
     }
 
+    @SuppressLint("RestrictedApi")
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void setupDialog(Dialog dialog, int style) {

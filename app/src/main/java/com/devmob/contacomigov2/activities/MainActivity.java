@@ -12,12 +12,12 @@ import android.view.View;
 
 import com.devmob.contacomigov2.R;
 import com.devmob.contacomigov2.dao.PessoaDAO;
-import com.devmob.contacomigov2.fragments.FragmentInterface;
+import com.devmob.contacomigov2.interfaces.FragmentInterface;
 import com.devmob.contacomigov2.fragments.ItemFragmento;
-import com.devmob.contacomigov2.fragments.NonSwipeableViewPager;
+import com.devmob.contacomigov2.viewPagers.NonSwipeableViewPager;
 import com.devmob.contacomigov2.fragments.PessoaFragmento;
 import com.devmob.contacomigov2.fragments.RestauranteFragmento;
-import com.devmob.contacomigov2.fragments.SectionsStatePagerAdapter;
+import com.devmob.contacomigov2.adapters.statePagers.SectionsStatePagerAdapter;
 import com.devmob.contacomigov2.fragments.TotalFragmento;
 import com.devmob.contacomigov2.model.Pessoa;
 

@@ -22,10 +22,12 @@ import android.widget.ExpandableListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.devmob.contacomigov2.ExpandableList.PessoaExpandableListAdapter;
+import com.devmob.contacomigov2.adapters.expandableLists.PessoaExpandableListAdapter;
 import com.devmob.contacomigov2.R;
 import com.devmob.contacomigov2.activities.AddPessoaActivity;
+import com.devmob.contacomigov2.bottomSheets.BottomSheetMenuPessoa;
 import com.devmob.contacomigov2.dao.PessoaDAO;
+import com.devmob.contacomigov2.interfaces.FragmentInterface;
 import com.devmob.contacomigov2.model.Gorjeta;
 import com.devmob.contacomigov2.model.Pessoa;
 
@@ -39,7 +41,7 @@ import static android.app.Activity.RESULT_OK;
  * Created by devmob on 03/05/17.
  */
 
-public class PessoaFragmento extends Fragment implements FragmentInterface{
+public class PessoaFragmento extends Fragment implements FragmentInterface {
     private static final String TAG = "PessoaFragmento";
 
 

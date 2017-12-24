@@ -1,4 +1,4 @@
-package com.devmob.contacomigov2.fragments;
+package com.devmob.contacomigov2.bottomSheets;
 
 import android.app.Dialog;
 import android.content.DialogInterface;
@@ -15,6 +15,7 @@ import android.widget.Toast;
 import com.devmob.contacomigov2.R;
 import com.devmob.contacomigov2.dao.PessoaDAO;
 import com.devmob.contacomigov2.dao.PessoaProdutoDAO;
+import com.devmob.contacomigov2.fragments.PessoaFragmento;
 import com.devmob.contacomigov2.model.Pessoa;
 
 /**

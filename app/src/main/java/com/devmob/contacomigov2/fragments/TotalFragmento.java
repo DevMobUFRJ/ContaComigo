@@ -17,13 +17,14 @@ import com.devmob.contacomigov2.R;
 import com.devmob.contacomigov2.activities.MainActivity;
 import com.devmob.contacomigov2.dao.PessoaDAO;
 import com.devmob.contacomigov2.dao.ServicoDAO;
+import com.devmob.contacomigov2.interfaces.FragmentInterface;
 import com.devmob.contacomigov2.model.Pessoa;
 
 /**
  * Created by devmob on 03/05/17.
  */
 
-public class TotalFragmento extends Fragment implements FragmentInterface{
+public class TotalFragmento extends Fragment implements FragmentInterface {
 
 
     private static final String TAG = "TotalFragmento";

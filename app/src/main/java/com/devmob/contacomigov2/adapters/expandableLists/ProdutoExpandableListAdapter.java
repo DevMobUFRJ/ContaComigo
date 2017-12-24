@@ -1,4 +1,4 @@
-package com.devmob.contacomigov2.expandableList;
+package com.devmob.contacomigov2.adapters.expandableLists;
 
 import android.content.Context;
 import android.view.LayoutInflater;

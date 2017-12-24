@@ -1,4 +1,4 @@
-package com.devmob.contacomigov2.fragments;
+package com.devmob.contacomigov2.viewPagers;
 
 /**
  * Created by DevMachine on 24/05/2017.

@@ -1,4 +1,4 @@
-package com.devmob.contacomigov2.ExpandableList;
+package com.devmob.contacomigov2.adapters.expandableLists;
 
 import android.content.Context;
 import android.util.Log;
