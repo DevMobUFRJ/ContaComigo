@@ -164,12 +164,9 @@ public class AddProdutoActivity extends AppCompatActivity implements QuantityVie
 
                 }
             });
-            final TextView warning = new TextView(this);
-            warning.setText("Erro!");
-            warning.setVisibility(View.INVISIBLE);
+
             checkboxInnerContainer.addView(checkBox);
             checkboxInnerContainer.addView(quantityViewIndividual);
-            checkboxInnerContainer.addView(warning);
             checkboxOuterContainer.addView(checkboxInnerContainer);
         }
         quantidadeDiferenteCheck.setOnCheckedChangeListener(quantidadeDiferenteListener);
@@ -272,19 +269,22 @@ public class AddProdutoActivity extends AppCompatActivity implements QuantityVie
         public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
             //Pega o quantity view relativo ao checkbox
             QuantityView qvDaPessoa = new QuantityView(AddProdutoActivity.this);
-            TextView avisoDaPessoa = new TextView(AddProdutoActivity.this);
             for (int i = 0; i < checkboxOuterContainer.getChildCount(); i++) {
                 qvDaPessoa = (QuantityView) ((LinearLayout)checkboxOuterContainer.getChildAt(i)).getChildAt(1);
-                avisoDaPessoa = (TextView) ((LinearLayout)checkboxOuterContainer.getChildAt(i)).getChildAt(2);
                 if (qvDaPessoa.getId() == buttonView.getId()){
                     break;
                 }
             }
             if (isChecked && qvDaPessoa.getQuantity() == 0 && quantidadeDiferenteCheck.isChecked()){
-                avisoDaPessoa.setVisibility(View.VISIBLE);
+                qvDaPessoa.setQuantity(1);
+                qvDaPessoa.setMinQuantity(1);
+            }
+            else if (isChecked && quantidadeDiferenteCheck.isChecked()){
+                qvDaPessoa.setMinQuantity(1);
             }
             else{
-                avisoDaPessoa.setVisibility(View.INVISIBLE);
+                qvDaPessoa.setQuantity(0);
+                qvDaPessoa.setMinQuantity(0);
             }
             //pega a quantidade das pessoas com check ja marcado
             int quantidadeContabilizada = 0;
@@ -341,10 +341,8 @@ public class AddProdutoActivity extends AppCompatActivity implements QuantityVie
     public void onQuantityViewIndividualQuantityChanged(int oldQuantity, int newQuantity, boolean programmatically, int id) {
         //pega o Checkbox relativo ao quantityView
         CheckBox checkBoxPessoa = new CheckBox(AddProdutoActivity.this);
-        TextView avisoDaPessoa = new TextView(AddProdutoActivity.this);
         for (int i = 0; i < checkboxOuterContainer.getChildCount(); i++) {
             checkBoxPessoa = (CheckBox) ((LinearLayout)checkboxOuterContainer.getChildAt(i)).getChildAt(0);
-            avisoDaPessoa = (TextView) ((LinearLayout)checkboxOuterContainer.getChildAt(i)).getChildAt(2);
             if (checkBoxPessoa.getId() == id){
                 break;
             }
@@ -359,10 +357,10 @@ public class AddProdutoActivity extends AppCompatActivity implements QuantityVie
             }
         }
         if (checkBoxPessoa.isChecked() && newQuantity == 0 && quantidadeDiferenteCheck.isChecked()){
-            avisoDaPessoa.setVisibility(View.VISIBLE);
+            //avisoDaPessoa.setVisibility(View.VISIBLE);
         }
         else{
-            avisoDaPessoa.setVisibility(View.INVISIBLE);
+            //avisoDaPessoa.setVisibility(View.INVISIBLE);
         }
         //seta máximos
         for (int i = 0; i < checkboxOuterContainer.getChildCount(); i++) {
@@ -395,8 +393,6 @@ public class AddProdutoActivity extends AppCompatActivity implements QuantityVie
             if (!isChecked){
                 for (int i = 0; i < checkboxOuterContainer.getChildCount(); i++) {
                     QuantityView qv = (QuantityView) ((LinearLayout)checkboxOuterContainer.getChildAt(i)).getChildAt(1);
-                    TextView avisoDaPessoa = (TextView) ((LinearLayout)checkboxOuterContainer.getChildAt(i)).getChildAt(2);
-                    avisoDaPessoa.setVisibility(View.INVISIBLE);
                     qv.setVisibility(View.INVISIBLE);
                     qv.setMaxQuantity(1);
                     qv.setMinQuantity(0);
@@ -404,21 +400,25 @@ public class AddProdutoActivity extends AppCompatActivity implements QuantityVie
                 }
             }
             else{
-                TextView avisoDaPessoa = new TextView(AddProdutoActivity.this);
                 int quantidadeContabilizada = 0;
                 for (int i = 0; i < checkboxOuterContainer.getChildCount(); i++) {
                     CheckBox checkBoxPessoa = (CheckBox) ((LinearLayout)checkboxOuterContainer.getChildAt(i)).getChildAt(0);
                     QuantityView qv = (QuantityView) ((LinearLayout)checkboxOuterContainer.getChildAt(i)).getChildAt(1);
-                    avisoDaPessoa = (TextView) ((LinearLayout)checkboxOuterContainer.getChildAt(i)).getChildAt(2);
                     qv.setVisibility(View.VISIBLE);
                     if (checkBoxPessoa.isChecked()){
-                        quantidadeContabilizada+= qv.getQuantity();
                         if (qv.getQuantity() == 0 && isChecked){
-                            avisoDaPessoa.setVisibility(View.VISIBLE);
+                            //avisoDaPessoa.setVisibility(View.VISIBLE);
+                            qv.setQuantity(1);
+                            qv.setMinQuantity(1);
+                        }
+                        else if(isChecked){
+                            qv.setMinQuantity(1);
                         }
                         else{
-                            avisoDaPessoa.setVisibility(View.INVISIBLE);
+                            qv.setQuantity(0);
+                            qv.setMinQuantity(0);
                         }
+                        quantidadeContabilizada+= qv.getQuantity();
                     }
                 }
                 for (int i = 0; i < checkboxOuterContainer.getChildCount(); i++) {
