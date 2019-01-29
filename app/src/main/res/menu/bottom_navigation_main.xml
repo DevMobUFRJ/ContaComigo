@@ -13,12 +13,12 @@
     <item
         android:id="@+id/moneyIcon"
         android:icon="@drawable/ic_money"
-        android:title="@string/text_money" />
+        android:title="Produtos" />
     <item
         android:id="@+id/tempIcon"
         android:enabled="true"
         android:icon="@drawable/ic_home"
-        android:title="TEMP" />
+        android:title="Limpar" />
 
 
 

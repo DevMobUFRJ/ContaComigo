@@ -207,20 +207,24 @@ public class AddProdutoActivity extends AppCompatActivity implements QuantityVie
             }
         }
 
+        Log.d(TAG, "qntdDiferenteIsChecked? " + quantidadeDiferenteCheck);
+
         if (!quantidadeDiferenteCheck.isChecked()) {
+            Log.d(TAG, "entrei if");
             float precoPorPessoa = (float) (produto.getPreco() * produto.getQuantidade() / idsConsumidores.size());
 
             for (Integer id : idsConsumidores.keySet()) {
-                int quantidadeConsumida = 1;
-                Log.d(TAG, "onClick : " + id + " " + quantidadeConsumida);
+                int quantidadeConsumida = produto.getQuantidade();
+                Log.d(TAG, "QuantidadeConsumida - IF : " + id + " " + quantidadeConsumida);
                 ppd.insere(id, produto.getId(), quantidadeConsumida, precoPorPessoa);
             }
         } else {
+            Log.d(TAG, "entrei else");
             for (Integer id : idsConsumidores.keySet()) {
                 int quantidadeConsumidaPorPessoa = idsConsumidores.get(id);
-                Log.d(TAG, "Pessoa: " + id + " Consumiu: " + quantidadeConsumidaPorPessoa);
+                Log.d(TAG, "Quantidade Consumida - ELSE" + "Pessoa: " + id + " Consumiu: " + quantidadeConsumidaPorPessoa);
                 ppd.insere(id, produto.getId(), quantidadeConsumidaPorPessoa, (float) produto.getPreco() * quantidadeConsumidaPorPessoa);
-                Log.d(TAG, "Preço: " + (float) produto.getPreco() * quantidadeConsumidaPorPessoa);
+                Log.d(TAG, "Quantidade Consumida - ELSE " + "Preço: " + (float) produto.getPreco() * quantidadeConsumidaPorPessoa);
             }
         }
     }

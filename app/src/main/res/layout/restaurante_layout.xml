@@ -8,8 +8,8 @@
         android:layout_height="match_parent"
         android:gravity="center"
         android:text="Olá, seja Bem-Vindo ao ContaComigo!
-versão Alpha 0.2\n\n O design do aplicativo ainda não está feito.\n\n
-Para remover todos os produtos e pessoas, há temporariamente um botão na última aba.
+Para remover todos os produtos e pessoas, vá na aba 'Limpar'.
+Para começar a utilizar o aplicativo, basta cadastrar seus amigos e falar o que cada um comeu!
 \n\n"
         />
 </LinearLayout>

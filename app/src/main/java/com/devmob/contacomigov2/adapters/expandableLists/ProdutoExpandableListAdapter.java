@@ -7,8 +7,9 @@ import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.TextView;
 
-
+import android.util.Log;
 import com.devmob.contacomigov2.R;
+import com.devmob.contacomigov2.dao.PessoaProdutoDAO;
 import com.devmob.contacomigov2.fragments.ItemFragmento;
 import com.devmob.contacomigov2.model.Pessoa;
 import com.devmob.contacomigov2.model.Produto;
@@ -61,12 +62,18 @@ public class ProdutoExpandableListAdapter extends BaseExpandableListAdapter {
         Pessoa detailInfo = (Pessoa) getChild(indiceProduto, indicePessoa);
         Produto produto = (Produto) getGroup(indiceProduto);
 
+        PessoaProdutoDAO ppd = new PessoaProdutoDAO(context);
+
+        List<ProdutoConsumido> produtosDaPessoa = ppd.buscaProdutosDeUmaPessoa(detailInfo);
+
+
         double price = 0;
         int quantidade = 1;
-        for (ProdutoConsumido pc : detailInfo.getProdutosConsumidos()) {
+        for (ProdutoConsumido pc : produtosDaPessoa) {
             if(pc.getProduto().getId() == produto.getId()) {
                 price = pc.getPrecoPago();
                 quantidade = pc.getQuantidade();
+                Log.d(TAG, "Produto: " + pc.getProduto().getNome() + " Quantidade: " + quantidade);
             }
         }
 
