@@ -2,7 +2,7 @@ package com.devmob.contacomigov2.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+import android.support.v4.app.FragmentActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.ArrayMap;
@@ -33,7 +33,7 @@ import java.util.Map;
 
 import me.himanshusoni.quantityview.QuantityView;
 
-public class AddProdutoActivity extends AppCompatActivity implements QuantityView.OnQuantityChangeListener{
+public class AddProdutoActivity extends FragmentActivity implements QuantityView.OnQuantityChangeListener{
 
     private static final String TAG = "AddProdutoActivity";
 
