@@ -1,13 +1,14 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fillViewport="true">
+    android:fillViewport="true"
+    android:padding="8dp" >
+
     <LinearLayout
         android:id="@+id/layoutAddPessoa"
-        xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical">
 
         <EditText
@@ -16,40 +17,6 @@
             android:layout_height="wrap_content"
             android:hint="Nova Pessoa"/>
 
-        <ScrollView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" >
-
-            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:id="@+id/checkbox_container"
-                android:orientation="vertical"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-            </LinearLayout>
-        </ScrollView>
-
-    <LinearLayout
-        android:id="@+id/bottom_panel"
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true">
-        <Button
-            android:id="@+id/salvar"
-            android:layout_width="0dip"
-            android:layout_weight="1"
-            android:shadowColor="@color/green"
-            android:layout_height="wrap_content"
-            android:text="@string/text_save"/>
-        <Button
-            android:id="@+id/cancelar"
-            android:layout_width="0dip"
-            android:layout_weight="1"
-            android:shadowColor="@color/red"
-            android:layout_height="wrap_content"
-            android:text="@string/text_cancel"/>
-    </LinearLayout>
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
@@ -58,12 +25,35 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end|bottom"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentBottom="true"
-                android:layout_margin="16sp"
+                android:layout_margin="12sp"
                 app:backgroundTint="@color/red"
                 android:src="@drawable/ic_add_button_circle" />
         </LinearLayout>
 
+        <LinearLayout
+            android:id="@+id/bottom_panel"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:gravity="bottom">
+
+            <Button
+                android:id="@+id/salvar"
+                android:layout_width="0dip"
+                android:layout_weight="1"
+                android:background="@color/green"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="3dp"
+                android:text="@string/text_save"/>
+            <Button
+                android:id="@+id/cancelar"
+                android:layout_width="0dip"
+                android:layout_weight="1"
+                android:background="@color/red"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="3dp"
+                android:text="@string/text_cancel"/>
+        </LinearLayout>
     </LinearLayout>
 </ScrollView>

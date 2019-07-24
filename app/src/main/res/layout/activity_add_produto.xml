@@ -1,23 +1,38 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:padding="8dp">
 
-    android:orientation="vertical">
-
-    <EditText
-        android:id="@+id/nome"
+    <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Nome"/>
+        android:labelFor="@+id/nome"
+        android:hint="Nome do Produto">
 
-    <EditText
-        android:id="@+id/preco"
-        android:layout_width="fill_parent"
+        <EditText
+            android:id="@+id/nome"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:autofillHints="Produto"/>
+
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Preço"
-        android:inputType="numberDecimal" />
+        android:labelFor="@+id/preco"
+        android:hint="Preço">
+        <EditText
+            android:id="@+id/preco"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:autofillHints="Preço"
+            android:inputType="numberDecimal" />
+    </android.support.design.widget.TextInputLayout>
+
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -27,8 +42,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:text="Quantidade Consumida?"
-            />
+            android:text="Quantidade Consumida?" />
+
         <me.himanshusoni.quantityview.QuantityView
             android:id="@+id/quantityView"
             android:layout_width="wrap_content"
@@ -41,40 +56,43 @@
             app:qv_quantity="1"
             app:qv_removeButtonBackground="@drawable/remove_selector"
             app:qv_removeButtonTextColor="@color/md_white_1000" />
+
         <CheckBox
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:text="Quantidade diferente por pessoa?"
-            android:id="@+id/quantidadeDiferenteCheckbox"
-            />
+            android:id="@+id/quantidadeDiferenteCheckbox" />
 
     </LinearLayout>
 
 
     <ScrollView
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" >
-
-        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+        <LinearLayout
             android:id="@+id/checkbox_outer_container"
             android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content">
 
         </LinearLayout>
     </ScrollView>
-
 
     <Button
         android:id="@+id/salvar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="6dp"
+        android:background="@color/green"
         android:text="@string/text_save"/>
+
     <Button
         android:id="@+id/cancelar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/red"
         android:text="@string/text_cancel"/>
 
 </LinearLayout>
