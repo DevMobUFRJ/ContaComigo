@@ -31,7 +31,8 @@
             android:layout_width="100sp"
             android:layout_height="match_parent"
             android:entries="@array/gorjetas"
-            android:dropDownWidth="50sp" />
+            android:gravity="right"
+            android:dropDownWidth="wrap_content" />
 
         <android.support.v7.widget.SwitchCompat
             android:id="@+id/switchGorjeta"
